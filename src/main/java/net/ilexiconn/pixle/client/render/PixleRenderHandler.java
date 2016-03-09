@@ -1,6 +1,7 @@
 package net.ilexiconn.pixle.client.render;
 
 import net.ilexiconn.pixle.client.PixleClient;
+import net.ilexiconn.pixle.client.gui.BaseGUI;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
@@ -26,9 +27,19 @@ public class PixleRenderHandler extends Thread {
 
         long timer = System.currentTimeMillis();
 
+        GL11.glMatrixMode(GL11.GL_PROJECTION);
+        GL11.glLoadIdentity();
+        GL11.glOrtho(0, PixleClient.SCREEN_WIDTH, 0, PixleClient.SCREEN_HEIGHT, 1, -1);
+        GL11.glMatrixMode(GL11.GL_MODELVIEW);
+
         while (!Display.isCloseRequested() && !client.isCloseRequested()) {
             GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
-            GL11.glLoadIdentity();
+
+            BaseGUI openGUI = client.getOpenGUI();
+
+            if (openGUI != null) {
+                openGUI.render();
+            }
 
             fps++;
 
@@ -40,5 +51,7 @@ public class PixleRenderHandler extends Thread {
 
             Display.update();
         }
+
+        client.stop();
     }
 }
