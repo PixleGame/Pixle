@@ -9,9 +9,9 @@ public class CrashReport {
     public String description;
     public Throwable throwable;
 
-    private CrashReport(String d, Throwable t) {
-        description = d;
-        throwable = t;
+    private CrashReport(String description, Throwable throwable) {
+        this.description = description;
+        this.throwable = throwable;
     }
 
     public static String makeCrashReport(Throwable e, String d) {

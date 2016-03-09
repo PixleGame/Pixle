@@ -14,11 +14,20 @@ sourceCompatibility = targetCompatibility = "1.7"
 
 repositories {
     mavenCentral()
+    maven {
+        url "http://maven.rubbix.net"
+    }
+    maven {
+        url "http://maven.ilexiconn.net"
+    }
 }
 
 dependencies {
+    compile fileTree(dir: "libs", include: "*.jar")
     compile "org.lwjgl.lwjgl:lwjgl:2.9.3"
     compile "commons-io:commons-io:2.4"
+    compile "net.darkhax.opennbt:OpenNBT:2.2.16"
+    compile "net.ilexiconn:netconn:0.1.0"
 }
 
 natives {
