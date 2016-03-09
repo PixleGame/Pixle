@@ -2,15 +2,30 @@ plugins {
    id "java"
    id "idea"
    id "eclipse"
+   id "com.stehno.natives" version "0.2.4"
 }
 
+apply plugin: 'application'
+mainClassName = 'net.ilexiconn.pixle.Main'
+
+sourceCompatibility = targetCompatibility = 1.7
+
 version = '0.0.0'
-archivesBaseName = "PixleClient"
+archivesBaseName = "Pixle"
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    compile 'org.lwjgl.lwjgl:lwjgl:2.8.2'
+    compile 'org.lwjgl.lwjgl:lwjgl:2.9.2'
+}
+
+natives {
+    jars = [ "lwjgl-platform-2.9.1-natives-linux",
+             "lwjgl-platform-2.9.1-natives-osx",
+             "lwjgl-platform-2.9.1-natives-windows",
+             "jinput-platform-2.0.5-natives-linux",
+             "jinput-platform-2.0.5-natives-osx",
+             "jinput-platform-2.0.5-natives-windows"]
 }
