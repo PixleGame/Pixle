@@ -58,6 +58,8 @@ public class PixleClient {
                 ups = 0;
             }
         }
+
+        System.exit(-1);
     }
 
     private void tick() {
