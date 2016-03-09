@@ -1,10 +1,14 @@
-package net.ilexiconn.pixle;
+package net.ilexiconn.pixle.client;
 
 public class PixleClient {
     private boolean closeRequested;
 
     public void start() {
         startTick();
+    }
+
+    public void stop() {
+        closeRequested = true;
     }
 
     private void startTick() {
@@ -18,14 +22,14 @@ public class PixleClient {
             delta += (currentTime - previousTime) / 10000000.0;
             previousTime = currentTime;
 
-            while(delta >= 1) {
+            while (delta >= 1) {
                 tick();
 
                 delta--;
                 ups++;
             }
 
-            if(System.currentTimeMillis() - timer > 1000) {
+            if (System.currentTimeMillis() - timer > 1000) {
                 System.out.println("UPS: " + ups);
 
                 timer += 1000;
@@ -35,6 +39,7 @@ public class PixleClient {
     }
 
     private void tick() {
+
     }
 
     private void renderTick() {
