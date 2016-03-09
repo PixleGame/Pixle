@@ -18,13 +18,13 @@ repositories {
 }
 
 dependencies {
-    compile 'org.lwjgl.lwjgl:lwjgl:2.9.2'
+    compile 'org.lwjgl.lwjgl:lwjgl:2.9.3'
 }
 
 natives {
-    jars = [ "lwjgl-platform-2.9.1-natives-linux",
-             "lwjgl-platform-2.9.1-natives-osx",
-             "lwjgl-platform-2.9.1-natives-windows",
+    jars = [ "lwjgl-platform-2.9.3-natives-linux",
+             "lwjgl-platform-2.9.3-natives-osx",
+             "lwjgl-platform-2.9.3-natives-windows",
              "jinput-platform-2.0.5-natives-linux",
              "jinput-platform-2.0.5-natives-osx",
              "jinput-platform-2.0.5-natives-windows"]
