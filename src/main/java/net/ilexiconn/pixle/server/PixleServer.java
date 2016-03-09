@@ -17,7 +17,7 @@ public class PixleServer {
         long timer = System.currentTimeMillis();
         int ups = 0;
 
-        while (!closeRequested) {
+        while (!isCloseRequested()) {
             long currentTime = System.nanoTime();
             delta += (currentTime - previousTime) / 10000000.0;
             previousTime = currentTime;
@@ -40,5 +40,9 @@ public class PixleServer {
 
     private void tick() {
 
+    }
+
+    public boolean isCloseRequested() {
+        return closeRequested;
     }
 }

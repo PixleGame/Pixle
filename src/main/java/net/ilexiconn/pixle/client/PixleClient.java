@@ -3,8 +3,8 @@ package net.ilexiconn.pixle.client;
 import net.ilexiconn.pixle.client.render.PixleRenderHandler;
 
 public class PixleClient {
-    public static final int SCREEN_WIDTH = 1000;
-    public static final int SCREEN_HEIGHT = 800;
+    public static final int SCREEN_WIDTH = 854;
+    public static final int SCREEN_HEIGHT = 480;
 
     private boolean closeRequested;
 
@@ -28,7 +28,7 @@ public class PixleClient {
         int ups = 0;
         double nanoUpdates = 1000000000.0 / 60.0;
 
-        while (!closeRequested) {
+        while (!isCloseRequested()) {
             long currentTime = System.nanoTime();
             delta += (currentTime - previousTime) / nanoUpdates;
             previousTime = currentTime;
