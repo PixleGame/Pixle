@@ -26,13 +26,13 @@ public class PixleRenderHandler extends Thread {
 
         long timer = System.currentTimeMillis();
 
-        while(!Display.isCloseRequested() && !client.isCloseRequested()) {
+        while (!Display.isCloseRequested() && !client.isCloseRequested()) {
             GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
             GL11.glLoadIdentity();
 
             fps++;
 
-            if(System.currentTimeMillis() - timer > 1000) {
+            if (System.currentTimeMillis() - timer > 1000) {
                 timer += 1000;
                 Display.setTitle("Pixle - FPS: " + fps);
                 fps = 0;
