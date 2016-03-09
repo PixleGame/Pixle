@@ -1,5 +1,7 @@
 package net.ilexiconn.pixle.client;
 
+import net.ilexiconn.pixle.client.gui.BaseGUI;
+import net.ilexiconn.pixle.client.gui.TestGUI;
 import net.ilexiconn.pixle.client.render.PixleRenderHandler;
 import net.ilexiconn.pixle.crash.CrashReport;
 
@@ -10,6 +12,8 @@ public class PixleClient {
     private boolean closeRequested;
 
     private PixleRenderHandler renderHandler;
+
+    private BaseGUI openGUI;
 
     public void start() {
         try {
@@ -26,6 +30,8 @@ public class PixleClient {
     private void startTick() {
         renderHandler = new PixleRenderHandler(this);
         renderHandler.start();
+
+        openGUI(new TestGUI());
 
         double delta = 0;
         long previousTime = System.nanoTime();
@@ -52,10 +58,20 @@ public class PixleClient {
                 ups = 0;
             }
         }
+
+        System.exit(-1);
     }
 
     private void tick() {
 
+    }
+
+    public void openGUI(BaseGUI gui) {
+        openGUI = gui;
+    }
+
+    public BaseGUI getOpenGUI() {
+        return openGUI;
     }
 
     public boolean isCloseRequested() {
