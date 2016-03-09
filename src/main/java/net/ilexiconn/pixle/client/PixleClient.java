@@ -1,6 +1,7 @@
 package net.ilexiconn.pixle.client;
 
 import net.ilexiconn.pixle.client.render.PixleRenderHandler;
+import net.ilexiconn.pixle.crash.CrashReport;
 
 public class PixleClient {
     public static final int SCREEN_WIDTH = 854;
@@ -11,7 +12,11 @@ public class PixleClient {
     private PixleRenderHandler renderHandler;
 
     public void start() {
-        startTick();
+        try {
+            startTick();
+        } catch (Exception e) {
+            System.err.println(CrashReport.makeCrashReport(e, "An unexpected error occurred."));
+        }
     }
 
     public void stop() {
