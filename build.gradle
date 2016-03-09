@@ -1,0 +1,16 @@
+plugins {
+   id "java"
+   id "idea"
+   id "eclipse"
+}
+
+version = '0.0.0'
+archivesBaseName = "PixleClient"
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile 'org.lwjgl.lwjgl:lwjgl:2.8.2'
+}
