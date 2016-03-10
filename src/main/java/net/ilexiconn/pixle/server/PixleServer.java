@@ -19,6 +19,7 @@ public class PixleServer {
     }
 
     public void stop() {
+        server.stop();
         closeRequested = true;
     }
 

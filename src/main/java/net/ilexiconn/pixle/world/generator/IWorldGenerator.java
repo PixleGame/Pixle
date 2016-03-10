@@ -6,5 +6,4 @@ import java.util.Random;
 
 public interface IWorldGenerator {
     void generate(Region region, int regionX, Random rand);
-
 }

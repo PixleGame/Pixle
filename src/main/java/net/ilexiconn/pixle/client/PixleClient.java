@@ -50,6 +50,7 @@ public class PixleClient {
     }
 
     public void disconnect() {
+        client.disconnect();
         client = null;
     }
 
