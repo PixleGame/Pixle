@@ -9,6 +9,8 @@ import net.ilexiconn.pixle.client.render.TextureManager;
 import net.ilexiconn.pixle.crash.CrashReport;
 import net.ilexiconn.pixle.world.World;
 import net.ilexiconn.pixle.world.entity.EntityRegistry;
+import net.ilexiconn.pixle.world.entity.PlayerEntity;
+import org.lwjgl.input.Keyboard;
 
 import java.io.IOException;
 
@@ -27,6 +29,7 @@ public class PixleClient {
     private Client client;
 
     private World world;
+    private PlayerEntity player;
 
     public void start() {
         try {
@@ -39,10 +42,14 @@ public class PixleClient {
 
     private void init() {
         textureManager = new TextureManager();
-        world = new World();
         worldGUI = new WorldGUI(this);
+
         Materials.init();
         EntityRegistry.register();
+
+        world = new World();
+        player = new PlayerEntity(world);
+        world.addEntity(player);
     }
 
     public void connect(String host, int port) throws IOException {
@@ -50,8 +57,10 @@ public class PixleClient {
     }
 
     public void disconnect() {
-        client.disconnect();
-        client = null;
+        if (client != null) {
+            client.disconnect();
+            client = null;
+        }
     }
 
     public void stop() {
@@ -92,7 +101,17 @@ public class PixleClient {
     }
 
     private void tick() {
+        float moveX = 0.0F;
 
+        if (Keyboard.isKeyDown(Keyboard.KEY_LEFT)) {
+            moveX = -1.0F;
+        } else if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) {
+            moveX = 1.0F;
+        }
+
+        player.velX = moveX;
+
+        world.update();
     }
 
     public void openGUI(BaseGUI gui) {

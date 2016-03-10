@@ -6,4 +6,8 @@ public class Pixel {
     public Pixel(Material material) {
         this.material = material;
     }
+
+    public Material getMaterial() {
+        return material;
+    }
 }

@@ -20,7 +20,7 @@ public class World {
     private IWorldGenerator worldGenerator;
     private long seed;
 
-    private List<Entity> entityList = new ArrayList<>();
+    private List<Entity> entities = new ArrayList<>();
 
     public World(long seed) {
         this.worldGenerator = new WorldGeneratorDefault();
@@ -73,9 +73,23 @@ public class World {
         return worldGenerator;
     }
 
+    public void update() {
+        for (Entity entity : entities) {
+            entity.update();
+        }
+    }
+
+    public void addEntity(Entity entity) {
+        this.entities.add(entity);
+    }
+
+    public void removeEntity(Entity entity) {
+        this.entities.remove(entity);
+    }
+
     public void writeToNBT(CompoundTag compound) {
         List<Tag> tagList = new ArrayList<>();
-        for (Entity entity : entityList) {
+        for (Entity entity : entities) {
             CompoundTag compoundTag = new CompoundTag("");
             entity.writeToNBT(compoundTag);
             tagList.add(compoundTag);
@@ -90,7 +104,7 @@ public class World {
             Entity entity = EntityRegistry.initializeEntity(compoundTag.getByte("id"), this);
             if (entity != null) {
                 entity.readFromNBT(compoundTag);
-                entityList.add(entity);
+                entities.add(entity);
             }
         }
     }

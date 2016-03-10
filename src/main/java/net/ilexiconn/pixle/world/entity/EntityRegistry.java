@@ -9,7 +9,7 @@ public class EntityRegistry {
     private static Map<Integer, Class<? extends Entity>> entityMap = new HashMap<>();
 
     public static void register() {
-
+        registerEntity(0, PlayerEntity.class);
     }
 
     public static void registerEntity(int id, Class<? extends Entity> clazz) {
