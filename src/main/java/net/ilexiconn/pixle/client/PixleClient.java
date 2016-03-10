@@ -3,12 +3,16 @@ package net.ilexiconn.pixle.client;
 import net.ilexiconn.netconn.client.Client;
 import net.ilexiconn.pixle.client.gui.BaseGUI;
 import net.ilexiconn.pixle.client.gui.WorldGUI;
-import net.ilexiconn.pixle.client.render.PixleRenderHandler;
 import net.ilexiconn.pixle.client.render.TextureManager;
 import net.ilexiconn.pixle.crash.CrashReport;
 import net.ilexiconn.pixle.world.World;
 import net.ilexiconn.pixle.world.entity.PlayerEntity;
+import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
+import org.lwjgl.opengl.Display;
+import org.lwjgl.opengl.DisplayMode;
+import org.lwjgl.opengl.GL11;
 
 import java.io.IOException;
 
@@ -17,8 +21,8 @@ public class PixleClient {
     public static final int SCREEN_HEIGHT = 480;
 
     private boolean closeRequested;
+    private int fps;
 
-    private PixleRenderHandler renderHandler;
     private TextureManager textureManager;
 
     private BaseGUI openGUI;
@@ -32,7 +36,63 @@ public class PixleClient {
     public void start() {
         try {
             init();
-            startTick();
+            try {
+                Display.setDisplayMode(new DisplayMode(PixleClient.SCREEN_WIDTH, PixleClient.SCREEN_HEIGHT));
+                Display.setTitle("Pixle");
+                Display.create();
+                Keyboard.create();
+                Mouse.create();
+            } catch (LWJGLException e) {
+                e.printStackTrace();
+            }
+
+            double delta = 0;
+            long previousTime = System.nanoTime();
+            long timer = System.currentTimeMillis();
+            int ups = 0;
+            double nanoUpdates = 1000000000.0 / 60.0;
+
+            GL11.glMatrixMode(GL11.GL_PROJECTION);
+            GL11.glLoadIdentity();
+            GL11.glOrtho(0, PixleClient.SCREEN_WIDTH, 0, PixleClient.SCREEN_HEIGHT, 1, -1);
+            GL11.glMatrixMode(GL11.GL_MODELVIEW);
+
+            while (!isCloseRequested()) {
+                long currentTime = System.nanoTime();
+                delta += (currentTime - previousTime) / nanoUpdates;
+                previousTime = currentTime;
+
+                while (delta >= 1) {
+                    tick();
+
+                    delta--;
+                    ups++;
+                }
+
+                GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
+                GL11.glPushMatrix();
+
+                GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
+
+                render();
+
+                fps++;
+
+                if (System.currentTimeMillis() - timer > 1000) {
+                    System.out.println("UPS: " + ups);
+                    Display.setTitle("Pixle - FPS: " + fps);
+                    fps = 0;
+
+                    timer += 1000;
+                    ups = 0;
+                }
+
+                GL11.glPopMatrix();
+
+                Display.update();
+            }
+
+            System.exit(-1);
         } catch (Exception e) {
             System.err.println(CrashReport.makeCrashReport(e, "An unexpected error occurred."));
         }
@@ -62,39 +122,6 @@ public class PixleClient {
         closeRequested = true;
     }
 
-    private void startTick() {
-        renderHandler = new PixleRenderHandler(this);
-        renderHandler.start();
-
-        double delta = 0;
-        long previousTime = System.nanoTime();
-        long timer = System.currentTimeMillis();
-        int ups = 0;
-        double nanoUpdates = 1000000000.0 / 60.0;
-
-        while (!isCloseRequested()) {
-            long currentTime = System.nanoTime();
-            delta += (currentTime - previousTime) / nanoUpdates;
-            previousTime = currentTime;
-
-            while (delta >= 1) {
-                tick();
-
-                delta--;
-                ups++;
-            }
-
-            if (System.currentTimeMillis() - timer > 1000) {
-                System.out.println("UPS: " + ups);
-
-                timer += 1000;
-                ups = 0;
-            }
-        }
-
-        System.exit(-1);
-    }
-
     private void tick() {
         float moveX = 0.0F;
 
@@ -107,6 +134,16 @@ public class PixleClient {
         player.velX = moveX;
 
         world.update();
+    }
+
+    private void render() {
+        getWorldGUI().render();
+
+        BaseGUI openGUI = getOpenGUI();
+
+        if (openGUI != null) {
+            openGUI.render();
+        }
     }
 
     public void openGUI(BaseGUI gui) {
