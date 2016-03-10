@@ -39,6 +39,7 @@ public class PixleClient {
             try {
                 Display.setDisplayMode(new DisplayMode(PixleClient.SCREEN_WIDTH, PixleClient.SCREEN_HEIGHT));
                 Display.setTitle("Pixle");
+                Display.setResizable(true);
                 Display.create();
                 Keyboard.create();
                 Mouse.create();
@@ -57,7 +58,7 @@ public class PixleClient {
             GL11.glOrtho(0, PixleClient.SCREEN_WIDTH, 0, PixleClient.SCREEN_HEIGHT, 1, -1);
             GL11.glMatrixMode(GL11.GL_MODELVIEW);
 
-            while (!isCloseRequested()) {
+            while (!Display.isCloseRequested() && !isCloseRequested()) {
                 long currentTime = System.nanoTime();
                 delta += (currentTime - previousTime) / nanoUpdates;
                 previousTime = currentTime;
