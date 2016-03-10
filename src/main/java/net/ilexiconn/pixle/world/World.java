@@ -1,9 +1,15 @@
 package net.ilexiconn.pixle.world;
 
+import net.darkhax.opennbt.tags.CompoundTag;
+import net.darkhax.opennbt.tags.Tag;
+import net.ilexiconn.pixle.world.entity.Entity;
 import net.ilexiconn.pixle.world.generator.IWorldGenerator;
 import net.ilexiconn.pixle.world.generator.WorldGeneratorDefault;
 import net.ilexiconn.pixle.world.pixel.Pixel;
 import net.ilexiconn.pixle.world.region.Region;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class World {
     private static final int WORLD_REGION_WIDTH = 62500;
@@ -12,6 +18,8 @@ public class World {
 
     private IWorldGenerator worldGenerator;
     private long seed;
+
+    private List<Entity> entityList = new ArrayList<>();
 
     public World(long seed) {
         this.worldGenerator = new WorldGeneratorDefault();
@@ -62,5 +70,27 @@ public class World {
 
     public IWorldGenerator getWorldGenerator() {
         return worldGenerator;
+    }
+
+    public void writeToNBT(CompoundTag compound) {
+        List<Tag> tagList = new ArrayList<>();
+        for (Entity entity : entityList) {
+            CompoundTag compoundTag = new CompoundTag("");
+            entity.writeToNBT(compoundTag);
+            tagList.add(compoundTag);
+        }
+        compound.setTagList("entities", tagList);
+    }
+
+    public void readFromNBT(CompoundTag compound) {
+        List<Tag> tagList = compound.getTagList("entities");
+        for (Tag tag : tagList) {
+            CompoundTag compoundTag = (CompoundTag) tag;
+            Entity entity = Entity.initializeEntity(compoundTag.getByte("id"), this);
+            if (entity != null) {
+                entity.readFromNBT(compoundTag);
+                entityList.add(entity);
+            }
+        }
     }
 }
