@@ -3,6 +3,8 @@ package net.ilexiconn.pixle.client.render;
 import net.ilexiconn.pixle.client.PixleClient;
 import net.ilexiconn.pixle.client.gui.BaseGUI;
 import org.lwjgl.LWJGLException;
+import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
@@ -21,6 +23,8 @@ public class PixleRenderHandler extends Thread {
         try {
             Display.setDisplayMode(new DisplayMode(PixleClient.SCREEN_WIDTH, PixleClient.SCREEN_HEIGHT));
             Display.create();
+            Keyboard.create();
+            Mouse.create();
         } catch (LWJGLException e) {
             e.printStackTrace();
         }
