@@ -6,7 +6,7 @@ import net.ilexiconn.pixle.world.pixel.Material;
 public class Materials {
     public static Material grass;
 
-    public static void init() {
+    static {
         grass = new GrassMaterial();
     }
 }

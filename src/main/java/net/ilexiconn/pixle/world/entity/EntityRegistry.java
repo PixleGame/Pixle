@@ -8,7 +8,7 @@ import java.util.Map;
 public class EntityRegistry {
     private static Map<Integer, Class<? extends Entity>> entityMap = new HashMap<>();
 
-    public static void register() {
+    static {
         registerEntity(0, PlayerEntity.class);
     }
 

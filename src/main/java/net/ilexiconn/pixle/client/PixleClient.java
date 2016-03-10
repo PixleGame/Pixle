@@ -1,14 +1,12 @@
 package net.ilexiconn.pixle.client;
 
 import net.ilexiconn.netconn.client.Client;
-import net.ilexiconn.pixle.Materials;
 import net.ilexiconn.pixle.client.gui.BaseGUI;
 import net.ilexiconn.pixle.client.gui.WorldGUI;
 import net.ilexiconn.pixle.client.render.PixleRenderHandler;
 import net.ilexiconn.pixle.client.render.TextureManager;
 import net.ilexiconn.pixle.crash.CrashReport;
 import net.ilexiconn.pixle.world.World;
-import net.ilexiconn.pixle.world.entity.EntityRegistry;
 import net.ilexiconn.pixle.world.entity.PlayerEntity;
 import org.lwjgl.input.Keyboard;
 
@@ -43,9 +41,6 @@ public class PixleClient {
     private void init() {
         textureManager = new TextureManager();
         worldGUI = new WorldGUI(this);
-
-        Materials.init();
-        EntityRegistry.register();
 
         world = new World();
         player = new PlayerEntity(world);
