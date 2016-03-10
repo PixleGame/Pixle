@@ -3,6 +3,7 @@ package net.ilexiconn.pixle.world;
 import net.darkhax.opennbt.tags.CompoundTag;
 import net.darkhax.opennbt.tags.Tag;
 import net.ilexiconn.pixle.world.entity.Entity;
+import net.ilexiconn.pixle.world.entity.EntityRegistry;
 import net.ilexiconn.pixle.world.generator.IWorldGenerator;
 import net.ilexiconn.pixle.world.generator.WorldGeneratorDefault;
 import net.ilexiconn.pixle.world.pixel.Pixel;
@@ -86,7 +87,7 @@ public class World {
         List<Tag> tagList = compound.getTagList("entities");
         for (Tag tag : tagList) {
             CompoundTag compoundTag = (CompoundTag) tag;
-            Entity entity = Entity.initializeEntity(compoundTag.getByte("id"), this);
+            Entity entity = EntityRegistry.initializeEntity(compoundTag.getByte("id"), this);
             if (entity != null) {
                 entity.readFromNBT(compoundTag);
                 entityList.add(entity);

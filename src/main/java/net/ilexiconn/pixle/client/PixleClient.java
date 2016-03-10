@@ -8,6 +8,7 @@ import net.ilexiconn.pixle.client.render.PixleRenderHandler;
 import net.ilexiconn.pixle.client.render.TextureManager;
 import net.ilexiconn.pixle.crash.CrashReport;
 import net.ilexiconn.pixle.world.World;
+import net.ilexiconn.pixle.world.entity.EntityRegistry;
 
 import java.io.IOException;
 
@@ -41,6 +42,7 @@ public class PixleClient {
         world = new World();
         worldGUI = new WorldGUI(this);
         Materials.init();
+        EntityRegistry.register();
     }
 
     public void connect(String host, int port) throws IOException {
