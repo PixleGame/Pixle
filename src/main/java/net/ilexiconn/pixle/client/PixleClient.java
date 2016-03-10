@@ -139,6 +139,7 @@ public class PixleClient {
     }
 
     private void render() {
+        GL11.glEnable(GL11.GL_COLOR);
         for (GUI gui : new ArrayList<>(getOpenGUIs())) {
             gui.render();
         }

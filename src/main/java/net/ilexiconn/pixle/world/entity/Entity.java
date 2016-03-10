@@ -6,8 +6,8 @@ import net.ilexiconn.pixle.world.pixel.Pixel;
 
 public class Entity {
     public World world;
-    public float posX;
-    public float posY;
+    public int posX;
+    public int posY;
     public float velX;
     public float velY;
     public boolean onSurface;
@@ -51,15 +51,15 @@ public class Entity {
 
     public void writeToNBT(CompoundTag compound) {
         compound.setByte("id", (byte) EntityRegistry.getEntityID(getClass()));
-        compound.setFloat("posX", posX);
-        compound.setFloat("posY", posY);
+        compound.setInt("posX", posX);
+        compound.setInt("posY", posY);
         compound.setFloat("velX", velX);
         compound.setFloat("velY", velY);
     }
 
     public void readFromNBT(CompoundTag compound) {
-        this.posX = compound.getFloat("posX");
-        this.posY = compound.getFloat("posY");
+        this.posX = compound.getInt("posX");
+        this.posY = compound.getInt("posY");
         this.velX = compound.getFloat("velX");
         this.velY = compound.getFloat("velY");
     }
