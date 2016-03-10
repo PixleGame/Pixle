@@ -87,6 +87,10 @@ public class World {
         this.entities.remove(entity);
     }
 
+    public List<Entity> getEntities() {
+        return new ArrayList<>(entities);
+    }
+
     public void writeToNBT(CompoundTag compound) {
         List<Tag> tagList = new ArrayList<>();
         for (Entity entity : entities) {
@@ -104,7 +108,7 @@ public class World {
             Entity entity = EntityRegistry.initializeEntity(compoundTag.getByte("id"), this);
             if (entity != null) {
                 entity.readFromNBT(compoundTag);
-                entities.add(entity);
+                addEntity(entity);
             }
         }
     }

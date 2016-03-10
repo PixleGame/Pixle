@@ -1,7 +1,7 @@
 package net.ilexiconn.pixle.client;
 
 import net.ilexiconn.netconn.client.Client;
-import net.ilexiconn.pixle.client.gui.BaseGUI;
+import net.ilexiconn.pixle.client.gui.GUI;
 import net.ilexiconn.pixle.client.gui.WorldGUI;
 import net.ilexiconn.pixle.client.render.TextureManager;
 import net.ilexiconn.pixle.crash.CrashReport;
@@ -24,10 +24,11 @@ public class PixleClient {
 
     private boolean closeRequested;
     private int fps;
+    private double delta;
 
     private TextureManager textureManager;
 
-    private List<BaseGUI> openGUIs = new ArrayList<>();
+    private List<GUI> openGUIs = new ArrayList<>();
 
     private Client client;
 
@@ -48,7 +49,7 @@ public class PixleClient {
                 e.printStackTrace();
             }
 
-            double delta = 0;
+            delta = 0;
             long previousTime = System.nanoTime();
             long timer = System.currentTimeMillis();
             int ups = 0;
@@ -138,22 +139,22 @@ public class PixleClient {
     }
 
     private void render() {
-        for (BaseGUI gui : new ArrayList<>(getOpenGUIs())) {
+        for (GUI gui : new ArrayList<>(getOpenGUIs())) {
             gui.render();
         }
     }
 
-    public void openGUI(BaseGUI gui) {
+    public void openGUI(GUI gui) {
         if (!openGUIs.contains(gui)) {
             openGUIs.add(gui);
         }
     }
 
-    public void closeGUI(BaseGUI gui) {
+    public void closeGUI(GUI gui) {
         openGUIs.remove(gui);
     }
 
-    public List<BaseGUI> getOpenGUIs() {
+    public List<GUI> getOpenGUIs() {
         return openGUIs;
     }
 
@@ -172,4 +173,9 @@ public class PixleClient {
     public PlayerEntity getPlayer() {
         return player;
     }
+
+    public double getDelta() {
+        return delta;
+    }
 }
+

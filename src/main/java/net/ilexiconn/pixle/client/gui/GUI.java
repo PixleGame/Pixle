@@ -3,10 +3,10 @@ package net.ilexiconn.pixle.client.gui;
 import net.ilexiconn.pixle.client.PixleClient;
 import org.lwjgl.opengl.GL11;
 
-public abstract class BaseGUI {
+public abstract class GUI {
     protected PixleClient pixle;
 
-    public BaseGUI(PixleClient pixle) {
+    public GUI(PixleClient pixle) {
         this.pixle = pixle;
     }
 
