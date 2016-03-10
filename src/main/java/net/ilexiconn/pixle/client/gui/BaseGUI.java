@@ -4,14 +4,21 @@ import net.ilexiconn.pixle.client.PixleClient;
 import org.lwjgl.opengl.GL11;
 
 public abstract class BaseGUI {
+    protected PixleClient pixle;
+
+    public BaseGUI(PixleClient pixle) {
+        this.pixle = pixle;
+    }
+
     public abstract void render();
 
     protected void drawTexture(int x, int y, int u, int v, int width, int height, int textureWidth, int textureHeight) {
         float uMultiplier = 1.0F / textureWidth;
         float vMultiplier = 1.0F / textureHeight;
 
-        GL11.glBegin(GL11.GL_QUADS);
         GL11.glEnable(GL11.GL_TEXTURE_2D);
+
+        GL11.glBegin(GL11.GL_QUADS);
 
         drawVertex(x, y + height, u, v + height, uMultiplier, vMultiplier);
         drawVertex(x + width, y + height, u + width, v + height, uMultiplier, vMultiplier);
@@ -25,8 +32,8 @@ public abstract class BaseGUI {
         float uMultiplier = 1.0F / width;
         float vMultiplier = 1.0F / height;
 
-        GL11.glBegin(GL11.GL_QUADS);
         GL11.glDisable(GL11.GL_TEXTURE_2D);
+        GL11.glBegin(GL11.GL_QUADS);
 
         drawVertex(x, y + height, 0, height, uMultiplier, vMultiplier);
         drawVertex(x + width, y + height, width, height, uMultiplier, vMultiplier);

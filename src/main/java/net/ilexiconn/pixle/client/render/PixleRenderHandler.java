@@ -34,6 +34,9 @@ public class PixleRenderHandler extends Thread {
 
         while (!Display.isCloseRequested() && !client.isCloseRequested()) {
             GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
+            GL11.glPushMatrix();
+
+            GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
 
             BaseGUI openGUI = client.getOpenGUI();
 
@@ -48,6 +51,8 @@ public class PixleRenderHandler extends Thread {
                 Display.setTitle("Pixle - FPS: " + fps);
                 fps = 0;
             }
+
+            GL11.glPopMatrix();
 
             Display.update();
         }

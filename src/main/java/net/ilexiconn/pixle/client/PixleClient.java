@@ -1,9 +1,13 @@
 package net.ilexiconn.pixle.client;
 
+import net.ilexiconn.netconn.client.Client;
 import net.ilexiconn.pixle.client.gui.BaseGUI;
 import net.ilexiconn.pixle.client.gui.TestGUI;
 import net.ilexiconn.pixle.client.render.PixleRenderHandler;
+import net.ilexiconn.pixle.client.render.TextureManager;
 import net.ilexiconn.pixle.crash.CrashReport;
+
+import java.io.IOException;
 
 public class PixleClient {
     public static final int SCREEN_WIDTH = 854;
@@ -12,15 +16,27 @@ public class PixleClient {
     private boolean closeRequested;
 
     private PixleRenderHandler renderHandler;
+    private TextureManager textureManager;
 
     private BaseGUI openGUI;
 
+    private Client client;
+
     public void start() {
         try {
+            textureManager = new TextureManager();
             startTick();
         } catch (Exception e) {
             System.err.println(CrashReport.makeCrashReport(e, "An unexpected error occurred."));
         }
+    }
+
+    public void connect(String host, int port) throws IOException {
+        client = new Client(host, port);
+    }
+
+    public void disconnect() {
+        client = null;
     }
 
     public void stop() {
@@ -31,7 +47,7 @@ public class PixleClient {
         renderHandler = new PixleRenderHandler(this);
         renderHandler.start();
 
-        openGUI(new TestGUI());
+        openGUI(new TestGUI(this));
 
         double delta = 0;
         long previousTime = System.nanoTime();
@@ -76,5 +92,9 @@ public class PixleClient {
 
     public boolean isCloseRequested() {
         return closeRequested;
+    }
+
+    public TextureManager getTextureManager() {
+        return textureManager;
     }
 }
