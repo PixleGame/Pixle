@@ -2,8 +2,6 @@ package net.ilexiconn.pixle.client.gui;
 
 import net.ilexiconn.pixle.client.PixleClient;
 import net.ilexiconn.pixle.world.World;
-import net.ilexiconn.pixle.world.region.Region;
-import org.lwjgl.opengl.GL11;
 
 public class WorldGUI extends BaseGUI {
     public WorldGUI(PixleClient pixle) {
