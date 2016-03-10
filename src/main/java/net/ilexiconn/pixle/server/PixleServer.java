@@ -1,7 +1,6 @@
 package net.ilexiconn.pixle.server;
 
 import net.ilexiconn.netconn.server.Server;
-import net.ilexiconn.pixle.Materials;
 import net.ilexiconn.pixle.crash.CrashReport;
 
 public class PixleServer {
@@ -11,7 +10,6 @@ public class PixleServer {
     public void start(int port) {
         try {
             server = new Server(port);
-            Materials.init();
             startTick();
         } catch (Exception e) {
             System.err.println(CrashReport.makeCrashReport(e, "An unexpected error occurred."));
