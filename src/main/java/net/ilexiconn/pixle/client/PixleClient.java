@@ -15,6 +15,8 @@ import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PixleClient {
     public static final int SCREEN_WIDTH = 854;
@@ -25,8 +27,7 @@ public class PixleClient {
 
     private TextureManager textureManager;
 
-    private BaseGUI openGUI;
-    private WorldGUI worldGUI;
+    private List<BaseGUI> openGUIs = new ArrayList<>();
 
     private Client client;
 
@@ -80,8 +81,7 @@ public class PixleClient {
                 fps++;
 
                 if (System.currentTimeMillis() - timer > 1000) {
-                    System.out.println("UPS: " + ups);
-                    Display.setTitle("Pixle - FPS: " + fps);
+                    Display.setTitle("Pixle - FPS: " + fps + " - UPS: " + ups);
                     fps = 0;
 
                     timer += 1000;
@@ -101,7 +101,7 @@ public class PixleClient {
 
     private void init() {
         textureManager = new TextureManager();
-        worldGUI = new WorldGUI(this);
+        openGUI(new WorldGUI(this));
 
         world = new World();
         player = new PlayerEntity(world);
@@ -138,21 +138,23 @@ public class PixleClient {
     }
 
     private void render() {
-        getWorldGUI().render();
-
-        BaseGUI openGUI = getOpenGUI();
-
-        if (openGUI != null) {
-            openGUI.render();
+        for (BaseGUI gui : new ArrayList<>(getOpenGUIs())) {
+            gui.render();
         }
     }
 
     public void openGUI(BaseGUI gui) {
-        openGUI = gui;
+        if (!openGUIs.contains(gui)) {
+            openGUIs.add(gui);
+        }
     }
 
-    public BaseGUI getOpenGUI() {
-        return openGUI;
+    public void closeGUI(BaseGUI gui) {
+        openGUIs.remove(gui);
+    }
+
+    public List<BaseGUI> getOpenGUIs() {
+        return openGUIs;
     }
 
     public boolean isCloseRequested() {
@@ -163,11 +165,11 @@ public class PixleClient {
         return textureManager;
     }
 
-    public WorldGUI getWorldGUI() {
-        return worldGUI;
-    }
-
     public World getWorld() {
         return world;
+    }
+
+    public PlayerEntity getPlayer() {
+        return player;
     }
 }
