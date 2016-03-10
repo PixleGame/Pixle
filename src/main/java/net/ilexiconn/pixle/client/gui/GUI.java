@@ -1,6 +1,7 @@
 package net.ilexiconn.pixle.client.gui;
 
 import net.ilexiconn.pixle.client.PixleClient;
+import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 
 public abstract class GUI {
@@ -45,6 +46,6 @@ public abstract class GUI {
 
     protected void drawVertex(int x, int y, int u, int v, float uMultiplier, float vMultiplier) {
         GL11.glTexCoord2f(u * uMultiplier, v * vMultiplier);
-        GL11.glVertex2f(x, PixleClient.SCREEN_HEIGHT - y);
+        GL11.glVertex2f(x, Display.getHeight() - y);
     }
 }
