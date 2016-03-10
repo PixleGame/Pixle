@@ -38,6 +38,8 @@ public class PixleRenderHandler extends Thread {
 
             GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
 
+            client.getWorldGUI().render();
+
             BaseGUI openGUI = client.getOpenGUI();
 
             if (openGUI != null) {

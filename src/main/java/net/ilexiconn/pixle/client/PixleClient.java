@@ -1,11 +1,13 @@
 package net.ilexiconn.pixle.client;
 
 import net.ilexiconn.netconn.client.Client;
+import net.ilexiconn.pixle.Materials;
 import net.ilexiconn.pixle.client.gui.BaseGUI;
-import net.ilexiconn.pixle.client.gui.TestGUI;
+import net.ilexiconn.pixle.client.gui.WorldGUI;
 import net.ilexiconn.pixle.client.render.PixleRenderHandler;
 import net.ilexiconn.pixle.client.render.TextureManager;
 import net.ilexiconn.pixle.crash.CrashReport;
+import net.ilexiconn.pixle.world.World;
 
 import java.io.IOException;
 
@@ -19,16 +21,26 @@ public class PixleClient {
     private TextureManager textureManager;
 
     private BaseGUI openGUI;
+    private WorldGUI worldGUI;
 
     private Client client;
 
+    private World world;
+
     public void start() {
         try {
-            textureManager = new TextureManager();
+            init();
             startTick();
         } catch (Exception e) {
             System.err.println(CrashReport.makeCrashReport(e, "An unexpected error occurred."));
         }
+    }
+
+    private void init() {
+        textureManager = new TextureManager();
+        world = new World();
+        worldGUI = new WorldGUI(this);
+        Materials.init();
     }
 
     public void connect(String host, int port) throws IOException {
@@ -46,8 +58,6 @@ public class PixleClient {
     private void startTick() {
         renderHandler = new PixleRenderHandler(this);
         renderHandler.start();
-
-        openGUI(new TestGUI(this));
 
         double delta = 0;
         long previousTime = System.nanoTime();
@@ -96,5 +106,13 @@ public class PixleClient {
 
     public TextureManager getTextureManager() {
         return textureManager;
+    }
+
+    public WorldGUI getWorldGUI() {
+        return worldGUI;
+    }
+
+    public World getWorld() {
+        return world;
     }
 }
