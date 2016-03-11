@@ -1,7 +1,6 @@
 package net.ilexiconn.pixle.client.gui;
 
 import net.ilexiconn.pixle.client.PixleClient;
-import net.ilexiconn.pixle.client.gl.GLStateManager;
 import net.ilexiconn.pixle.client.render.RenderingRegistry;
 import net.ilexiconn.pixle.client.render.entity.IEntityRenderer;
 import net.ilexiconn.pixle.world.World;
@@ -10,6 +9,7 @@ import net.ilexiconn.pixle.world.entity.PlayerEntity;
 import net.ilexiconn.pixle.world.pixel.Pixel;
 import net.ilexiconn.pixle.world.region.Region;
 import org.lwjgl.opengl.Display;
+import org.lwjgl.opengl.GL11;
 
 public class WorldGUI extends GUI {
     public WorldGUI(PixleClient pixle) {
@@ -32,7 +32,7 @@ public class WorldGUI extends GUI {
         int regionCount = (Display.getWidth() / (pixelSize * 16)) + 1;
         int playerRegionX = world.getRegionX((int) player.posX);
 
-        GLStateManager.setColor(0x0094FF);
+        GL11.glColor3f(0.0F, 148.0F / 255.0F, 1.0F);
 
         int centerY = (Display.getHeight() / pixelSize) / 2;
 
@@ -46,7 +46,11 @@ public class WorldGUI extends GUI {
                     for (int x = 0; x < 16; x++) {
                         Pixel pixel = region.getPixel(x, y);
                         if (pixel != null) {
-                            GLStateManager.setColor(pixel.getMaterial().getColor());
+                            int color = pixel.getMaterial().getColor();
+                            int r = (color & 0xFF0000) >> 16;
+                            int g = (color & 0xFF00) >> 8;
+                            int b = (color & 0xFF);
+                            GL11.glColor3f(r / 255.0F, g / 255.0F, b / 255.0F);
                             drawRect((int) (((x + (regionX * 16)) - player.posX) * pixelSize), (Display.getHeight() / 2) - (int) (relativeY * pixelSize), pixelSize, pixelSize);
                         }
                     }

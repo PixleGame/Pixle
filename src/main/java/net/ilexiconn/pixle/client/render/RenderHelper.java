@@ -1,19 +1,10 @@
-package net.ilexiconn.pixle.client.gui;
+package net.ilexiconn.pixle.client.render;
 
-import net.ilexiconn.pixle.client.PixleClient;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 
-public abstract class GUI {
-    protected PixleClient pixle;
-
-    public GUI(PixleClient pixle) {
-        this.pixle = pixle;
-    }
-
-    public abstract void render();
-
-    protected void drawTexture(int x, int y, int u, int v, int width, int height, int textureWidth, int textureHeight) {
+public class RenderHelper {
+    public static void drawTexture(int x, int y, int u, int v, int width, int height, int textureWidth, int textureHeight) {
         float uMultiplier = 1.0F / textureWidth;
         float vMultiplier = 1.0F / textureHeight;
 
@@ -29,7 +20,7 @@ public abstract class GUI {
         GL11.glEnd();
     }
 
-    protected void drawRect(int x, int y, int width, int height) {
+    public static void drawRect(int x, int y, int width, int height) {
         float uMultiplier = 1.0F / width;
         float vMultiplier = 1.0F / height;
 
@@ -44,7 +35,7 @@ public abstract class GUI {
         GL11.glEnd();
     }
 
-    protected void drawVertex(int x, int y, int u, int v, float uMultiplier, float vMultiplier) {
+    public static void drawVertex(int x, int y, int u, int v, float uMultiplier, float vMultiplier) {
         GL11.glTexCoord2f(u * uMultiplier, v * vMultiplier);
         GL11.glVertex2f(x, Display.getHeight() - y);
     }
