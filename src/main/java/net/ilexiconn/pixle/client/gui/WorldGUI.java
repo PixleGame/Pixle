@@ -28,8 +28,7 @@ public class WorldGUI extends GUI {
             }
         }
 
-        int pixelSize = 8;
-
+        int pixelSize = World.PIXEL_SIZE;
         int regionCount = (Display.getWidth() / (pixelSize * 16)) + 1;
         int playerRegionX = world.getRegionX((int) player.posX);
 
@@ -37,7 +36,7 @@ public class WorldGUI extends GUI {
 
         int centerY = (Display.getHeight() / pixelSize) / 2;
 
-        drawRect(0, 0, Display.getWidth(), Display.getHeight() - (int) ((centerY - player.posY - 1) * 8));
+        drawRect(0, 0, Display.getWidth(), Display.getHeight() - (int) ((centerY - player.posY - 1) * pixelSize));
 
         for (int regionX = 0; regionX < regionCount; regionX++) {
             Region region = world.getRegion((playerRegionX + regionX) - (regionCount / 2));

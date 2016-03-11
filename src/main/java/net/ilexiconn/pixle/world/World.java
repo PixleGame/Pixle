@@ -24,6 +24,8 @@ public class World {
 
     private List<Entity> entities = new ArrayList<>();
 
+    public static final int PIXEL_SIZE = 6;
+
     public World(long seed) {
         this.worldGenerator = new WorldGeneratorDefault();
         this.seed = seed;
