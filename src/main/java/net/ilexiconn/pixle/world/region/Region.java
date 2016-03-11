@@ -1,5 +1,6 @@
 package net.ilexiconn.pixle.world.region;
 
+import net.darkhax.opennbt.tags.CompoundTag;
 import net.ilexiconn.pixle.world.World;
 import net.ilexiconn.pixle.world.pixel.Pixel;
 
@@ -33,5 +34,18 @@ public class Region {
 
     public World getWorld() {
         return world;
+    }
+
+    public void writeToNBT(CompoundTag compound) {
+        compound.setInt("regionX", x);
+        for (int x = 0; x < pixels.length; x++) {
+            compound.setIntArray(x + "", pixels[x]);
+        }
+    }
+
+    public void readFromNBT(CompoundTag compound) {
+        for (int x = 0; x < pixels.length; x++) {
+            pixels[x] =  compound.getIntArray(x + "");
+        }
     }
 }

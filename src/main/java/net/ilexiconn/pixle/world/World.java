@@ -128,6 +128,15 @@ public class World {
             tagList.add(compoundTag);
         }
         compound.setTagList("entities", tagList);
+        tagList.clear();
+        for (Region region : regions) {
+            if (region != null) {
+                CompoundTag compoundTag = new CompoundTag("");
+                region.writeToNBT(compoundTag);
+                tagList.add(compoundTag);
+            }
+        }
+        compound.setTagList("regions", tagList);
     }
 
     public void readFromNBT(CompoundTag compound) {
@@ -139,6 +148,14 @@ public class World {
                 entity.readFromNBT(compoundTag);
                 addEntity(entity);
             }
+        }
+        tagList = compound.getTagList("regions");
+        for (Tag tag : tagList) {
+            CompoundTag compoundTag = (CompoundTag) tag;
+            int regionX = compoundTag.getInt("regionX");
+            Region region = new Region(regionX, this);
+            region.readFromNBT(compoundTag);
+            regions[regionX] = region;
         }
     }
 }
