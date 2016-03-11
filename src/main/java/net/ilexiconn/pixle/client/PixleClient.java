@@ -106,6 +106,7 @@ public class PixleClient {
 
         world = new World();
         player = new PlayerEntity(world);
+        player.posY = 5;
         world.addEntity(player);
     }
 

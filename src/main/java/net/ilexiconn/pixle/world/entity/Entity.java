@@ -18,7 +18,7 @@ public class Entity {
     }
 
     public void update() {
-//        velY -= getGravity() * 0.1F;
+        velY -= getGravity() * 0.1F;
 
         if (velY < -1.0F) {
             velY = -1.0F;

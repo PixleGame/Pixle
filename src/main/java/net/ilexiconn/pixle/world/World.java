@@ -40,7 +40,15 @@ public class World {
     }
 
     public Pixel getPixel(int x, int y) {
-        return getRegionForPixel(x).getPixel(x % 15, y);
+        Region region = getRegionForPixel(x);
+
+        if (x < 0) {
+            x = 16 - x;
+        }
+
+        x = x % 15;
+
+        return region.getPixel(x, y);
     }
 
     public int getRegionX(int x) {

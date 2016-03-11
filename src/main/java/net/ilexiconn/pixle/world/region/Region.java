@@ -16,7 +16,11 @@ public class Region {
     }
 
     public Pixel getPixel(int x, int y) {
-        return pixels[x][y];
+        if (y >= 0) {
+            return pixels[x][y];
+        } else {
+            return null;
+        }
     }
 
     public void setPixel(Pixel pixel, int x, int y) {
