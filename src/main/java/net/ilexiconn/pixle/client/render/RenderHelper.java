@@ -1,5 +1,6 @@
 package net.ilexiconn.pixle.client.render;
 
+import net.ilexiconn.pixle.client.gl.GLStateManager;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 
@@ -8,24 +9,23 @@ public class RenderHelper {
         float uMultiplier = 1.0F / textureWidth;
         float vMultiplier = 1.0F / textureHeight;
 
-        GL11.glEnable(GL11.GL_TEXTURE_2D);
-
-        GL11.glBegin(GL11.GL_QUADS);
+        GLStateManager.enableTexture();
+        GLStateManager.startDrawingQuads();
 
         drawVertex(x, y + height, u, v + height, uMultiplier, vMultiplier);
         drawVertex(x + width, y + height, u + width, v + height, uMultiplier, vMultiplier);
         drawVertex(x + width, y, u + width, v, uMultiplier, vMultiplier);
         drawVertex(x, y, u, v, uMultiplier, vMultiplier);
 
-        GL11.glEnd();
+        GLStateManager.end();
     }
 
     public static void drawRect(int x, int y, int width, int height) {
         float uMultiplier = 1.0F / width;
         float vMultiplier = 1.0F / height;
 
-        GL11.glDisable(GL11.GL_TEXTURE_2D);
-        GL11.glBegin(GL11.GL_QUADS);
+        GLStateManager.disableTexture();
+        GLStateManager.startDrawingQuads();
 
         drawVertex(x, y + height, 0, height, uMultiplier, vMultiplier);
         drawVertex(x + width, y + height, width, height, uMultiplier, vMultiplier);
