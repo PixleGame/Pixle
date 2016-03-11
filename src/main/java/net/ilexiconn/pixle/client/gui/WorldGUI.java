@@ -40,7 +40,7 @@ public class WorldGUI extends GUI {
                     for (int x = 0; x < 16; x++) {
                         Pixel pixel = region.getPixel(x, y);
                         if (pixel != null) {
-                            GLStateManager.setColor(pixel.getMaterial().getColor());
+                            GLStateManager.setColor(pixel.getColor());
                             RenderHelper.drawRect((int) (((x + (regionX * 16)) - player.posX) * pixelSize), (Display.getHeight() / 2) - (int) (relativeY * pixelSize), pixelSize, pixelSize);
                         }
                     }

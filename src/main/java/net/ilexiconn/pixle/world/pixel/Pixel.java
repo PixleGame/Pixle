@@ -1,13 +1,38 @@
 package net.ilexiconn.pixle.world.pixel;
 
 public class Pixel {
-    private Material material;
+    private static Pixel[] pixels = new Pixel[256];
 
-    public Pixel(Material material) {
-        this.material = material;
+    public static final Pixel grass;
+
+    static {
+        grass = new Pixel(0).setColor(0x71C476);
     }
 
-    public Material getMaterial() {
-        return material;
+    private final int pixelID;
+    private int color;
+
+    protected Pixel(int id) {
+        if (pixels[id] != null) {
+            throw new RuntimeException("Pixel ID " + id + " already occupied by pixel " + Pixel.pixels[id] + " when adding pixel " + this);
+        }
+        pixels[pixelID = id] = this;
+    }
+
+    public int getPixelID() {
+        return pixelID;
+    }
+
+    public static Pixel getPixelByID(int id) {
+        return pixels[id];
+    }
+
+    public int getColor() {
+        return color;
+    }
+
+    public Pixel setColor(int color) {
+        this.color = color;
+        return this;
     }
 }

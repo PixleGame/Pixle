@@ -7,7 +7,7 @@ import java.util.Random;
 
 public class Region {
     private World world;
-    private Pixel[][] pixels = new Pixel[16][256];
+    private int[][] pixels = new int[16][256];
     private int x;
 
     public Region(int x, World world) {
@@ -17,14 +17,14 @@ public class Region {
 
     public Pixel getPixel(int x, int y) {
         if (y >= 0) {
-            return pixels[x][y];
+            return Pixel.getPixelByID(pixels[x][y]);
         } else {
             return null;
         }
     }
 
     public void setPixel(Pixel pixel, int x, int y) {
-        pixels[x][y] = pixel;
+        pixels[x][y] = pixel.getPixelID();
     }
 
     public void generate(long seed) {

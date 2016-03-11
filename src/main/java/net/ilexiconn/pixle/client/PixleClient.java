@@ -94,7 +94,7 @@ public class PixleClient {
 
             System.exit(-1);
         } catch (Exception e) {
-            System.err.println(CrashReport.makeCrashReport(e, "An unexpected error occurred."));
+            System.err.println(CrashReport.makeCrashReport(e, e.getLocalizedMessage()));
         }
     }
 
