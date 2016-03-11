@@ -4,7 +4,6 @@ import net.darkhax.opennbt.tags.CompoundTag;
 import net.ilexiconn.pixle.world.World;
 import net.ilexiconn.pixle.world.bounds.Bounds;
 import net.ilexiconn.pixle.world.bounds.EntityBounds;
-import net.ilexiconn.pixle.world.pixel.Pixel;
 
 import java.util.List;
 
@@ -21,11 +20,10 @@ public class Entity {
     public boolean collidingHorizontally;
 
     public boolean onSurface;
-    public Pixel standingOn;
 
     public Entity(World world) {
         this.world = world;
-        this.setBounds(1.0F, 1.0F);
+        this.setBounds(1.0F, 2.0F);
     }
 
     public void setBounds(float sizeX, float sizeY) {
