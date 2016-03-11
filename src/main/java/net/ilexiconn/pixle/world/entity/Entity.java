@@ -59,8 +59,8 @@ public class Entity {
         List<Bounds> intersectingBounds = world.getIntersectingPixelBounds(bounds);
 
         for (Bounds intersecting : intersectingBounds) {
-            posX += intersecting.getXIntersectOffset(bounds);
-            posY += intersecting.getYIntersectOffset(bounds);
+            posX = bounds.preventIntersectionX(posX, intersecting);
+            posY = bounds.preventIntersectionY(posY, intersecting);
         }
 
         collidingHorizontally = originalX != posX;

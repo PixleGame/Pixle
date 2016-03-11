@@ -9,18 +9,22 @@ public abstract class Bounds {
         return (x > getMinX() && x < getMaxX()) && (y > getMinY() && y < getMaxY());
     }
 
-    public double getXIntersectOffset(Bounds bounds) {
-        if (bounds.getMaxY() > getMinY() && bounds.getMinY() < getMaxY()) {
-            return getMinX() - bounds.getMinX();
+    public double preventIntersectionX(double posX, Bounds intersecting) {
+        if (getMinX() < intersecting.getMaxX()) {
+            posX = intersecting.getMaxX();
+        } else if (getMaxX() > intersecting.getMinX()) {
+            posX = intersecting.getMinX();
         }
-        return 0.0F;
+        return posX;
     }
 
-    public double getYIntersectOffset(Bounds bounds) {
-        if (bounds.getMaxX() > getMinX() && bounds.getMinX() < getMaxX()) {
-            return bounds.getMaxY() - getMinY();
+    public double preventIntersectionY(double posY, Bounds intersecting) {
+        if (getMinY() < intersecting.getMaxY()) {
+            posY = intersecting.getMaxY();
+        } else if (getMaxY() > intersecting.getMinY()) {
+            posY = intersecting.getMinY();
         }
-        return 0.0F;
+        return posY;
     }
 
     public abstract float getMaxX();
