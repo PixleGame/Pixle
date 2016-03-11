@@ -133,6 +133,10 @@ public class PixleClient {
             moveX = 1.0F;
         }
 
+        if (player.onSurface && Keyboard.isKeyDown(Keyboard.KEY_UP)) {
+            player.velY = 1.0F;
+        }
+
         player.velX = moveX;
 
         world.update();

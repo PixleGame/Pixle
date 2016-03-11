@@ -11,6 +11,10 @@ public class WorldGeneratorDefault implements IWorldGenerator {
     public void generate(Region region, int regionX, Random rand) {
         for (int x = 0; x < 16; x++) {
             region.setPixel(new Pixel(Materials.grass), x, 0);
+
+            if (x % 2 == 0) {
+                region.setPixel(new Pixel(Materials.grass), x, 1);
+            }
         }
     }
 }
