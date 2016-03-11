@@ -6,8 +6,8 @@ import net.ilexiconn.pixle.world.pixel.Pixel;
 
 public class Entity {
     public World world;
-    public int posX;
-    public int posY;
+    public double posX;
+    public double posY;
     public float velX;
     public float velY;
     public boolean onSurface;
@@ -23,6 +23,8 @@ public class Entity {
         if (velY < -1.0F) {
             velY = 1.0F;
         }
+
+        move(velX, velY);
 
         float airFriction = getAirFriction();
 
@@ -51,15 +53,15 @@ public class Entity {
 
     public void writeToNBT(CompoundTag compound) {
         compound.setByte("id", (byte) EntityRegistry.getEntityID(getClass()));
-        compound.setInt("posX", posX);
-        compound.setInt("posY", posY);
+        compound.setDouble("posX", posX);
+        compound.setDouble("posY", posY);
         compound.setFloat("velX", velX);
         compound.setFloat("velY", velY);
     }
 
     public void readFromNBT(CompoundTag compound) {
-        this.posX = compound.getInt("posX");
-        this.posY = compound.getInt("posY");
+        this.posX = compound.getDouble("posX");
+        this.posY = compound.getDouble("posY");
         this.velX = compound.getFloat("velX");
         this.velY = compound.getFloat("velY");
     }
