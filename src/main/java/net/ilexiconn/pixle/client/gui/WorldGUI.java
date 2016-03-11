@@ -1,6 +1,7 @@
 package net.ilexiconn.pixle.client.gui;
 
 import net.ilexiconn.pixle.client.PixleClient;
+import net.ilexiconn.pixle.client.render.RenderHelper;
 import net.ilexiconn.pixle.client.render.RenderingRegistry;
 import net.ilexiconn.pixle.client.render.entity.IEntityRenderer;
 import net.ilexiconn.pixle.world.World;
@@ -21,13 +22,6 @@ public class WorldGUI extends GUI {
         World world = pixle.getWorld();
         PlayerEntity player = pixle.getPlayer();
 
-        for (Entity entity : world.getEntities()) {
-            IEntityRenderer entityRenderer = RenderingRegistry.getEntityRenderer(entity.getClass());
-            if (entityRenderer != null) {
-                entityRenderer.render(entity, world, (float) pixle.getDelta());
-            }
-        }
-
         int pixelSize = World.PIXEL_SIZE;
         int regionCount = (Display.getWidth() / (pixelSize * 16)) + 1;
         int playerRegionX = world.getRegionX((int) player.posX);
@@ -36,7 +30,7 @@ public class WorldGUI extends GUI {
 
         int centerY = (Display.getHeight() / pixelSize) / 2;
 
-        drawRect(0, 0, Display.getWidth(), Display.getHeight() - (int) ((centerY - player.posY - 1) * pixelSize));
+        RenderHelper.drawRect(0, 0, Display.getWidth(), Display.getHeight() - (int) ((centerY - player.posY - 1) * pixelSize));
 
         for (int regionX = 0; regionX < regionCount; regionX++) {
             Region region = world.getRegion((playerRegionX + regionX) - (regionCount / 2));
@@ -51,10 +45,17 @@ public class WorldGUI extends GUI {
                             int g = (color & 0xFF00) >> 8;
                             int b = (color & 0xFF);
                             GL11.glColor3f(r / 255.0F, g / 255.0F, b / 255.0F);
-                            drawRect((int) (((x + (regionX * 16)) - player.posX) * pixelSize), (Display.getHeight() / 2) - (int) (relativeY * pixelSize), pixelSize, pixelSize);
+                            RenderHelper.drawRect((int) (((x + (regionX * 16)) - player.posX) * pixelSize), (Display.getHeight() / 2) - (int) (relativeY * pixelSize), pixelSize, pixelSize);
                         }
                     }
                 }
+            }
+        }
+
+        for (Entity entity : world.getEntities()) {
+            IEntityRenderer entityRenderer = RenderingRegistry.getEntityRenderer(entity.getClass());
+            if (entityRenderer != null) {
+                entityRenderer.render(entity, (Display.getWidth() / 2) - (int) ((entity.posX - player.posX) * pixelSize), (Display.getHeight() / 2) - (int) ((entity.posY - player.posY) * pixelSize) ,world, (float) pixle.getDelta());
             }
         }
     }
