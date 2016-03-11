@@ -28,6 +28,8 @@ dependencies {
     compile "commons-io:commons-io:2.4"
     compile "net.darkhax.opennbt:OpenNBT:2.3.18"
     compile "net.ilexiconn:netconn:0.1.0"
+    compile "org.apache.logging.log4j:log4j-api:2.0-beta9"
+    compile "org.apache.logging.log4j:log4j-core:2.0-beta9"
 }
 
 natives {

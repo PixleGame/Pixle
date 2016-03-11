@@ -1,6 +1,7 @@
 package net.ilexiconn.pixle.client;
 
 import net.ilexiconn.netconn.client.Client;
+import net.ilexiconn.pixle.client.gl.GLStateManager;
 import net.ilexiconn.pixle.client.gui.GUI;
 import net.ilexiconn.pixle.client.gui.WorldGUI;
 import net.ilexiconn.pixle.client.render.TextureManager;
@@ -19,9 +20,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PixleClient {
-    public static final int SCREEN_WIDTH = 854;
-    public static final int SCREEN_HEIGHT = 480;
-
     private boolean closeRequested;
     private int fps;
     private double delta;
@@ -39,7 +37,7 @@ public class PixleClient {
         try {
             init();
             try {
-                Display.setDisplayMode(new DisplayMode(PixleClient.SCREEN_WIDTH, PixleClient.SCREEN_HEIGHT));
+                Display.setDisplayMode(new DisplayMode(854, 480));
                 Display.setTitle("Pixle");
                 Display.setResizable(true);
                 Display.create();
@@ -57,7 +55,7 @@ public class PixleClient {
 
             GL11.glMatrixMode(GL11.GL_PROJECTION);
             GL11.glLoadIdentity();
-            GL11.glOrtho(0, PixleClient.SCREEN_WIDTH, 0, PixleClient.SCREEN_HEIGHT, 1, -1);
+            GL11.glOrtho(0, Display.getWidth(), 0, Display.getHeight(), 1, -1);
             GL11.glMatrixMode(GL11.GL_MODELVIEW);
 
             while (!Display.isCloseRequested() && !isCloseRequested()) {
@@ -73,7 +71,7 @@ public class PixleClient {
                 }
 
                 GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
-                GL11.glPushMatrix();
+                GLStateManager.pushMatrix();
 
                 GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
 
@@ -89,7 +87,7 @@ public class PixleClient {
                     ups = 0;
                 }
 
-                GL11.glPopMatrix();
+                GLStateManager.popMatrix();
 
                 Display.update();
             }
@@ -146,7 +144,7 @@ public class PixleClient {
     }
 
     private void render() {
-        GL11.glEnable(GL11.GL_COLOR);
+        GLStateManager.enableColor();
         for (GUI gui : new ArrayList<>(getOpenGUIs())) {
             gui.render();
         }
