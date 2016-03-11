@@ -126,19 +126,21 @@ public class PixleClient {
     }
 
     private void tick() {
-        float moveX = 0.0F;
+        if (player.onSurface) {
+            float moveX = 0.0F;
 
-        if (Keyboard.isKeyDown(Keyboard.KEY_LEFT)) {
-            moveX = -1.0F;
-        } else if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) {
-            moveX = 1.0F;
+            if (Keyboard.isKeyDown(Keyboard.KEY_LEFT)) {
+                moveX = -1.0F;
+            } else if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) {
+                moveX = 1.0F;
+            }
+
+            if (Keyboard.isKeyDown(Keyboard.KEY_UP)) {
+                player.velY = 1.0F;
+            }
+
+            player.velX = moveX;
         }
-
-        if (player.onSurface && Keyboard.isKeyDown(Keyboard.KEY_UP)) {
-            player.velY = 1.0F;
-        }
-
-        player.velX = moveX;
 
         world.update();
     }
