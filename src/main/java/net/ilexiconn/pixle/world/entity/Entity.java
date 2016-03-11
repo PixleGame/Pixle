@@ -2,7 +2,11 @@ package net.ilexiconn.pixle.world.entity;
 
 import net.darkhax.opennbt.tags.CompoundTag;
 import net.ilexiconn.pixle.world.World;
+import net.ilexiconn.pixle.world.bounds.Bounds;
+import net.ilexiconn.pixle.world.bounds.EntityBounds;
 import net.ilexiconn.pixle.world.pixel.Pixel;
+
+import java.util.List;
 
 public class Entity {
     public World world;
@@ -10,11 +14,22 @@ public class Entity {
     public double posY;
     public float velX;
     public float velY;
+
+    public EntityBounds bounds;
+
+    public boolean collidingVertically;
+    public boolean collidingHorizontally;
+
     public boolean onSurface;
     public Pixel standingOn;
 
     public Entity(World world) {
         this.world = world;
+        this.setBounds(1.0F, 1.0F);
+    }
+
+    public void setBounds(float sizeX, float sizeY) {
+        this.bounds = new EntityBounds(this, sizeX, sizeY);
     }
 
     public void update() {
@@ -32,7 +47,7 @@ public class Entity {
         velY *= airFriction;
 
         if (onSurface) {
-            velX *= standingOn.getMaterial().getFriction();
+//            velX *= standingOn.getMaterial().getFriction();
         }
     }
 
@@ -40,7 +55,19 @@ public class Entity {
         posX += velX;
         posY += velY;
 
-        //TODO check for collision
+        double originalX = posX;
+        double originalY = posY;
+
+        List<Bounds> intersectingBounds = world.getIntersectingPixelBounds(bounds);
+
+        for (Bounds intersecting : intersectingBounds) {
+            posX += intersecting.getXIntersectOffset(bounds);
+            posY += intersecting.getYIntersectOffset(bounds);
+        }
+
+        collidingHorizontally = originalX != posX;
+        collidingVertically = originalY != posY;
+        onSurface = collidingVertically && posY > originalY;
     }
 
     public float getGravity() {

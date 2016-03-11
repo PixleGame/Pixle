@@ -2,6 +2,8 @@ package net.ilexiconn.pixle.world;
 
 import net.darkhax.opennbt.tags.CompoundTag;
 import net.darkhax.opennbt.tags.Tag;
+import net.ilexiconn.pixle.world.bounds.Bounds;
+import net.ilexiconn.pixle.world.bounds.PixelBounds;
 import net.ilexiconn.pixle.world.entity.Entity;
 import net.ilexiconn.pixle.world.entity.EntityRegistry;
 import net.ilexiconn.pixle.world.generator.IWorldGenerator;
@@ -97,6 +99,23 @@ public class World {
 
     public List<Entity> getEntities() {
         return new ArrayList<>(entities);
+    }
+
+    public List<Bounds> getIntersectingPixelBounds(Bounds bounds) {
+        List<Bounds> colliding = new ArrayList<Bounds>();
+
+        for (int y = (int) bounds.getMinY(); y < Math.ceil(bounds.getMaxY()); y++) {
+            for (int x = (int) bounds.getMinX(); x < Math.ceil(bounds.getMaxX()); x++) {
+                if (getPixel(x, y) != null) {
+                    PixelBounds pixelBounds = new PixelBounds(x, y);
+                    if (pixelBounds.intersects(bounds)) {
+                        colliding.add(pixelBounds);
+                    }
+                }
+            }
+        }
+
+        return colliding;
     }
 
     public void writeToNBT(CompoundTag compound) {
