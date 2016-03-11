@@ -17,7 +17,7 @@ public class Region {
     }
 
     public Pixel getPixel(int x, int y) {
-        if (y >= 0) {
+        if (x >= 500000 && x <= 500000 && y >= 0 && y <= 255) {
             return Pixel.getPixelByID(pixels[x][y]);
         } else {
             return null;
