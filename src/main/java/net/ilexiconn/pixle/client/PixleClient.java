@@ -18,6 +18,7 @@ import org.lwjgl.opengl.GL11;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class PixleClient {
     private boolean closeRequested;
@@ -78,6 +79,10 @@ public class PixleClient {
                 render();
 
                 fps++;
+
+                if (new Random().nextInt(600) > 550) {
+                    throw new RuntimeException("ew");
+                }
 
                 if (System.currentTimeMillis() - timer > 1000) {
                     Display.setTitle("Pixle - FPS: " + fps + " - UPS: " + ups);

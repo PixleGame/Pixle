@@ -1,5 +1,6 @@
 package net.ilexiconn.pixle.crash;
 
+import net.ilexiconn.pixle.util.Side;
 import org.apache.commons.io.IOUtils;
 
 import java.io.PrintWriter;
@@ -19,13 +20,17 @@ public class CrashReport {
     }
 
     private String getCompleteReport() {
-        return "---- Crash Report ----\n\nDescription: " + description + "\n\n-- Crash Log --\n" + getStackTrace() + "\n-- System Details --\n" + getSystemDetails();
+        return "---- Crash Report ----\nDescription: " + description + "\n\n-- Crash Log --\n" + getStackTrace() + "\n-- System Details --\n" + getSystemDetails();
     }
 
     private String getSystemDetails() {
         String s = "";
+        s += toPrettyString("Current Thread", Thread.currentThread().getName());
         s += toPrettyString("Operating System", System.getProperty("os.name") + " (" + System.getProperty("os.arch") + ")");
         s += toPrettyString("Java Version", System.getProperty("java.version"));
+        if (Side.get().isClient()) {
+            s += toPrettyString("LWJGL Version", org.lwjgl.Sys.getVersion());
+        }
         return s;
     }
 
