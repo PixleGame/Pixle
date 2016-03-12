@@ -1,11 +1,11 @@
-package net.ilexiconn.pixle.world.generator;
+package net.ilexiconn.pixle.level.generator;
 
-import net.ilexiconn.pixle.world.pixel.Pixel;
-import net.ilexiconn.pixle.world.region.Region;
+import net.ilexiconn.pixle.pixel.Pixel;
+import net.ilexiconn.pixle.level.region.Region;
 
 import java.util.Random;
 
-public class WorldGeneratorDefault implements IWorldGenerator {
+public class LevelGeneratorDefault implements ILevelGenerator {
     @Override
     public void generate(Region region, int regionX, Random rand) {
         for (int x = 0; x < 16; x++) {

@@ -1,4 +1,4 @@
-package net.ilexiconn.pixle.world.pixel;
+package net.ilexiconn.pixle.pixel;
 
 public class Pixel {
     private static Pixel[] pixels = new Pixel[256];

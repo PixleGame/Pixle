@@ -6,8 +6,8 @@ import net.ilexiconn.pixle.client.gui.GUI;
 import net.ilexiconn.pixle.client.gui.WorldGUI;
 import net.ilexiconn.pixle.client.render.TextureManager;
 import net.ilexiconn.pixle.crash.CrashReport;
-import net.ilexiconn.pixle.world.World;
-import net.ilexiconn.pixle.world.entity.PlayerEntity;
+import net.ilexiconn.pixle.level.Level;
+import net.ilexiconn.pixle.entity.PlayerEntity;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
@@ -30,7 +30,7 @@ public class PixleClient {
 
     private Client client;
 
-    private World world;
+    private Level level;
     private PlayerEntity player;
 
     public void start() {
@@ -102,10 +102,10 @@ public class PixleClient {
         textureManager = new TextureManager();
         openGUI(new WorldGUI(this));
 
-        world = new World();
-        player = new PlayerEntity(world);
+        level = new Level();
+        player = new PlayerEntity(level);
         player.posY = 5;
-        world.addEntity(player);
+        level.addEntity(player);
     }
 
     public void connect(String host, int port) throws IOException {
@@ -140,7 +140,7 @@ public class PixleClient {
             player.velX = moveX;
         }
 
-        world.update();
+        level.update();
     }
 
     private void render() {
@@ -172,8 +172,8 @@ public class PixleClient {
         return textureManager;
     }
 
-    public World getWorld() {
-        return world;
+    public Level getLevel() {
+        return level;
     }
 
     public PlayerEntity getPlayer() {

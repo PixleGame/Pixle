@@ -1,6 +1,6 @@
-package net.ilexiconn.pixle.world.bounds;
+package net.ilexiconn.pixle.util;
 
-import net.ilexiconn.pixle.world.entity.Entity;
+import net.ilexiconn.pixle.entity.Entity;
 
 public class EntityBounds extends Bounds {
     private float sizeX;

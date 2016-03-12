@@ -1,6 +1,6 @@
-package net.ilexiconn.pixle.world.entity;
+package net.ilexiconn.pixle.entity;
 
-import net.ilexiconn.pixle.world.World;
+import net.ilexiconn.pixle.level.Level;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,9 +16,9 @@ public class EntityRegistry {
         entityMap.put(id, clazz);
     }
 
-    public static Entity initializeEntity(int id, World world) {
+    public static Entity initializeEntity(int id, Level level) {
         try {
-            return entityMap.get(id).getConstructor(World.class).newInstance(world);
+            return entityMap.get(id).getConstructor(Level.class).newInstance(level);
         } catch (Exception e) {
             e.printStackTrace();
             return null;

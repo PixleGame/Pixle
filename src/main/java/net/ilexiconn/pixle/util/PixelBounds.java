@@ -1,4 +1,4 @@
-package net.ilexiconn.pixle.world.bounds;
+package net.ilexiconn.pixle.util;
 
 public class PixelBounds extends Bounds {
     private int x;

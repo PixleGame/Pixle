@@ -1,14 +1,14 @@
-package net.ilexiconn.pixle.world.entity;
+package net.ilexiconn.pixle.entity;
 
 import net.darkhax.opennbt.tags.CompoundTag;
-import net.ilexiconn.pixle.world.World;
-import net.ilexiconn.pixle.world.bounds.Bounds;
-import net.ilexiconn.pixle.world.bounds.EntityBounds;
+import net.ilexiconn.pixle.level.Level;
+import net.ilexiconn.pixle.util.Bounds;
+import net.ilexiconn.pixle.util.EntityBounds;
 
 import java.util.List;
 
 public class Entity {
-    public World world;
+    public Level level;
     public double posX;
     public double posY;
     public float velX;
@@ -21,8 +21,8 @@ public class Entity {
 
     public boolean onSurface;
 
-    public Entity(World world) {
-        this.world = world;
+    public Entity(Level level) {
+        this.level = level;
         this.setBounds(1.0F, 2.0F);
     }
 
@@ -56,7 +56,7 @@ public class Entity {
         double originalX = posX;
         double originalY = posY;
 
-        List<Bounds> intersectingBounds = world.getIntersectingPixelBounds(bounds);
+        List<Bounds> intersectingBounds = level.getIntersectingPixelBounds(bounds);
 
         for (Bounds intersecting : intersectingBounds) {
             posY = bounds.preventIntersectionY(posY, intersecting);
@@ -92,6 +92,6 @@ public class Entity {
     }
 
     public void destroy() {
-        world.removeEntity(this);
+        level.removeEntity(this);
     }
 }

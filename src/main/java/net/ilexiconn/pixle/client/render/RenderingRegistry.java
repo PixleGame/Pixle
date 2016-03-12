@@ -2,8 +2,8 @@ package net.ilexiconn.pixle.client.render;
 
 import net.ilexiconn.pixle.client.render.entity.IEntityRenderer;
 import net.ilexiconn.pixle.client.render.entity.PlayerEntityRenderer;
-import net.ilexiconn.pixle.world.entity.Entity;
-import net.ilexiconn.pixle.world.entity.PlayerEntity;
+import net.ilexiconn.pixle.entity.Entity;
+import net.ilexiconn.pixle.entity.PlayerEntity;
 
 import java.util.HashMap;
 import java.util.Map;

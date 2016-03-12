@@ -5,10 +5,10 @@ import net.ilexiconn.pixle.client.gl.GLStateManager;
 import net.ilexiconn.pixle.client.render.RenderHelper;
 import net.ilexiconn.pixle.client.render.RenderingRegistry;
 import net.ilexiconn.pixle.client.render.entity.IEntityRenderer;
-import net.ilexiconn.pixle.world.World;
-import net.ilexiconn.pixle.world.entity.Entity;
-import net.ilexiconn.pixle.world.entity.PlayerEntity;
-import net.ilexiconn.pixle.world.pixel.Pixel;
+import net.ilexiconn.pixle.level.Level;
+import net.ilexiconn.pixle.entity.Entity;
+import net.ilexiconn.pixle.entity.PlayerEntity;
+import net.ilexiconn.pixle.pixel.Pixel;
 import org.lwjgl.opengl.Display;
 
 public class WorldGUI extends GUI {
@@ -18,10 +18,10 @@ public class WorldGUI extends GUI {
 
     @Override
     public void render() {
-        World world = pixle.getWorld();
+        Level level = pixle.getLevel();
         PlayerEntity player = pixle.getPlayer();
 
-        int pixelSize = World.PIXEL_SIZE;
+        int pixelSize = Level.PIXEL_SIZE;
         int pixelsInWidth = (int) Math.ceil(Display.getWidth() / pixelSize);
 
         int centerX = Display.getWidth() / 2;
@@ -32,18 +32,18 @@ public class WorldGUI extends GUI {
 
         for (int y = 0; y < 256; y++) {
             for (int x = (int) (player.posX - (pixelsInWidth / 2)) - 1; x < player.posX + (pixelsInWidth / 2) + 1; x++) {
-                if (world.hasPixel(x, y)) {
-                    Pixel pixel = world.getPixel(x, y);
+                if (level.hasPixel(x, y)) {
+                    Pixel pixel = level.getPixel(x, y);
                     GLStateManager.setColor(pixel.getColor());
                     RenderHelper.drawRect((int) (centerX - Math.round((player.posX - x) * pixelSize)), Display.getHeight() - (centerY - (int) ((player.posY - y) * pixelSize)), pixelSize, pixelSize);
                 }
             }
         }
 
-        for (Entity entity : world.getEntities()) {
+        for (Entity entity : level.getEntities()) {
             IEntityRenderer entityRenderer = RenderingRegistry.getEntityRenderer(entity.getClass());
             if (entityRenderer != null) {
-                entityRenderer.render(entity, centerX - (int) ((entity.posX - player.posX) * pixelSize), centerY - (int) ((entity.posY - player.posY) * pixelSize), world, (float) pixle.getDelta());
+                entityRenderer.render(entity, centerX - (int) ((entity.posX - player.posX) * pixelSize), centerY - (int) ((entity.posY - player.posY) * pixelSize), level, (float) pixle.getDelta());
             }
         }
     }

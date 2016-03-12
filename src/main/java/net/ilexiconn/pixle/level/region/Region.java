@@ -1,18 +1,18 @@
-package net.ilexiconn.pixle.world.region;
+package net.ilexiconn.pixle.level.region;
 
 import net.darkhax.opennbt.tags.CompoundTag;
-import net.ilexiconn.pixle.world.World;
-import net.ilexiconn.pixle.world.pixel.Pixel;
+import net.ilexiconn.pixle.level.Level;
+import net.ilexiconn.pixle.pixel.Pixel;
 
 import java.util.Random;
 
 public class Region {
-    private World world;
+    private Level level;
     private int[][] pixels = new int[16][256];
     private int x;
 
-    public Region(int x, World world) {
-        this.world = world;
+    public Region(int x, Level level) {
+        this.level = level;
         this.x = x;
     }
 
@@ -29,11 +29,11 @@ public class Region {
     }
 
     public void generate(long seed) {
-        world.getWorldGenerator().generate(this, x, new Random(seed * x));
+        level.getWorldGenerator().generate(this, x, new Random(seed * x));
     }
 
-    public World getWorld() {
-        return world;
+    public Level getLevel() {
+        return level;
     }
 
     public void writeToNBT(CompoundTag compound) {

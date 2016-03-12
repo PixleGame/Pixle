@@ -1,4 +1,4 @@
-package net.ilexiconn.pixle.world.bounds;
+package net.ilexiconn.pixle.util;
 
 public abstract class Bounds {
     public boolean intersects(Bounds bounds) {
