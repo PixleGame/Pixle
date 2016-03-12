@@ -3,6 +3,8 @@ package net.ilexiconn.pixle.server;
 import net.ilexiconn.netconn.server.Server;
 import net.ilexiconn.pixle.crash.CrashReport;
 
+import java.io.IOException;
+
 public class PixleServer {
     private boolean closeRequested;
     private Server server;
@@ -26,11 +28,24 @@ public class PixleServer {
         long previousTime = System.nanoTime();
         long timer = System.currentTimeMillis();
         int ups = 0;
+        double nanoUpdates = 1000000000.0 / 60.0;
+
+        new Thread() {
+            public void run() {
+                try {
+                    server.waitForConnection();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }.start();
 
         while (!isCloseRequested()) {
             long currentTime = System.nanoTime();
-            delta += (currentTime - previousTime) / 10000000.0;
+            delta += (currentTime - previousTime) / nanoUpdates;
             previousTime = currentTime;
+
+            server.listen();
 
             while (delta >= 1) {
                 tick();
