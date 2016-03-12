@@ -11,7 +11,7 @@ public class WorldGeneratorDefault implements IWorldGenerator {
         for (int x = 0; x < 16; x++) {
             region.setPixel(Pixel.grass, x, 0);
 
-            if (x % 2 == 0) {
+            if (x % 4 == 0) {
                 region.setPixel(Pixel.grass, x, 1);
             }
         }
