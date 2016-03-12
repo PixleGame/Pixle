@@ -1,15 +1,15 @@
-import net.ilexiconn.pixle.Startup;
+import net.ilexiconn.pixle.util.StartupUtils;
 
 import java.util.Map;
 
 public abstract class DevStart {
     public void start(String[] args) throws ReflectiveOperationException {
-        Map<String, String> properties = Startup.argsToMap(args);
+        Map<String, String> properties = StartupUtils.argsToMap(args);
         applyDefaults(properties);
         preInit(properties);
         Class<?> clazz = Class.forName(getStartupClassName());
         clazz.getMethod("main", String[].class).invoke(null, new Object[]{
-                Startup.mapToArgs(properties)
+                StartupUtils.mapToArgs(properties)
         });
     }
 

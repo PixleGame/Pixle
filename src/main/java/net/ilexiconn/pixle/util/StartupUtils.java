@@ -1,11 +1,11 @@
-package net.ilexiconn.pixle;
+package net.ilexiconn.pixle.util;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Startup {
+public class StartupUtils {
     public static Map<String, String> argsToMap(String[] args) {
         String current = null;
         HashMap<String, String> properties = new HashMap<>();

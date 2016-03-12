@@ -13,24 +13,17 @@ public final class SystemUtils {
         String os = System.getProperty("os.name").toLowerCase();
         if (os.contains("win")) {
             return OperatingSystem.WINDOWS;
-        }
-        if (os.contains("sunos") || os.contains("solaris")) {
+        } else if (os.contains("sunos") || os.contains("solaris")) {
             return OperatingSystem.SOLARIS;
-        }
-        if (os.contains("unix")) {
+        } else if (os.contains("unix")) {
             return OperatingSystem.LINUX;
-        }
-        if (os.contains("linux")) {
+        } else if (os.contains("linux")) {
             return OperatingSystem.LINUX;
-        }
-        if (os.contains("mac")) {
+        } else if (os.contains("mac")) {
             return OperatingSystem.MACOSX;
+        } else {
+            return OperatingSystem.UNKNOWN;
         }
-        return OperatingSystem.UNKNOWN;
-    }
-
-    public static String getUserName() {
-        return System.getProperty("user.name");
     }
 
     public static File getGameFolder() {
@@ -43,19 +36,6 @@ public final class SystemUtils {
             }
         }
         return gameFolder;
-    }
-
-    public static void deleteRecursivly(File file) {
-        if (file.isDirectory()) {
-            File[] list = file.listFiles();
-            if (list != null) {
-                for (File f : list) {
-                    deleteRecursivly(f);
-                    f.delete();
-                }
-            }
-        }
-        file.delete();
     }
 
     public static void setGameFolder(File file) {
