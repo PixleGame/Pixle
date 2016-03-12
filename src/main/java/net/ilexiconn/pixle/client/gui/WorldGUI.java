@@ -37,16 +37,16 @@ public class WorldGUI extends GUI {
                 Pixel pixel = world.getPixel(x, y);
                 if (pixel != null) {
                     GLStateManager.setColor(pixel.getColor());
-                    RenderHelper.drawRect(centerX - (int) ((player.posX - x) * pixelSize), Display.getHeight() - (centerY - (int) ((player.posY - y) * pixelSize)), pixelSize, pixelSize);
+                    RenderHelper.drawRect((int) (centerX - Math.round((player.posX - x) * pixelSize)), Display.getHeight() - (centerY - (int) ((player.posY - y) * pixelSize)), pixelSize, pixelSize);
                 }
             }
         }
 
-//        for (Entity entity : world.getEntities()) {
-//            IEntityRenderer entityRenderer = RenderingRegistry.getEntityRenderer(entity.getClass());
-//            if (entityRenderer != null) {
-//                entityRenderer.render(entity, centerX - (int) ((entity.posX - player.posX) * pixelSize), centerY - (int) ((entity.posY - player.posY) * pixelSize), world, (float) pixle.getDelta());
-//            }
-//        }
+        for (Entity entity : world.getEntities()) {
+            IEntityRenderer entityRenderer = RenderingRegistry.getEntityRenderer(entity.getClass());
+            if (entityRenderer != null) {
+                entityRenderer.render(entity, centerX - (int) ((entity.posX - player.posX) * pixelSize), centerY - (int) ((entity.posY - player.posY) * pixelSize), world, (float) pixle.getDelta());
+            }
+        }
     }
 }

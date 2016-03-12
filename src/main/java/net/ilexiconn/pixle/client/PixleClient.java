@@ -128,9 +128,9 @@ public class PixleClient {
             float moveX = 0.0F;
 
             if (Keyboard.isKeyDown(Keyboard.KEY_LEFT)) {
-                moveX = -1.0F;
+                moveX = -0.25F;
             } else if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) {
-                moveX = 1.0F;
+                moveX = 0.25F;
             }
 
             if (Keyboard.isKeyDown(Keyboard.KEY_UP)) {

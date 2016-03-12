@@ -102,9 +102,8 @@ public class World {
 
     public List<Bounds> getIntersectingPixelBounds(Bounds bounds) {
         List<Bounds> colliding = new ArrayList<Bounds>();
-
-        for (int y = (int) bounds.getMinY(); y < Math.ceil(bounds.getMaxY()); y++) {
-            for (int x = (int) bounds.getMinX(); x < Math.ceil(bounds.getMaxX()); x++) {
+        for (int y = (int) bounds.getMinY() - 1; y < Math.ceil(bounds.getMaxY() + 1); y++) {
+            for (int x = (int) bounds.getMinX() - 1; x < Math.ceil(bounds.getMaxX() + 1); x++) {
                 if (getPixel(x, y) != null) {
                     PixelBounds pixelBounds = new PixelBounds(x, y);
                     if (pixelBounds.intersects(bounds)) {
@@ -113,7 +112,6 @@ public class World {
                 }
             }
         }
-
         return colliding;
     }
 

@@ -21,8 +21,6 @@ public class Entity {
 
     public boolean onSurface;
 
-    public double stepHeight = 0;
-
     public Entity(World world) {
         this.world = world;
         this.setBounds(1.0F, 2.0F);
@@ -61,14 +59,8 @@ public class Entity {
         List<Bounds> intersectingBounds = world.getIntersectingPixelBounds(bounds);
 
         for (Bounds intersecting : intersectingBounds) {
-            posX = bounds.preventIntersectionX(posX, intersecting);
             posY = bounds.preventIntersectionY(posY, intersecting);
-        }
-
-        double offsetY = posY - originalY;
-
-        if (offsetY > stepHeight && onSurface) {
-            posY = originalY;
+            posX = bounds.preventIntersectionX(posX, intersecting);
         }
 
         collidingHorizontally = originalX != posX;
