@@ -3,7 +3,6 @@ package net.ilexiconn.pixle.level.generator;
 import net.ilexiconn.pixle.level.Level;
 import net.ilexiconn.pixle.level.generator.tree.TreeGenerator;
 import net.ilexiconn.pixle.level.region.Region;
-import net.ilexiconn.pixle.pixel.Pixel;
 
 import java.util.Random;
 
@@ -25,14 +24,14 @@ public class DefaultLevelGenerator implements ILevelGenerator {
             Random bedrockRand = new Random(worldX * seed);
 
             for (int y = 0; y < height; y++) {
-                Pixel pixel = Pixel.stone;
+                int pixel = 0x909090;
                 if (y == 0 || (y < 15 && bedrockRand.nextInt(y + 1) == 0)) {
-                    pixel = Pixel.bedrock;
+                    pixel = 0x333333;
                 } else if (y >= dirtLayer) {
                     if (y == height - 1) {
-                        pixel = Pixel.grass;
+                        pixel = 0x71C476;
                     } else {
-                        pixel = Pixel.dirt;
+                        pixel = 0x7C5B44;
                     }
                 }
                 region.setPixel(pixel, x, y);

@@ -7,7 +7,6 @@ import net.ilexiconn.pixle.entity.EntityRegistry;
 import net.ilexiconn.pixle.level.generator.DefaultLevelGenerator;
 import net.ilexiconn.pixle.level.generator.ILevelGenerator;
 import net.ilexiconn.pixle.level.region.Region;
-import net.ilexiconn.pixle.pixel.Pixel;
 import net.ilexiconn.pixle.util.Bounds;
 import net.ilexiconn.pixle.util.PixelBounds;
 
@@ -39,20 +38,20 @@ public class Level {
         this(System.nanoTime());
     }
 
-    public void setPixel(Pixel pixel, int x, int y) {
+    public void setPixel(int pixel, int x, int y) {
         Region regionForPixel = getRegionForPixel(x);
         x = x & (Region.REGION_WIDTH - 1);
         regionForPixel.setPixel(pixel, x, y);
     }
 
-    public Pixel getPixel(int x, int y) {
+    public int getPixel(int x, int y) {
         Region region = getRegionForPixel(x);
         x = x & (Region.REGION_WIDTH - 1);
         return region.getPixel(x, y);
     }
 
     public boolean hasPixel(int x, int y) {
-        return getPixel(x, y) != Pixel.air;
+        return getPixel(x, y) != 0;
     }
 
     public int getRegionX(int x) {

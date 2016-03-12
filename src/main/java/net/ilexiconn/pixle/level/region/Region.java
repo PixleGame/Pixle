@@ -3,7 +3,6 @@ package net.ilexiconn.pixle.level.region;
 import net.darkhax.opennbt.tags.CompoundTag;
 import net.ilexiconn.pixle.level.Level;
 import net.ilexiconn.pixle.level.generator.ILevelGenerator;
-import net.ilexiconn.pixle.pixel.Pixel;
 
 import java.util.Random;
 
@@ -21,17 +20,17 @@ public class Region {
         this.x = x;
     }
 
-    public Pixel getPixel(int x, int y) {
+    public int getPixel(int x, int y) {
         if (x >= 0 && x < REGION_WIDTH && y >= 0 && y < REGION_HEIGHT) {
-            return Pixel.getPixelByID(pixels[x][y]);
+            return pixels[x][y];
         } else {
-            return Pixel.air;
+            return 0x0094FF;
         }
     }
 
-    public void setPixel(Pixel pixel, int x, int y) {
+    public void setPixel(int pixel, int x, int y) {
         if (x >= 0 && x < REGION_WIDTH && y >= 0 && y < REGION_HEIGHT) {
-            pixels[x][y] = pixel.getPixelID();
+            pixels[x][y] = pixel;
             if (y > heights[x]) {
                 heights[x] = y;
             }

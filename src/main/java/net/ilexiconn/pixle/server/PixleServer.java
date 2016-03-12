@@ -14,7 +14,7 @@ public class PixleServer {
             server = new Server(port);
             startTick();
         } catch (Exception e) {
-            System.err.println(CrashReport.makeCrashReport(e, "An unexpected error occurred."));
+            System.err.println(CrashReport.makeCrashReport(e, e.getLocalizedMessage()));
         }
     }
 

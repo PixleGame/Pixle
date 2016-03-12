@@ -9,7 +9,6 @@ import net.ilexiconn.pixle.level.Level;
 import net.ilexiconn.pixle.entity.Entity;
 import net.ilexiconn.pixle.entity.PlayerEntity;
 import net.ilexiconn.pixle.level.region.Region;
-import net.ilexiconn.pixle.pixel.Pixel;
 import org.lwjgl.opengl.Display;
 
 public class WorldGUI extends GUI {
@@ -38,8 +37,7 @@ public class WorldGUI extends GUI {
             if (Math.abs(relativeY) <= halfPixelsInHeight) {
                 for (int x = (int) (player.posX - (pixelsInWidth / 2)) - 1; x < player.posX + (pixelsInWidth / 2) + 1; x++) {
                     if (level.hasPixel(x, y)) {
-                        Pixel pixel = level.getPixel(x, y);
-                        GLStateManager.setColor(pixel.getColor());
+                        GLStateManager.setColor(level.getPixel(x, y));
                         RenderHelper.drawRect((int) (centerX - Math.round((player.posX - x) * pixelSize)), Display.getHeight() - (centerY - (int) ((player.posY - y) * pixelSize)), pixelSize, pixelSize);
                     }
                 }

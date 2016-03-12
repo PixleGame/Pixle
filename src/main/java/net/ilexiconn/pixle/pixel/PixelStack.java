@@ -2,14 +2,14 @@ package net.ilexiconn.pixle.pixel;
 
 public class PixelStack {
     private int size;
-    private Pixel pixel;
+    private int pixel;
 
-    public PixelStack(Pixel pixel, int size) {
+    public PixelStack(int pixel, int size) {
         this.pixel = pixel;
         this.size = size;
     }
 
-    public PixelStack(Pixel pixel) {
+    public PixelStack(int pixel) {
         this(pixel, 1);
     }
 
@@ -17,7 +17,7 @@ public class PixelStack {
         return size;
     }
 
-    public Pixel getPixel() {
+    public int getPixel() {
         return pixel;
     }
 

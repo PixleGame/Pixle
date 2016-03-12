@@ -2,7 +2,6 @@ package net.ilexiconn.pixle.entity.inventory;
 
 import net.darkhax.opennbt.tags.CompoundTag;
 import net.darkhax.opennbt.tags.Tag;
-import net.ilexiconn.pixle.pixel.Pixel;
 import net.ilexiconn.pixle.pixel.PixelStack;
 
 import java.util.ArrayList;
@@ -45,7 +44,7 @@ public abstract class Inventory {
             PixelStack stack = getPixelStack(i);
             if (stack != null) {
                 CompoundTag pixelTag = new CompoundTag(i + "");
-                pixelTag.setInt("id", stack.getPixel().getPixelID());
+                pixelTag.setInt("color", stack.getPixel());
                 pixelTag.setInt("size", stack.getSize());
                 pixelList.add(pixelTag);
             }
@@ -57,7 +56,7 @@ public abstract class Inventory {
         List<Tag> pixelList = tag.getTagList("pixels");
         for (Tag pixelTag : pixelList) {
             CompoundTag pixelCompoundTag = (CompoundTag) pixelTag;
-            setPixelStack(new PixelStack(Pixel.getPixelByID(pixelCompoundTag.getInt("id")), pixelCompoundTag.getInt("size")), Integer.parseInt(pixelCompoundTag.getName()));
+            setPixelStack(new PixelStack(pixelCompoundTag.getInt("color"), pixelCompoundTag.getInt("size")), Integer.parseInt(pixelCompoundTag.getName()));
         }
     }
 
