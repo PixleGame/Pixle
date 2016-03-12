@@ -109,7 +109,7 @@ public class PixleClient {
 
         level = new Level();
         player = new PlayerEntity(level);
-        player.posY = 5;
+        player.posY = level.getHeight((int) player.posX) + 1;
         level.addEntity(player);
 
         PixleClient.EVENT_BUS.register(this);
