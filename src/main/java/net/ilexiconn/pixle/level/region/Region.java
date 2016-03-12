@@ -28,9 +28,11 @@ public class Region {
     }
 
     public void setPixel(Pixel pixel, int x, int y) {
-        pixels[x][y] = pixel.getPixelID();
-        if (y > heights[x]) {
-            heights[x] = y;
+        if (x >= 0 && x < REGION_WIDTH && y >= 0 && y <= 255) {
+            pixels[x][y] = pixel.getPixelID();
+            if (y > heights[x]) {
+                heights[x] = y;
+            }
         }
     }
 

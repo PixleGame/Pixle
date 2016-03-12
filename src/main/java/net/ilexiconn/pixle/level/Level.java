@@ -40,7 +40,11 @@ public class Level {
     }
 
     public void setPixel(Pixel pixel, int x, int y) {
-        getRegionForPixel(x).setPixel(pixel, x % (Region.REGION_WIDTH - 1), y);
+        if (x < 0) {
+            x = Region.REGION_WIDTH - x;
+        }
+        x = x % (Region.REGION_WIDTH - 1);
+        getRegionForPixel(x).setPixel(pixel, x, y);
     }
 
     public Pixel getPixel(int x, int y) {

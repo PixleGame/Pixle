@@ -8,20 +8,35 @@ import java.util.Random;
 public class DefaultLevelGenerator implements ILevelGenerator {
     @Override
     public void generate(Region region, int regionX, long seed) {
+        int regionOffset = regionX * Region.REGION_WIDTH;
         for (int x = 0; x < Region.REGION_WIDTH; x++) {
-            int worldX = x + (regionX * Region.REGION_WIDTH);
+            int worldX = x + regionOffset;
 
-            float scaledX = worldX / 8.0F;
+            float scaledX = worldX / 16.0F;
 
-            int scaledXInt = (int) scaledX;
+            int scaledXInt = fastFloor(scaledX);
             float fractionX = scaledX - scaledXInt;
 
             int height = (int) cubicInterpolate(new double[] { getHeight(seed, scaledXInt - 1), getHeight(seed, scaledXInt), getHeight(seed, scaledXInt + 1), getHeight(seed, scaledXInt + 2) }, fractionX);
+            int dirtLayer = height - 5;
 
             for (int y = 0; y < height; y++) {
-                region.setPixel(Pixel.grass, x, y);
+                Pixel pixel = Pixel.stone;
+                if (y >= dirtLayer) {
+                    if (y == height - 1) {
+                        pixel = Pixel.grass;
+                    } else {
+                        pixel = Pixel.dirt;
+                    }
+                }
+                region.setPixel(pixel, x, y);
             }
         }
+    }
+
+    private static int fastFloor(double x) {
+        int intX = (int) x;
+        return x < intX ? intX - 1 : intX;
     }
 
     private static double cubicInterpolate(double[] p, double x) {
@@ -29,6 +44,6 @@ public class DefaultLevelGenerator implements ILevelGenerator {
     }
 
     private int getHeight(long seed, int x) {
-        return new Random(seed * x).nextInt(10) + 10;
+        return new Random(seed * x).nextInt(10) + 60;
     }
 }
