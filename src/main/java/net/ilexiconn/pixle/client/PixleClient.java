@@ -155,9 +155,7 @@ public class PixleClient {
 
     private void render() {
         GLStateManager.enableColor();
-        for (GUI gui : new ArrayList<>(getOpenGUIs())) {
-            gui.render();
-        }
+        new ArrayList<>(getOpenGUIs()).forEach(GUI::render);
     }
 
     public void openGUI(GUI gui) {

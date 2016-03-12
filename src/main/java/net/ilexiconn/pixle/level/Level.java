@@ -4,10 +4,10 @@ import net.darkhax.opennbt.tags.CompoundTag;
 import net.darkhax.opennbt.tags.Tag;
 import net.ilexiconn.pixle.entity.Entity;
 import net.ilexiconn.pixle.entity.EntityRegistry;
-import net.ilexiconn.pixle.level.generator.ILevelGenerator;
 import net.ilexiconn.pixle.level.generator.DefaultLevelGenerator;
-import net.ilexiconn.pixle.pixel.Pixel;
+import net.ilexiconn.pixle.level.generator.ILevelGenerator;
 import net.ilexiconn.pixle.level.region.Region;
+import net.ilexiconn.pixle.pixel.Pixel;
 import net.ilexiconn.pixle.util.Bounds;
 import net.ilexiconn.pixle.util.PixelBounds;
 
@@ -92,9 +92,7 @@ public class Level {
     }
 
     public void update() {
-        for (Entity entity : entities) {
-            entity.update();
-        }
+        entities.forEach(Entity::update);
     }
 
     public void addEntity(Entity entity) {
@@ -126,11 +124,11 @@ public class Level {
 
     public void writeToNBT(CompoundTag compound) {
         List<Tag> tagList = new ArrayList<>();
-        for (Entity entity : entities) {
+        entities.forEach(entity -> {
             CompoundTag compoundTag = new CompoundTag("");
             entity.writeToNBT(compoundTag);
             tagList.add(compoundTag);
-        }
+        });
         compound.setTagList("entities", tagList);
         tagList.clear();
         for (Region region : regions) {
@@ -145,21 +143,21 @@ public class Level {
 
     public void readFromNBT(CompoundTag compound) {
         List<Tag> tagList = compound.getTagList("entities");
-        for (Tag tag : tagList) {
+        tagList.forEach(tag -> {
             CompoundTag compoundTag = (CompoundTag) tag;
             Entity entity = EntityRegistry.initializeEntity(compoundTag.getByte("id"), this);
             if (entity != null) {
                 entity.readFromNBT(compoundTag);
                 addEntity(entity);
             }
-        }
+        });
         tagList = compound.getTagList("regions");
-        for (Tag tag : tagList) {
+        tagList.forEach(tag -> {
             CompoundTag compoundTag = (CompoundTag) tag;
             int regionX = compoundTag.getInt("regionX");
             Region region = new Region(regionX, this);
             region.readFromNBT(compoundTag);
             regions[regionX] = region;
-        }
+        });
     }
 }
