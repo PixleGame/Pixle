@@ -16,7 +16,7 @@ public class TreeGenerator {
     public static void generateTree(Level level, int x, int y, Random rand) {
         String treeType = treeTypes[rand.nextInt(treeTypes.length)];
         try {
-            ImageStructureGenerator.generateFromImage(level, x, y - 8, getTreeLocation(treeType));
+            ImageStructureGenerator.generateFromImage(level, x, y - 8, getTreeLocation(treeType), false);
         } catch (IOException e) {
             e.printStackTrace();
         }

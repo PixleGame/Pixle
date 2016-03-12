@@ -6,23 +6,34 @@ import net.ilexiconn.pixle.pixel.Pixel;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ImageStructureGenerator {
-    public static void generateFromImage(Level level, int x, int y, String imagePath) throws IOException {
+    private static Map<String, Structure> structureChache = new HashMap<>();
+
+    public static void generateFromImage(Level level, int x, int y, String imagePath, boolean generateAir) throws IOException {
         if (!imagePath.startsWith("/")) {
             imagePath = "/" + imagePath;
         }
+        Structure structure = structureChache.get(imagePath);
+        if (structure == null) {
+            structure = loadStructure(imagePath);
+            structureChache.put(imagePath, structure);
+        }
+        structure.generate(level, x, y, generateAir);
+    }
+
+    private static Structure loadStructure(String imagePath) throws IOException {
         BufferedImage image = ImageIO.read(ImageStructureGenerator.class.getResourceAsStream(imagePath));
         int width = image.getWidth();
         int height = image.getHeight();
+        Pixel[][] pixels = new Pixel[width][height];
         for (int pixelY = 0; pixelY < height; pixelY++) {
             for (int pixelX = 0; pixelX < width; pixelX++) {
-                int color = image.getRGB(pixelX, pixelY) & 0xFFFFFF;
-                Pixel pixel = Pixel.fromColor(color);
-                if (pixel != Pixel.air) {
-                    level.setPixel(pixel, (x + pixelX) - (width / 2), y + (height - pixelY));
-                }
+                pixels[pixelX][pixelY] = Pixel.fromColor(image.getRGB(pixelX, pixelY) & 0xFFFFFF);
             }
         }
+        return new Structure(pixels);
     }
 }
