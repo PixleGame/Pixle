@@ -32,7 +32,7 @@ public class RenderHelper {
         drawVertex(x + width, y, width, 0, uMultiplier, vMultiplier);
         drawVertex(x, y, 0, 0, uMultiplier, vMultiplier);
 
-        GL11.glEnd();
+        GLStateManager.end();
     }
 
     public static void drawVertex(int x, int y, int u, int v, float uMultiplier, float vMultiplier) {

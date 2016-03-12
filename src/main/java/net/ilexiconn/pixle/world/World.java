@@ -45,13 +45,10 @@ public class World {
 
     public Pixel getPixel(int x, int y) {
         Region region = getRegionForPixel(x);
-
         if (x < 0) {
             x = 16 - x;
         }
-
         x = x % 15;
-
         return region.getPixel(x, y);
     }
 

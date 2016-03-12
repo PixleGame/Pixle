@@ -23,35 +23,30 @@ public class WorldGUI extends GUI {
         PlayerEntity player = pixle.getPlayer();
 
         int pixelSize = World.PIXEL_SIZE;
-        int regionCount = (Display.getWidth() / (pixelSize * 16)) + 1;
-        int playerRegionX = world.getRegionX((int) player.posX);
+        int pixelsInWidth = (int) Math.ceil(Display.getWidth() / pixelSize);
+
+        int centerX = Display.getWidth() / 2;
+        int centerY = Display.getHeight() / 2;
 
         GLStateManager.setColor(0x0094FF);
 
-        int centerY = (Display.getHeight() / pixelSize) / 2;
+        RenderHelper.drawRect(0, 0, Display.getWidth(), (int) (Display.getHeight() - (centerY - ((player.posY + 1) * pixelSize))));
 
-        RenderHelper.drawRect(0, 0, Display.getWidth(), Display.getHeight() - (int) ((centerY - player.posY - 1) * pixelSize));
-
-        for (int regionX = 0; regionX < regionCount; regionX++) {
-            Region region = world.getRegion((playerRegionX + regionX) - (regionCount / 2));
-            for (int y = 0; y < 256; y++) {
-                double relativeY = y - player.posY;
-                if (relativeY >= -centerY - 1 && relativeY <= centerY + 1) {
-                    for (int x = 0; x < 16; x++) {
-                        Pixel pixel = region.getPixel(x, y);
-                        if (pixel != null) {
-                            GLStateManager.setColor(pixel.getColor());
-                            RenderHelper.drawRect((int) (((x + (regionX * 16)) - player.posX) * pixelSize), (Display.getHeight() / 2) - (int) (relativeY * pixelSize), pixelSize, pixelSize);
-                        }
-                    }
+        for (int y = 0; y < 256; y++) {
+            for (int x = (int) (player.posX - (pixelsInWidth / 2)) - 1; x < player.posX + (pixelsInWidth / 2) + 1; x++) {
+                Pixel pixel = world.getPixel(x, y);
+                if (pixel != null) {
+                    GLStateManager.setColor(pixel.getColor());
+                    RenderHelper.drawRect(centerX - (int) ((player.posX - x) * pixelSize), Display.getHeight() - (centerY - (int) ((player.posY - y) * pixelSize)), pixelSize, pixelSize);
                 }
             }
         }
-        for (Entity entity : world.getEntities()) {
-            IEntityRenderer entityRenderer = RenderingRegistry.getEntityRenderer(entity.getClass());
-            if (entityRenderer != null) {
-                entityRenderer.render(entity, (Display.getWidth() / 2) - (int) ((entity.posX - player.posX) * pixelSize), (Display.getHeight() / 2) - (int) ((entity.posY - player.posY) * pixelSize), world, (float) pixle.getDelta());
-            }
-        }
+
+//        for (Entity entity : world.getEntities()) {
+//            IEntityRenderer entityRenderer = RenderingRegistry.getEntityRenderer(entity.getClass());
+//            if (entityRenderer != null) {
+//                entityRenderer.render(entity, centerX - (int) ((entity.posX - player.posX) * pixelSize), centerY - (int) ((entity.posY - player.posY) * pixelSize), world, (float) pixle.getDelta());
+//            }
+//        }
     }
 }
