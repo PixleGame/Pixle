@@ -23,7 +23,7 @@ public class Region {
         if (x >= 0 && x < REGION_WIDTH && y >= 0 && y <= 255) {
             return Pixel.getPixelByID(pixels[x][y]);
         } else {
-            return null;
+            return Pixel.air;
         }
     }
 
