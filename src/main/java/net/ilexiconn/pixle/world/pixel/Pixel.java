@@ -3,10 +3,12 @@ package net.ilexiconn.pixle.world.pixel;
 public class Pixel {
     private static Pixel[] pixels = new Pixel[256];
 
+    public static final Pixel air;
     public static final Pixel grass;
 
     static {
-        grass = new Pixel(0).setColor(0x71C476);
+        air = new Pixel(0);
+        grass = new Pixel(1).setColor(0x71C476);
     }
 
     private final int pixelID;

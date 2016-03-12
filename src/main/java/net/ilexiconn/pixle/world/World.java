@@ -52,6 +52,10 @@ public class World {
         return region.getPixel(x, y);
     }
 
+    public boolean hasPixel(int x, int y) {
+        return getPixel(x, y) != Pixel.air;
+    }
+
     public int getRegionX(int x) {
         return x >> 4;
     }
@@ -104,7 +108,7 @@ public class World {
         List<Bounds> colliding = new ArrayList<Bounds>();
         for (int y = (int) bounds.getMinY() - 1; y < Math.ceil(bounds.getMaxY() + 1); y++) {
             for (int x = (int) bounds.getMinX() - 1; x < Math.ceil(bounds.getMaxX() + 1); x++) {
-                if (getPixel(x, y) != null) {
+                if (hasPixel(x, y)) {
                     PixelBounds pixelBounds = new PixelBounds(x, y);
                     if (pixelBounds.intersects(bounds)) {
                         colliding.add(pixelBounds);

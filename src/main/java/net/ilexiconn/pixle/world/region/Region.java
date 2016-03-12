@@ -8,7 +8,7 @@ import java.util.Random;
 
 public class Region {
     private World world;
-    private Pixel[][] pixels = new Pixel[16][256];
+    private int[][] pixels = new int[16][256];
     private int x;
 
     public Region(int x, World world) {
@@ -18,14 +18,14 @@ public class Region {
 
     public Pixel getPixel(int x, int y) {
         if (x >= 0 && x < 16 && y >= 0 && y <= 255) {
-            return pixels[x][y];
+            return Pixel.getPixelByID(pixels[x][y]);
         } else {
             return null;
         }
     }
 
     public void setPixel(Pixel pixel, int x, int y) {
-        pixels[x][y] = pixel;
+        pixels[x][y] = pixel.getPixelID();
     }
 
     public void generate(long seed) {
@@ -39,23 +39,13 @@ public class Region {
     public void writeToNBT(CompoundTag compound) {
         compound.setInt("regionX", x);
         for (int x = 0; x < pixels.length; x++) {
-            Pixel[] pixelArray = pixels[x];
-            int[] pixelArrayInt = new int[pixelArray.length];
-            for (int y = 0; y < pixelArray.length; y++) {
-                pixelArrayInt[y] = pixelArray[y].getPixelID();
-            }
-            compound.setIntArray(x + "", pixelArrayInt);
+            compound.setIntArray(x + "", pixels[x]);
         }
     }
 
     public void readFromNBT(CompoundTag compound) {
         for (int x = 0; x < pixels.length; x++) {
-            int[] pixelIntArray = compound.getIntArray(x + "");
-            Pixel[] pixelArray = new Pixel[pixelIntArray.length];
-            for (int y = 0; y < pixelArray.length; y++) {
-                pixelArray[y] = Pixel.getPixelByID(pixelIntArray[y]);
-            }
-            pixels[x] = pixelArray;
+            pixels[x] =  compound.getIntArray(x + "");
         }
     }
 }
