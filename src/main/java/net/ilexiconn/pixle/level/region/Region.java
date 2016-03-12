@@ -11,6 +11,7 @@ public class Region {
 
     private Level level;
     private int[][] pixels = new int[REGION_WIDTH][256];
+    private int[] heights = new int[REGION_WIDTH];
     private int x;
 
     public Region(int x, Level level) {
@@ -28,10 +29,13 @@ public class Region {
 
     public void setPixel(Pixel pixel, int x, int y) {
         pixels[x][y] = pixel.getPixelID();
+        if (y > heights[x]) {
+            heights[x] = y;
+        }
     }
 
     public void generate(long seed) {
-        level.getLevelGenerator().generate(this, x, new Random(seed * x));
+        level.getLevelGenerator().generate(this, x, seed);
     }
 
     public Level getLevel() {
@@ -49,5 +53,9 @@ public class Region {
         for (int x = 0; x < pixels.length; x++) {
             pixels[x] =  compound.getIntArray(x + "");
         }
+    }
+
+    public int getHeight(int x) {
+        return heights[x];
     }
 }

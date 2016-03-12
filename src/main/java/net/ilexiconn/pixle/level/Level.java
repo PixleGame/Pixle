@@ -74,6 +74,15 @@ public class Level {
         return region;
     }
 
+    public int getHeight(int x) {
+        Region region = getRegionForPixel(x);
+        if (x < 0) {
+            x = Region.REGION_WIDTH - x;
+        }
+        x = x % (Region.REGION_WIDTH - 1);
+        return region.getHeight(x);
+    }
+
     public void setRegion(Region region, int x) {
         regions[getRegionIndex(x)] = region;
     }
@@ -105,9 +114,9 @@ public class Level {
     }
 
     public List<Bounds> getIntersectingPixelBounds(Bounds bounds) {
-        List<Bounds> colliding = new ArrayList<Bounds>();
-        for (int y = (int) bounds.getMinY() - 1; y < Math.ceil(bounds.getMaxY() + 1); y++) {
-            for (int x = (int) bounds.getMinX() - 1; x < Math.ceil(bounds.getMaxX() + 1); x++) {
+        List<Bounds> colliding = new ArrayList<>();
+        for (int y = (int) bounds.getMinY() - 1; y < Math.ceil(bounds.getMaxY()); y++) {
+            for (int x = (int) bounds.getMinX() - 1; x < Math.ceil(bounds.getMaxX()); x++) {
                 if (hasPixel(x, y)) {
                     PixelBounds pixelBounds = new PixelBounds(x, y);
                     if (pixelBounds.intersects(bounds)) {
