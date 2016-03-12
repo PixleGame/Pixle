@@ -9,9 +9,10 @@ import java.util.Random;
 
 public class Region {
     public static final int REGION_WIDTH = 64;
+    public static final int REGION_HEIGHT = 1024;
 
     private Level level;
-    private int[][] pixels = new int[REGION_WIDTH][256];
+    private int[][] pixels = new int[REGION_WIDTH][REGION_HEIGHT];
     private int[] heights = new int[REGION_WIDTH];
     private int x;
 
@@ -21,7 +22,7 @@ public class Region {
     }
 
     public Pixel getPixel(int x, int y) {
-        if (x >= 0 && x < REGION_WIDTH && y >= 0 && y <= 255) {
+        if (x >= 0 && x < REGION_WIDTH && y >= 0 && y < REGION_HEIGHT) {
             return Pixel.getPixelByID(pixels[x][y]);
         } else {
             return Pixel.air;
@@ -29,7 +30,7 @@ public class Region {
     }
 
     public void setPixel(Pixel pixel, int x, int y) {
-        if (x >= 0 && x < REGION_WIDTH && y >= 0 && y <= 255) {
+        if (x >= 0 && x < REGION_WIDTH && y >= 0 && y < REGION_HEIGHT) {
             pixels[x][y] = pixel.getPixelID();
             if (y > heights[x]) {
                 heights[x] = y;
