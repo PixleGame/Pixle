@@ -29,7 +29,7 @@ public class Region {
     }
 
     public void generate(long seed) {
-        level.getWorldGenerator().generate(this, x, new Random(seed * x));
+        level.getLevelGenerator().generate(this, x, new Random(seed * x));
     }
 
     public Level getLevel() {
