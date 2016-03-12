@@ -31,11 +31,11 @@ public class PixelBounds extends Bounds {
 
     @Override
     public float getSizeX() {
-        return 1;
+        return 1.0F;
     }
 
     @Override
     public float getSizeY() {
-        return 1;
+        return 1.0F;
     }
 }

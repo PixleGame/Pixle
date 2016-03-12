@@ -15,12 +15,12 @@ public class EntityBounds extends Bounds {
 
     @Override
     public float getMaxX() {
-        return (float) (entity.posX + (sizeX / 2.0F));
+        return (float) (entity.posX + sizeX);
     }
 
     @Override
     public float getMinX() {
-        return (float) (entity.posX - (sizeX / 2.0F));
+        return (float) entity.posX;
     }
 
     @Override

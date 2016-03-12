@@ -8,6 +8,8 @@ import net.ilexiconn.pixle.level.generator.ILevelGenerator;
 import net.ilexiconn.pixle.level.generator.DefaultLevelGenerator;
 import net.ilexiconn.pixle.pixel.Pixel;
 import net.ilexiconn.pixle.level.region.Region;
+import net.ilexiconn.pixle.util.Bounds;
+import net.ilexiconn.pixle.util.PixelBounds;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -100,6 +102,21 @@ public class Level {
 
     public List<Entity> getEntities() {
         return new ArrayList<>(entities);
+    }
+
+    public List<Bounds> getIntersectingPixelBounds(Bounds bounds) {
+        List<Bounds> colliding = new ArrayList<Bounds>();
+        for (int y = (int) bounds.getMinY() - 1; y < Math.ceil(bounds.getMaxY() + 1); y++) {
+            for (int x = (int) bounds.getMinX() - 1; x < Math.ceil(bounds.getMaxX() + 1); x++) {
+                if (hasPixel(x, y)) {
+                    PixelBounds pixelBounds = new PixelBounds(x, y);
+                    if (pixelBounds.intersects(bounds)) {
+                        colliding.add(pixelBounds);
+                    }
+                }
+            }
+        }
+        return colliding;
     }
 
     public void writeToNBT(CompoundTag compound) {

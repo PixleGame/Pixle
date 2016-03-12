@@ -2,7 +2,7 @@ package net.ilexiconn.pixle.util;
 
 public abstract class Bounds {
     public boolean intersects(Bounds bounds) {
-        return (getMinY() < bounds.getMaxY() || getMaxY() > bounds.getMinY()) && (getMinX() < bounds.getMaxX() || getMaxX() > bounds.getMinX());
+        return (getMinY() < bounds.getMaxY() && getMaxY() > bounds.getMinY()) && (getMinX() < bounds.getMaxX() && getMaxX() > bounds.getMinX());
     }
 
     public boolean intersects(double x, double y) {
@@ -14,18 +14,18 @@ public abstract class Bounds {
             if (getMinX() < intersecting.getMaxX() && getMinX() > intersecting.getMinX()) {
                 posX = intersecting.getMaxX();
             } else if (getMaxX() > intersecting.getMinX() && getMaxX() < intersecting.getMaxX()) {
-                posX = intersecting.getMinX();
+                posX = intersecting.getMinX() - getSizeX();
             }
         }
         return posX;
     }
 
     public double preventIntersectionY(double posY, Bounds intersecting) {
-        if (getMinX() < intersecting.getMaxX() && getMaxX() > intersecting.getMinX()) {
+        if (getMinX() <= intersecting.getMaxX() && getMaxX() >= intersecting.getMinX()) {
             if (getMinY() < intersecting.getMaxY() && getMinY() > intersecting.getMinY()) {
                 posY = intersecting.getMaxY();
             } else if (getMaxY() > intersecting.getMinY() && getMaxY() < intersecting.getMaxY()) {
-                posY = intersecting.getMinY();
+                posY = intersecting.getMinY() - getSizeY();
             }
         }
         return posY;
