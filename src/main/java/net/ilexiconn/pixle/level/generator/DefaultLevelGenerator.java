@@ -22,9 +22,13 @@ public class DefaultLevelGenerator implements ILevelGenerator {
             int height = (int) cubicInterpolate(new double[] { getHeight(seed, scaledXInt - 1), getHeight(seed, scaledXInt), getHeight(seed, scaledXInt + 1), getHeight(seed, scaledXInt + 2) }, fractionX);
             int dirtLayer = height - 10;
 
+            Random bedrockRand = new Random(worldX * seed);
+
             for (int y = 0; y < height; y++) {
                 Pixel pixel = Pixel.stone;
-                if (y >= dirtLayer) {
+                if (y == 0 || (y < 15 && bedrockRand.nextInt(y + 1) == 0)) {
+                    pixel = Pixel.bedrock;
+                } else if (y >= dirtLayer) {
                     if (y == height - 1) {
                         pixel = Pixel.grass;
                     } else {

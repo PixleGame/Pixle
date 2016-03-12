@@ -9,6 +9,7 @@ public class Pixel {
     public static final Pixel dirt;
     public static final Pixel log;
     public static final Pixel leaves;
+    public static final Pixel bedrock;
 
     static {
         air = new Pixel(0);
@@ -17,6 +18,7 @@ public class Pixel {
         dirt = new Pixel(3).setColor(0x7C5B44);
         log = new Pixel(4).setColor(0xB97A57);
         leaves = new Pixel(5).setColor(0x22B14C);
+        bedrock = new Pixel(6).setColor(0x333333);
     }
 
     private final int pixelID;
