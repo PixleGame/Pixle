@@ -69,7 +69,7 @@ public class Entity {
     }
 
     public float getGravity() {
-        return 1.0F;
+        return 0.5F;
     }
 
     public float getAirFriction() {

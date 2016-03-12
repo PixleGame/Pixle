@@ -6,8 +6,8 @@ import net.ilexiconn.pixle.client.gui.GUI;
 import net.ilexiconn.pixle.client.gui.WorldGUI;
 import net.ilexiconn.pixle.client.render.TextureManager;
 import net.ilexiconn.pixle.crash.CrashReport;
-import net.ilexiconn.pixle.level.Level;
 import net.ilexiconn.pixle.entity.PlayerEntity;
+import net.ilexiconn.pixle.level.Level;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
@@ -18,7 +18,6 @@ import org.lwjgl.opengl.GL11;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class PixleClient {
     private boolean closeRequested;
@@ -80,10 +79,6 @@ public class PixleClient {
 
                 fps++;
 
-                if (new Random().nextInt(600) > 550) {
-                    throw new RuntimeException("ew");
-                }
-
                 if (System.currentTimeMillis() - timer > 1000) {
                     Display.setTitle("Pixle - FPS: " + fps + " - UPS: " + ups);
                     fps = 0;
@@ -129,21 +124,18 @@ public class PixleClient {
     }
 
     private void tick() {
+        float moveX = 0.0F;
+        if (Keyboard.isKeyDown(Keyboard.KEY_LEFT)) {
+            moveX = -0.25F;
+        } else if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) {
+            moveX = 0.25F;
+        }
         if (player.onSurface) {
-            float moveX = 0.0F;
-
-            if (Keyboard.isKeyDown(Keyboard.KEY_LEFT)) {
-                moveX = -0.25F;
-            } else if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) {
-                moveX = 0.25F;
-            }
-
             if (Keyboard.isKeyDown(Keyboard.KEY_UP)) {
                 player.velY = 1.0F;
             }
-
-            player.velX = moveX;
         }
+        player.velX = moveX;
 
         level.update();
     }
