@@ -10,16 +10,16 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ImageStructureGenerator {
-    private static Map<String, Structure> structureChache = new HashMap<>();
+    private static Map<String, Structure> structureCache = new HashMap<>();
 
     public static void generateFromImage(Level level, int x, int y, String imagePath, boolean generateAir) throws IOException {
         if (!imagePath.startsWith("/")) {
             imagePath = "/" + imagePath;
         }
-        Structure structure = structureChache.get(imagePath);
+        Structure structure = structureCache.get(imagePath);
         if (structure == null) {
             structure = loadStructure(imagePath);
-            structureChache.put(imagePath, structure);
+            structureCache.put(imagePath, structure);
         }
         structure.generate(level, x, y, generateAir);
     }
