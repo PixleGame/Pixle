@@ -7,8 +7,10 @@ import net.ilexiconn.pixle.pixel.Pixel;
 import java.util.Random;
 
 public class Region {
+    public static final int REGION_WIDTH = 64;
+
     private Level level;
-    private int[][] pixels = new int[16][256];
+    private int[][] pixels = new int[REGION_WIDTH][256];
     private int x;
 
     public Region(int x, Level level) {
@@ -17,7 +19,7 @@ public class Region {
     }
 
     public Pixel getPixel(int x, int y) {
-        if (x >= 0 && x <= 15 && y >= 0 && y <= 255) {
+        if (x >= 0 && x < REGION_WIDTH && y >= 0 && y <= 255) {
             return Pixel.getPixelByID(pixels[x][y]);
         } else {
             return null;
