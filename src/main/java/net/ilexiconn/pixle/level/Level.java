@@ -7,7 +7,7 @@ import net.ilexiconn.pixle.util.PixelBounds;
 import net.ilexiconn.pixle.entity.Entity;
 import net.ilexiconn.pixle.entity.EntityRegistry;
 import net.ilexiconn.pixle.level.generator.ILevelGenerator;
-import net.ilexiconn.pixle.level.generator.LevelGeneratorDefault;
+import net.ilexiconn.pixle.level.generator.DefaultLevelGenerator;
 import net.ilexiconn.pixle.pixel.Pixel;
 import net.ilexiconn.pixle.level.region.Region;
 
@@ -27,7 +27,7 @@ public class Level {
     public static final int PIXEL_SIZE = 6;
 
     public Level(long seed) {
-        this.worldGenerator = new LevelGeneratorDefault();
+        this.worldGenerator = new DefaultLevelGenerator();
         this.seed = seed;
     }
 

@@ -5,7 +5,7 @@ import net.ilexiconn.pixle.level.region.Region;
 
 import java.util.Random;
 
-public class LevelGeneratorDefault implements ILevelGenerator {
+public class DefaultLevelGenerator implements ILevelGenerator {
     @Override
     public void generate(Region region, int regionX, Random rand) {
         for (int x = 0; x < 16; x++) {
