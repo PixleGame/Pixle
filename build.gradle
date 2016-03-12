@@ -10,7 +10,7 @@ version = "0.1.0"
 group = "net.ilexiconn"
 archivesBaseName = "pixle"
 mainClassName = "net.ilexiconn.pixle.client.PixleClientStartup"
-sourceCompatibility = targetCompatibility = "1.7"
+sourceCompatibility = targetCompatibility = "1.8"
 
 repositories {
     mavenCentral()

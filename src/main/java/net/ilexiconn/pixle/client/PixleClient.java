@@ -7,6 +7,9 @@ import net.ilexiconn.pixle.client.gui.WorldGUI;
 import net.ilexiconn.pixle.client.render.TextureManager;
 import net.ilexiconn.pixle.crash.CrashReport;
 import net.ilexiconn.pixle.entity.PlayerEntity;
+import net.ilexiconn.pixle.event.bus.EventBus;
+import net.ilexiconn.pixle.event.bus.EventHandler;
+import net.ilexiconn.pixle.event.event.InitializeEvent;
 import net.ilexiconn.pixle.level.Level;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
@@ -32,6 +35,8 @@ public class PixleClient {
 
     private Level level;
     private PlayerEntity player;
+
+    public static final EventBus EVENT_BUS = new EventBus();
 
     public void start() {
         try {
@@ -106,6 +111,14 @@ public class PixleClient {
         player = new PlayerEntity(level);
         player.posY = 5;
         level.addEntity(player);
+
+        PixleClient.EVENT_BUS.register(this);
+        PixleClient.EVENT_BUS.post(new InitializeEvent());
+    }
+
+    @EventHandler
+    public void onInitialize(InitializeEvent event) {
+        System.out.println("Event bus test!");
     }
 
     public void connect(String host, int port) throws IOException {

@@ -15,11 +15,8 @@ public class GLStateManager {
         blendState.setDisabled();
     }
 
-    public static void setColor(int rgb) {
-        if (rgb != colorState.getRGB()) {
-            colorState = new ColorState(rgb);
-            GL11.glColor3f(colorState.getRed(), colorState.getGreen(), colorState.getBlue());
-        }
+    public static void setColor(int hex) {
+        setColor(((hex & 0xFF0000) >> 16) / 255.0F, ((hex & 0xFF00) >> 8) / 255.0F, (hex & 0xFF) / 255.0F);
     }
 
     public static void setColor(float red, float green, float blue) {
@@ -98,10 +95,6 @@ public class GLStateManager {
             this(-1.0F, -1.0F, -1.0F);
         }
 
-        public ColorState(int hex) {
-            this(((hex & 0xFF0000) >> 16) / 255.0F, ((hex & 0xFF00) >> 8) / 255.0F, (hex & 0xFF) / 255.0F);
-        }
-
         public ColorState(float red, float green, float blue) {
             super(GL11.GL_COLOR);
             this.red = red;
@@ -119,10 +112,6 @@ public class GLStateManager {
 
         public float getBlue() {
             return blue;
-        }
-
-        public int getRGB() {
-            return (0xff << 24) | (((int) (red * 255) & 0xff) << 16) | (((int) (green * 255) & 0xff) << 8) | ((int) (blue * 255) & 0xff);
         }
     }
 }
