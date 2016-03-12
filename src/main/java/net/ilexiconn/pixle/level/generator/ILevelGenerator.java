@@ -6,4 +6,6 @@ import java.util.Random;
 
 public interface ILevelGenerator {
     void generate(Region region, int regionX, long seed);
+
+    void decorate(Region region, int regionX, Random rand);
 }

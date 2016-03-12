@@ -40,19 +40,14 @@ public class Level {
     }
 
     public void setPixel(Pixel pixel, int x, int y) {
-        if (x < 0) {
-            x = Region.REGION_WIDTH - x;
-        }
-        x = x % (Region.REGION_WIDTH - 1);
-        getRegionForPixel(x).setPixel(pixel, x, y);
+        Region regionForPixel = getRegionForPixel(x);
+        x = x & (Region.REGION_WIDTH - 1);
+        regionForPixel.setPixel(pixel, x, y);
     }
 
     public Pixel getPixel(int x, int y) {
         Region region = getRegionForPixel(x);
-        if (x < 0) {
-            x = Region.REGION_WIDTH - x;
-        }
-        x = x % (Region.REGION_WIDTH - 1);
+        x = x & (Region.REGION_WIDTH - 1);
         return region.getPixel(x, y);
     }
 
@@ -72,18 +67,15 @@ public class Level {
         Region region = regions[getRegionIndex(x)];
         if (region == null) {
             region = new Region(x, this);
-            region.generate(seed);
             setRegion(region, x);
+            region.generate(seed);
         }
         return region;
     }
 
     public int getHeight(int x) {
         Region region = getRegionForPixel(x);
-        if (x < 0) {
-            x = Region.REGION_WIDTH - x;
-        }
-        x = x % (Region.REGION_WIDTH - 1);
+        x = x & (Region.REGION_WIDTH - 1);
         return region.getHeight(x);
     }
 

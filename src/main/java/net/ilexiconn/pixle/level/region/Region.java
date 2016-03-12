@@ -2,6 +2,7 @@ package net.ilexiconn.pixle.level.region;
 
 import net.darkhax.opennbt.tags.CompoundTag;
 import net.ilexiconn.pixle.level.Level;
+import net.ilexiconn.pixle.level.generator.ILevelGenerator;
 import net.ilexiconn.pixle.pixel.Pixel;
 
 import java.util.Random;
@@ -37,7 +38,9 @@ public class Region {
     }
 
     public void generate(long seed) {
-        level.getLevelGenerator().generate(this, x, seed);
+        ILevelGenerator levelGenerator = level.getLevelGenerator();
+        levelGenerator.generate(this, x, seed);
+        levelGenerator.decorate(this, x, new Random(seed * x));
     }
 
     public Level getLevel() {

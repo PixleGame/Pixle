@@ -7,12 +7,16 @@ public class Pixel {
     public static final Pixel grass;
     public static final Pixel stone;
     public static final Pixel dirt;
+    public static final Pixel log;
+    public static final Pixel leaves;
 
     static {
         air = new Pixel(0);
         grass = new Pixel(1).setColor(0x71C476);
         stone = new Pixel(2).setColor(0x909090);
         dirt = new Pixel(3).setColor(0x7C5B44);
+        log = new Pixel(4).setColor(0xB97A57);
+        leaves = new Pixel(5).setColor(0x22B14C);
     }
 
     private final int pixelID;
@@ -40,5 +44,14 @@ public class Pixel {
     public Pixel setColor(int color) {
         this.color = color;
         return this;
+    }
+
+    public static Pixel fromColor(int color) {
+        for (Pixel pixel : pixels) {
+            if (pixel != null && pixel.color == color) {
+                return pixel;
+            }
+        }
+        return Pixel.air;
     }
 }

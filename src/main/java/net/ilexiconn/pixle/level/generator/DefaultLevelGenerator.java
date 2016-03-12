@@ -1,5 +1,7 @@
 package net.ilexiconn.pixle.level.generator;
 
+import net.ilexiconn.pixle.level.Level;
+import net.ilexiconn.pixle.level.generator.tree.TreeGenerator;
 import net.ilexiconn.pixle.level.region.Region;
 import net.ilexiconn.pixle.pixel.Pixel;
 
@@ -18,7 +20,7 @@ public class DefaultLevelGenerator implements ILevelGenerator {
             float fractionX = scaledX - scaledXInt;
 
             int height = (int) cubicInterpolate(new double[] { getHeight(seed, scaledXInt - 1), getHeight(seed, scaledXInt), getHeight(seed, scaledXInt + 1), getHeight(seed, scaledXInt + 2) }, fractionX);
-            int dirtLayer = height - 5;
+            int dirtLayer = height - 10;
 
             for (int y = 0; y < height; y++) {
                 Pixel pixel = Pixel.stone;
@@ -31,6 +33,16 @@ public class DefaultLevelGenerator implements ILevelGenerator {
                 }
                 region.setPixel(pixel, x, y);
             }
+        }
+    }
+
+    @Override
+    public void decorate(Region region, int regionX, Random rand) {
+        int regionOffsetX = regionX * Region.REGION_WIDTH;
+        Level level = region.getLevel();
+        for (int i = 0; i < rand.nextInt(2); i++) {
+            int x = rand.nextInt(Region.REGION_WIDTH);
+            TreeGenerator.generateTree(level, x + regionOffsetX, region.getHeight(x), rand);
         }
     }
 
