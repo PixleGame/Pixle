@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.util.Random;
 
 public class TreeGenerator {
-    private static final String[] treeTypes = new String[] { "tree_1" };
+    private static final String[] treeTypes = new String[] { "tree_1", "tree_2" };
 
     private static String getTreeLocation(String treeType) {
         return "textures/generation/trees/" + treeType + ".png";
