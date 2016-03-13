@@ -39,8 +39,8 @@ public class LWJGLSetup {
                 }
             } else if (os == SystemUtils.OperatingSystem.MACOSX) {
                 if (!new File(folder.getPath() + "/openal.dylib").exists()) {
-                    extractFromClasspath("liblwjgl.jnilib", folder);
-                    extractFromClasspath("liblwjgl-osx.jnilib", folder);
+                    extractFromClasspath("liblwjgl.dylib", folder);
+                    extractFromClasspath("libjinput-osx.jnilib", folder);
                     extractFromClasspath("openal.dylib", folder);
                 }
             }
