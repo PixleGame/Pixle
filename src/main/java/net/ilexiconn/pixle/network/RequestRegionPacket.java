@@ -22,9 +22,9 @@ public class RequestRegionPacket extends PixlePacket {
     @Override
     public void handleServer(PixleServer server, Socket sender, PlayerEntity player, INetworkManager networkManager) {
         Region region = server.getLevel().getRegion(x);
-        for (PixelLayer layer : PixelLayer.values()) {
-            networkManager.sendPacketToClient(new SendRegionPacket(region, layer), sender);
-        }
+//        for (PixelLayer layer : PixelLayer.values()) {
+//            networkManager.sendPacketToClient(new SendRegionPacket(region, PixelLayer.FOREGROUND), sender);
+//        }
     }
 
     @Override

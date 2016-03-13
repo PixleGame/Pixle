@@ -27,7 +27,6 @@ dependencies {
     compile "org.lwjgl.lwjgl:lwjgl:2.9.3"
     compile "commons-io:commons-io:2.4"
     compile "net.darkhax.opennbt:OpenNBT:2.4.20"
-    compile "net.ilexiconn:netconn:0.1.0"
 }
 
 natives {
