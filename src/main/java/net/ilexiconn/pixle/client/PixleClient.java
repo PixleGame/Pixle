@@ -1,6 +1,7 @@
 package net.ilexiconn.pixle.client;
 
 import net.ilexiconn.netconn.client.Client;
+import net.ilexiconn.netconn.client.IClientListener;
 import net.ilexiconn.pixle.client.gl.GLStateManager;
 import net.ilexiconn.pixle.client.gui.GUI;
 import net.ilexiconn.pixle.client.gui.WorldGUI;
@@ -11,7 +12,6 @@ import net.ilexiconn.pixle.event.bus.EventBus;
 import net.ilexiconn.pixle.event.bus.EventHandler;
 import net.ilexiconn.pixle.event.event.InitializeEvent;
 import net.ilexiconn.pixle.level.ClientLevel;
-import net.ilexiconn.pixle.level.Level;
 import net.ilexiconn.pixle.level.PixelLayer;
 import net.ilexiconn.pixle.network.ConnectPacket;
 import net.ilexiconn.pixle.network.PixleNetworkManager;
@@ -23,10 +23,11 @@ import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
 
 import java.io.IOException;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PixleClient {
+public class PixleClient implements IClientListener {
     private boolean closeRequested;
     private int fps;
     private double delta;
@@ -135,7 +136,13 @@ public class PixleClient {
 
     public void connect(String host, int port) throws IOException {
         client = new Client(host, port);
-        client.sendPacketToServer(new ConnectPacket(username));
+        client.addListener(this);
+
+        new Thread(() -> {
+            while (client.isRunning()) {
+                client.listen();
+            }
+        }).start();
     }
 
     public void disconnect() {
@@ -207,6 +214,16 @@ public class PixleClient {
 
     public Client getClient() {
         return client;
+    }
+
+    @Override
+    public void onConnected(Client client, Socket socket) {
+        client.sendPacketToServer(new ConnectPacket(username));
+    }
+
+    @Override
+    public void onDisconnected(Client client) {
+
     }
 }
 

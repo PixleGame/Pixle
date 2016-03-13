@@ -46,22 +46,26 @@ public class PixleServer {
         int ups = 0;
         double nanoUpdates = 1000000000.0 / 60.0;
 
-        new Thread() {
-            public void run() {
+        new Thread(() -> {
+            while (server.isRunning()) {
                 try {
                     server.waitForConnection();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
-        }.start();
+        }).start();
 
-        while (!isCloseRequested()) {
+        new Thread(() -> {
+            while (server.isRunning()) {
+                server.listen();
+            }
+        }).start();
+
+        while (!isCloseRequested() && !closeRequested) {
             long currentTime = System.nanoTime();
             delta += (currentTime - previousTime) / nanoUpdates;
             previousTime = currentTime;
-
-            server.listen();
 
             while (delta >= 1) {
                 tick();

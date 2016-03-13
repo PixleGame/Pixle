@@ -4,6 +4,7 @@ import net.ilexiconn.netconn.ByteBuffer;
 import net.ilexiconn.netconn.INetworkManager;
 import net.ilexiconn.pixle.client.PixleClient;
 import net.ilexiconn.pixle.entity.PlayerEntity;
+import net.ilexiconn.pixle.level.ClientLevel;
 import net.ilexiconn.pixle.level.PixelLayer;
 import net.ilexiconn.pixle.level.region.Region;
 import net.ilexiconn.pixle.server.PixleServer;
@@ -15,14 +16,14 @@ import java.util.Map;
 public class SendRegionPacket extends PixlePacket {
     private int[][] pixels;
     private int regionX;
-    private byte layer;
+    private PixelLayer layer;
 
     public SendRegionPacket() {}
 
     public SendRegionPacket(Region region, PixelLayer layer) {
         this.pixels = region.getPixels()[layer.ordinal()];
         this.regionX = region.getX();
-        this.layer = (byte) layer.ordinal();
+        this.layer = layer;
     }
 
     @Override
@@ -31,14 +32,15 @@ public class SendRegionPacket extends PixlePacket {
 
     @Override
     public void handleClient(PixleClient client, INetworkManager networkManager) {
-        Region region = new Region(regionX, client.getLevel());
-        region.setPixels(pixels, PixelLayer.values()[layer]);
-        client.getLevel().receiveRegion(region);
+        ClientLevel level = client.getLevel();
+        Region region = level.getRegion(regionX);
+        region.setPixels(pixels, layer);
+        level.receiveRegion(region);
     }
 
     @Override
     public void encode(ByteBuffer buffer) {
-        buffer.writeByte(layer);
+        buffer.writeByte((byte) layer.ordinal());
         buffer.writeInteger(regionX);
 
         int id = Byte.MIN_VALUE;
@@ -69,7 +71,7 @@ public class SendRegionPacket extends PixlePacket {
 
     @Override
     public void decode(ByteBuffer buffer) {
-        layer = buffer.readByte();
+        layer = PixelLayer.values()[buffer.readByte()];
         regionX = buffer.readInteger();
 
         int width = Region.REGION_WIDTH;

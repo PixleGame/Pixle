@@ -87,7 +87,7 @@ public class Region {
     private void loadHeights(PixelLayer layer) {
         int layerIndex = layer.ordinal();
         for (int x = 0; x < pixels[layerIndex].length; x++) {
-            for (int y = REGION_HEIGHT; y >= 0; y--) {
+            for (int y = REGION_HEIGHT - 1; y >= 0; y--) {
                 int pixel = pixels[layerIndex][x][y];
                 if (pixel != Pixel.AIR) {
                     heights[layerIndex][x] = y;
