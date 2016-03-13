@@ -4,6 +4,7 @@ import net.ilexiconn.pixle.entity.Entity;
 import net.ilexiconn.pixle.level.region.Region;
 import net.ilexiconn.pixle.network.AddEntityPacket;
 import net.ilexiconn.pixle.network.RemoveEntityPacket;
+import net.ilexiconn.pixle.network.SetPixelPacket;
 import net.ilexiconn.pixle.server.PixleServer;
 import net.ilexiconn.pixle.util.Side;
 
@@ -11,6 +12,12 @@ public class ServerLevel extends Level {
     @Override
     public Side getSide() {
         return Side.SERVER;
+    }
+
+    @Override
+    public void setPixel(int pixel, int x, int y, PixelLayer layer) {
+        super.setPixel(pixel, x, y, layer);
+        PixleServer.INSTANCE.getServer().sendPacketToAllClients(new SetPixelPacket(pixel, x, y, layer));
     }
 
     @Override

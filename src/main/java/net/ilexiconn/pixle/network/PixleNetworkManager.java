@@ -18,6 +18,7 @@ public class PixleNetworkManager {
         NetconnRegistry.registerPacket(5, EntityPositionUpdatePacket.class);
         NetconnRegistry.registerPacket(6, PlayerMovePacket.class);
         NetconnRegistry.registerPacket(7, SetPlayerPacket.class);
+        NetconnRegistry.registerPacket(8, SetPixelPacket.class);
     }
 
     public static boolean addClient(Socket socket, String username) {

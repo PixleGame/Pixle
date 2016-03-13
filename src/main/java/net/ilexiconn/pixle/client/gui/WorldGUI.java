@@ -36,12 +36,12 @@ public class WorldGUI extends GUI {
 
             for (PixelLayer layer : PixelLayer.values()) {
                 for (int y = 0; y < Region.REGION_HEIGHT; y++) {
-                    int relativeY = (int) (player.posY - y);
+                    int relativeY = (int) player.posY - y;
                     if (Math.abs(relativeY) <= halfPixelsInHeight) {
                         for (int x = (int) (player.posX - (pixelsInWidth / 2)) - 1; x < player.posX + (pixelsInWidth / 2) + 1; x++) {
                             if (level.hasPixel(x, y, layer)) {
                                 GLStateManager.setColor(level.getPixel(x, y, layer));
-                                RenderHelper.drawRect((int) (centerX - Math.round((player.posX - x) * pixelSize)), Display.getHeight() - (centerY - (int) ((player.posY - y) * pixelSize)), pixelSize, pixelSize);
+                                RenderHelper.drawRect((int) (centerX - Math.round((player.posX - x) * pixelSize)), Display.getHeight() - (centerY - (int) Math.round((player.posY - y) * pixelSize)), pixelSize, pixelSize);
                             }
                         }
                     }
@@ -51,7 +51,7 @@ public class WorldGUI extends GUI {
             for (Entity entity : level.getEntities()) {
                 IEntityRenderer entityRenderer = RenderingRegistry.getEntityRenderer(entity.getClass());
                 if (entityRenderer != null) {
-                    entityRenderer.render(entity, centerX - (int) ((player.posX - entity.posX) * pixelSize), centerY - (int) ((entity.posY - player.posY) * pixelSize), level, (float) pixle.getDelta());
+                    entityRenderer.render(entity, centerX - (int) ((player.posX - entity.posX) * pixelSize), centerY - (int) Math.round((entity.posY - player.posY) * pixelSize), level, (float) pixle.getDelta());
                 }
             }
         }
