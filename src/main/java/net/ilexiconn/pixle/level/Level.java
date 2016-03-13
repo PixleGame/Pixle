@@ -38,20 +38,20 @@ public class Level {
         this(System.nanoTime());
     }
 
-    public void setPixel(int pixel, int x, int y) {
+    public void setPixel(int pixel, int x, int y, PixelLayer layer) {
         Region regionForPixel = getRegionForPixel(x);
         x = x & (Region.REGION_WIDTH - 1);
-        regionForPixel.setPixel(pixel, x, y);
+        regionForPixel.setPixel(pixel, x, y, layer);
     }
 
-    public int getPixel(int x, int y) {
+    public int getPixel(int x, int y, PixelLayer layer) {
         Region region = getRegionForPixel(x);
         x = x & (Region.REGION_WIDTH - 1);
-        return region.getPixel(x, y);
+        return region.getPixel(x, y, layer);
     }
 
-    public boolean hasPixel(int x, int y) {
-        return getPixel(x, y) != 0;
+    public boolean hasPixel(int x, int y, PixelLayer layer) {
+        return getPixel(x, y, layer) != 0;
     }
 
     public int getRegionX(int x) {
@@ -72,10 +72,10 @@ public class Level {
         return region;
     }
 
-    public int getHeight(int x) {
+    public int getHeight(int x, PixelLayer layer) {
         Region region = getRegionForPixel(x);
         x = x & (Region.REGION_WIDTH - 1);
-        return region.getHeight(x);
+        return region.getHeight(x, layer);
     }
 
     public void setRegion(Region region, int x) {
@@ -110,7 +110,7 @@ public class Level {
         List<Bounds> colliding = new ArrayList<>();
         for (int y = (int) bounds.getMinY() - 1; y < Math.ceil(bounds.getMaxY()); y++) {
             for (int x = (int) bounds.getMinX() - 1; x < Math.ceil(bounds.getMaxX()); x++) {
-                if (hasPixel(x, y)) {
+                if (hasPixel(x, y, PixelLayer.FOREGROUND)) {
                     PixelBounds pixelBounds = new PixelBounds(x, y);
                     if (pixelBounds.intersects(bounds)) {
                         colliding.add(pixelBounds);

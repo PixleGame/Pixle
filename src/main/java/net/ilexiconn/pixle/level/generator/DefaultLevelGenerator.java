@@ -1,6 +1,7 @@
 package net.ilexiconn.pixle.level.generator;
 
 import net.ilexiconn.pixle.level.Level;
+import net.ilexiconn.pixle.level.PixelLayer;
 import net.ilexiconn.pixle.level.generator.tree.TreeGenerator;
 import net.ilexiconn.pixle.level.region.Region;
 import net.ilexiconn.pixle.pixel.Pixel;
@@ -35,7 +36,7 @@ public class DefaultLevelGenerator implements ILevelGenerator {
                         pixel = Pixel.DIRT;
                     }
                 }
-                region.setPixel(pixel, x, y);
+                region.setPixel(pixel, x, y, PixelLayer.FOREGROUND);
             }
         }
     }
@@ -46,7 +47,7 @@ public class DefaultLevelGenerator implements ILevelGenerator {
         Level level = region.getLevel();
         for (int i = 0; i < rand.nextInt(2); i++) {
             int x = rand.nextInt(Region.REGION_WIDTH);
-            TreeGenerator.generateTree(level, x + regionOffsetX, region.getHeight(x), rand);
+            TreeGenerator.generateTree(level, x + regionOffsetX, region.getHeight(x, PixelLayer.FOREGROUND), rand);
         }
     }
 

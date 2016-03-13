@@ -11,6 +11,7 @@ import net.ilexiconn.pixle.event.bus.EventBus;
 import net.ilexiconn.pixle.event.bus.EventHandler;
 import net.ilexiconn.pixle.event.event.InitializeEvent;
 import net.ilexiconn.pixle.level.Level;
+import net.ilexiconn.pixle.level.PixelLayer;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
@@ -109,7 +110,7 @@ public class PixleClient {
 
         level = new Level();
         player = new PlayerEntity(level);
-        player.posY = level.getHeight((int) player.posX) + 1;
+        player.posY = level.getHeight((int) player.posX, PixelLayer.FOREGROUND) + 1;
         level.addEntity(player);
 
         PixleClient.EVENT_BUS.register(this);
