@@ -25,11 +25,6 @@ public class RequestRegionPacket extends PixlePacket {
     public void handleServer(PixleServer server, Socket sender, PlayerEntity player, INetworkManager networkManager) {
         Level level = server.getLevel();
         Region region = level.getRegion(x);
-        for (Entity entity : level.getEntities()) {
-            if (level.getRegionX((int) entity.posX) == x) {
-                networkManager.sendPacketToClient(new AddEntityPacket(entity), sender);
-            }
-        }
         for (PixelLayer layer : PixelLayer.values()) {
             networkManager.sendPacketToClient(new SendRegionPacket(region, layer), sender);
         }

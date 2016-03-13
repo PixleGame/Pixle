@@ -77,8 +77,6 @@ public class PixleServer implements IServerListener {
             }
 
             if (System.currentTimeMillis() - timer > 1000) {
-                System.out.println("UPS: " + ups);
-
                 timer += 1000;
                 ups = 0;
             }
