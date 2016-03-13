@@ -229,8 +229,8 @@ public class PixleClient implements IClientListener {
         return username;
     }
 
-    public void setPlayer(PlayerEntity player) {
-        this.player = player;
+    public void setPlayer(int player) {
+        this.player = (PlayerEntity) level.getEntityById(player);
     }
 }
 

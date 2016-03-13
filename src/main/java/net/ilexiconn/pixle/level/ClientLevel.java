@@ -26,21 +26,6 @@ public class ClientLevel extends Level {
         }
     }
 
-    @Override
-    public boolean addEntity(Entity entity, boolean assignId) {
-        boolean add = super.addEntity(entity, assignId);
-        if (add) {
-            if (entity instanceof PlayerEntity) {
-                PlayerEntity player = (PlayerEntity) entity;
-                PixleClient client = PixleClient.INSTANCE;
-                if (player.username.equals(client.getUsername())) {
-                    client.setPlayer(player);
-                }
-            }
-        }
-        return add;
-    }
-
     public void receiveRegion(Region region) {
         Integer x = region.getX();
         requestingRegions.remove(x);

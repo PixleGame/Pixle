@@ -19,6 +19,7 @@ public class AddEntityPacket extends PixlePacket {
 
     public AddEntityPacket(Entity entity) {
         this.entity = entity;
+        this.entityId = entity.getEntityId();
     }
 
     @Override

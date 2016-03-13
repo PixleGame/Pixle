@@ -1,8 +1,6 @@
 package net.ilexiconn.pixle.network;
 
 import net.ilexiconn.netconn.NetconnRegistry;
-import net.ilexiconn.netconn.server.IServerListener;
-import net.ilexiconn.netconn.server.Server;
 
 import java.net.Socket;
 import java.util.HashMap;
@@ -19,6 +17,7 @@ public class PixleNetworkManager {
         NetconnRegistry.registerPacket(4, RemoveEntityPacket.class);
         NetconnRegistry.registerPacket(5, EntityPositionUpdatePacket.class);
         NetconnRegistry.registerPacket(6, PlayerMovePacket.class);
+        NetconnRegistry.registerPacket(7, SetPlayerPacket.class);
     }
 
     public static boolean addClient(Socket socket, String username) {

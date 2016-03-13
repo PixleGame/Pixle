@@ -31,15 +31,17 @@ public class ConnectPacket implements IPacket {
 
     @Override
     public void handleServer(Socket sender, INetworkManager networkManager) {
+        PixleServer server = PixleServer.INSTANCE;
         if (PixleNetworkManager.addClient(sender, username)) {
             System.out.println(username + " has connected to the server!");
-            Level level = PixleServer.INSTANCE.getLevel();
+            Level level = server.getLevel();
             PlayerEntity player = new PlayerEntity(level, username);
             player.posY = level.getHeight((int) player.posX, PixelLayer.FOREGROUND) + 1;
             level.addEntity(player, true);
+            server.getServer().sendPacketToClient(new SetPlayerPacket(player), sender);
         } else {
             System.out.println(username + " tried to join but somebody with that username is connected!");
-            PixleServer.INSTANCE.getServer().disconnectClient(sender);
+            server.getServer().disconnectClient(sender);
         }
     }
 
