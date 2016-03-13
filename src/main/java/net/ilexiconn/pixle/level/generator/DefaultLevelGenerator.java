@@ -61,6 +61,6 @@ public class DefaultLevelGenerator implements ILevelGenerator {
     }
 
     private int getHeight(long seed, int x) {
-        return new Random(seed * x).nextInt(10) + 512;
+        return new Random(seed * x).nextInt(10) + 256;
     }
 }

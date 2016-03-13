@@ -4,26 +4,31 @@ import net.darkhax.opennbt.tags.CompoundTag;
 import net.darkhax.opennbt.tags.Tag;
 import net.ilexiconn.pixle.entity.Entity;
 import net.ilexiconn.pixle.entity.EntityRegistry;
+import net.ilexiconn.pixle.entity.PlayerEntity;
 import net.ilexiconn.pixle.level.generator.DefaultLevelGenerator;
 import net.ilexiconn.pixle.level.generator.ILevelGenerator;
 import net.ilexiconn.pixle.level.region.Region;
 import net.ilexiconn.pixle.util.Bounds;
 import net.ilexiconn.pixle.util.PixelBounds;
+import net.ilexiconn.pixle.util.Side;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Level {
-    private static final int LEVEL_REGION_WIDTH = 62500;
+public abstract class Level {
+    protected static final int LEVEL_REGION_WIDTH = 62500;
 
-    private Region[] regions = new Region[LEVEL_REGION_WIDTH];
+    protected Region[] regions = new Region[LEVEL_REGION_WIDTH];
 
-    private ILevelGenerator levelGenerator;
-    private long seed;
+    protected ILevelGenerator levelGenerator;
+    protected long seed;
 
-    private List<Entity> entities = new ArrayList<>();
+    protected List<Entity> entities = new ArrayList<>();
+    protected List<PlayerEntity> players = new ArrayList<>();
 
     public static final int PIXEL_SIZE = 6;
+
+    protected int nextEntityId;
 
     public Level(long seed) {
         this.levelGenerator = new DefaultLevelGenerator();
@@ -55,7 +60,7 @@ public class Level {
     }
 
     public int getRegionX(int x) {
-        return x >> 6;
+        return x >> 4;
     }
 
     public Region getRegionForPixel(int x) {
@@ -67,7 +72,7 @@ public class Level {
         if (region == null) {
             region = new Region(x, this);
             setRegion(region, x);
-            region.generate(seed);
+            requestRegion(region, x);
         }
         return region;
     }
@@ -82,7 +87,7 @@ public class Level {
         regions[getRegionIndex(x)] = region;
     }
 
-    private int getRegionIndex(int x) {
+    protected int getRegionIndex(int x) {
         return x + (LEVEL_REGION_WIDTH / 2);
     }
 
@@ -95,15 +100,35 @@ public class Level {
     }
 
     public void addEntity(Entity entity) {
-        this.entities.add(entity);
+        entity.entityId = getUniqueEntityId();
+        entities.add(entity);
+        if (entity instanceof PlayerEntity) {
+            players.add((PlayerEntity) entity);
+        }
+    }
+
+    public Entity getEntityById(int entityId) {
+        for (Entity entity : getEntities()) {
+            if (entity.entityId == entityId) {
+                return entity;
+            }
+        }
+        return null;
     }
 
     public void removeEntity(Entity entity) {
-        this.entities.remove(entity);
+        entities.remove(entity);
+        if (entity instanceof PlayerEntity) {
+            players.remove(entity);
+        }
     }
 
     public List<Entity> getEntities() {
         return new ArrayList<>(entities);
+    }
+
+    public List<PlayerEntity> getPlayers() {
+        return new ArrayList<>(players);
     }
 
     public List<Bounds> getIntersectingPixelBounds(Bounds bounds) {
@@ -159,4 +184,21 @@ public class Level {
             regions[regionX] = region;
         });
     }
+
+    private int getUniqueEntityId() {
+        return nextEntityId++;
+    }
+
+    public PlayerEntity getPlayerByUsername(String username) {
+        for (PlayerEntity player : getPlayers()) {
+            if (player.username.equals(username)) {
+                return player;
+            }
+        }
+        return null;
+    }
+
+    public abstract Side getSide();
+
+    public abstract void requestRegion(Region region, int regionX);
 }

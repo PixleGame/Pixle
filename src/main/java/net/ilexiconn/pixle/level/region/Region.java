@@ -4,12 +4,13 @@ import net.darkhax.opennbt.tags.CompoundTag;
 import net.ilexiconn.pixle.level.Level;
 import net.ilexiconn.pixle.level.PixelLayer;
 import net.ilexiconn.pixle.level.generator.ILevelGenerator;
+import net.ilexiconn.pixle.pixel.Pixel;
 
 import java.util.Random;
 
 public class Region {
-    public static final int REGION_WIDTH = 64;
-    public static final int REGION_HEIGHT = 1024;
+    public static final int REGION_WIDTH = 16;
+    public static final int REGION_HEIGHT = 512;
 
     private Level level;
     private int[][][] pixels = new int[PixelLayer.values().length][REGION_WIDTH][REGION_HEIGHT];
@@ -25,7 +26,7 @@ public class Region {
         if (x >= 0 && x < REGION_WIDTH && y >= 0 && y < REGION_HEIGHT) {
             return pixels[layer.ordinal()][x][y];
         } else {
-            return 0x0094FF;
+            return Pixel.AIR;
         }
     }
 
@@ -72,5 +73,30 @@ public class Region {
 
     public int getHeight(int x, PixelLayer layer) {
         return heights[layer.ordinal()][x];
+    }
+
+    public int[][][] getPixels() {
+        return pixels;
+    }
+
+    public void setPixels(int[][] pixels, PixelLayer layer) {
+        this.pixels[layer.ordinal()] = pixels;
+        loadHeights(layer);
+    }
+
+    private void loadHeights(PixelLayer layer) {
+        int layerIndex = layer.ordinal();
+        for (int x = 0; x < pixels[layerIndex].length; x++) {
+            for (int y = REGION_HEIGHT; y >= 0; y--) {
+                int pixel = pixels[layerIndex][x][y];
+                if (pixel != Pixel.AIR) {
+                    heights[layerIndex][x] = y;
+                }
+            }
+        }
+    }
+
+    public int getX() {
+        return x;
     }
 }

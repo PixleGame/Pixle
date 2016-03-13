@@ -10,8 +10,11 @@ import net.ilexiconn.pixle.entity.PlayerEntity;
 import net.ilexiconn.pixle.event.bus.EventBus;
 import net.ilexiconn.pixle.event.bus.EventHandler;
 import net.ilexiconn.pixle.event.event.InitializeEvent;
+import net.ilexiconn.pixle.level.ClientLevel;
 import net.ilexiconn.pixle.level.Level;
 import net.ilexiconn.pixle.level.PixelLayer;
+import net.ilexiconn.pixle.network.ConnectPacket;
+import net.ilexiconn.pixle.network.PixleNetworkManager;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
@@ -34,13 +37,20 @@ public class PixleClient {
 
     private Client client;
 
-    private Level level;
+    private ClientLevel level;
     private PlayerEntity player;
+
+    private String username;
 
     public static final EventBus EVENT_BUS = new EventBus();
 
-    public void start() {
+    public static PixleClient INSTANCE;
+
+    public void start(String username, String host, int port) {
         try {
+            PixleClient.INSTANCE = this;
+            this.username = username;
+            connect(host, port);
             init();
             try {
                 Display.setDisplayMode(new DisplayMode(854, 480));
@@ -106,9 +116,10 @@ public class PixleClient {
 
     private void init() {
         textureManager = new TextureManager();
+        PixleNetworkManager.init();
         openGUI(new WorldGUI(this));
 
-        level = new Level();
+        level = new ClientLevel();
         player = new PlayerEntity(level);
         player.posY = level.getHeight((int) player.posX, PixelLayer.FOREGROUND) + 1;
         level.addEntity(player);
@@ -124,6 +135,7 @@ public class PixleClient {
 
     public void connect(String host, int port) throws IOException {
         client = new Client(host, port);
+        client.sendPacketToServer(new ConnectPacket(username));
     }
 
     public void disconnect() {
@@ -181,7 +193,7 @@ public class PixleClient {
         return textureManager;
     }
 
-    public Level getLevel() {
+    public ClientLevel getLevel() {
         return level;
     }
 
@@ -191,6 +203,10 @@ public class PixleClient {
 
     public double getDelta() {
         return delta;
+    }
+
+    public Client getClient() {
+        return client;
     }
 }
 

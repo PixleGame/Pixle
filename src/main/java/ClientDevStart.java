@@ -23,6 +23,8 @@ public class ClientDevStart extends DevStart {
     public void applyDefaults(Map<String, String> properties) {
         applyDefault(properties, "username", "Player" + (int) (Math.random() * 1000L));
         applyDefault(properties, "gamefolder", SystemUtils.getGameFolder().getAbsolutePath());
+        applyDefault(properties, "host", "localhost");
+        applyDefault(properties, "port", 25565);
     }
 
     @Override

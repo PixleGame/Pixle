@@ -14,6 +14,8 @@ public class Entity {
     public float velX;
     public float velY;
 
+    public int entityId;
+
     public EntityBounds bounds;
 
     public boolean collidingVertically;
@@ -93,5 +95,9 @@ public class Entity {
 
     public void destroy() {
         level.removeEntity(this);
+    }
+
+    public int getEntityId() {
+        return entityId;
     }
 }

@@ -21,6 +21,9 @@ public class Structure {
                 for (int pixelX = 0; pixelX < width; pixelX++) {
                     int pixel = pixels[layer][pixelX][pixelY];
                     if ((pixel != Pixel.AIR && pixel != 0xFFFFFF && pixel != 0) || generateAir) {
+                        if (pixel == 0 || pixel == 0xFFFFFF) {
+                            pixel = Pixel.AIR;
+                        }
                         level.setPixel(pixel, (x + pixelX) - (width / 2), y + (height - pixelY), PixelLayer.values()[layer]);
                     }
                 }

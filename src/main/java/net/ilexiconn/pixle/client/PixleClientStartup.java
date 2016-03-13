@@ -15,6 +15,6 @@ public class PixleClientStartup {
         System.out.println("Setting user: " + properties.get("username"));
         System.out.println("LWJGL version: " + Sys.getVersion());
         PixleClient client = new PixleClient();
-        client.start();
+        client.start(properties.get("username"), properties.get("host"), Integer.parseInt(properties.get("port")));
     }
 }

@@ -2,20 +2,36 @@ package net.ilexiconn.pixle.server;
 
 import net.ilexiconn.netconn.server.Server;
 import net.ilexiconn.pixle.crash.CrashReport;
+import net.ilexiconn.pixle.event.bus.EventBus;
+import net.ilexiconn.pixle.level.Level;
+import net.ilexiconn.pixle.level.ServerLevel;
+import net.ilexiconn.pixle.network.PixleNetworkManager;
 
 import java.io.IOException;
 
 public class PixleServer {
     private boolean closeRequested;
     private Server server;
+    private Level level;
+
+    public static PixleServer INSTANCE;
+    public static final EventBus EVENT_BUS = new EventBus();
 
     public void start(int port) {
         try {
-            server = new Server(port);
+            INSTANCE = this;
+            init(port);
             startTick();
         } catch (Exception e) {
             System.err.println(CrashReport.makeCrashReport(e, e.getLocalizedMessage()));
         }
+    }
+
+    private void init(int port) throws IOException {
+        PixleNetworkManager.init();
+        server = new Server(port);
+        server.addListener(new PixleNetworkManager());
+        level = new ServerLevel();
     }
 
     public void stop() {
@@ -69,5 +85,9 @@ public class PixleServer {
 
     public boolean isCloseRequested() {
         return closeRequested;
+    }
+
+    public Level getLevel() {
+        return level;
     }
 }
