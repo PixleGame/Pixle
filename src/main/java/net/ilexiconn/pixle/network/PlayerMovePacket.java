@@ -23,9 +23,11 @@ public class PlayerMovePacket extends PixlePacket {
 
     @Override
     public void handleServer(PixleServer server, Socket sender, PlayerEntity player, INetworkManager networkManager) {
-        player.velX = moveX;
-        if (player.onSurface && jumping) {
-            player.velY = 1.0F;
+        if (player != null) {
+            player.velX = moveX;
+            if (player.onSurface && jumping) {
+                player.velY = 1.0F;
+            }
         }
     }
 

@@ -58,12 +58,6 @@ public class PixleServer implements IServerListener {
             }
         }).start();
 
-        new Thread(() -> {
-            while (server.isRunning()) {
-                server.listen();
-            }
-        }).start();
-
         while (!isCloseRequested() && !closeRequested) {
             long currentTime = System.nanoTime();
             delta += (currentTime - previousTime) / nanoUpdates;
@@ -77,6 +71,7 @@ public class PixleServer implements IServerListener {
             }
 
             if (System.currentTimeMillis() - timer > 1000) {
+                System.out.println("UPS: " + ups);
                 timer += 1000;
                 ups = 0;
             }
