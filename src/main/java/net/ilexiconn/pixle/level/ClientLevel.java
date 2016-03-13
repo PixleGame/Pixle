@@ -27,8 +27,8 @@ public class ClientLevel extends Level {
     }
 
     @Override
-    public boolean addEntity(Entity entity) {
-        boolean add = super.addEntity(entity);
+    public boolean addEntity(Entity entity, boolean assignId) {
+        boolean add = super.addEntity(entity, assignId);
         if (add) {
             if (entity instanceof PlayerEntity) {
                 PlayerEntity player = (PlayerEntity) entity;

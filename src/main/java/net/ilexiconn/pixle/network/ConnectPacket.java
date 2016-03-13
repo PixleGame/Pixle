@@ -36,7 +36,7 @@ public class ConnectPacket implements IPacket {
             Level level = PixleServer.INSTANCE.getLevel();
             PlayerEntity player = new PlayerEntity(level, username);
             player.posY = level.getHeight((int) player.posX, PixelLayer.FOREGROUND) + 1;
-            level.addEntity(player);
+            level.addEntity(player, true);
         } else {
             System.out.println(username + " tried to join but somebody with that username is connected!");
             PixleServer.INSTANCE.getServer().disconnectClient(sender);

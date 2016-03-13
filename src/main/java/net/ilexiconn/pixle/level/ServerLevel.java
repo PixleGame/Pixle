@@ -14,10 +14,12 @@ public class ServerLevel extends Level {
     }
 
     @Override
-    public boolean addEntity(Entity entity) {
-        boolean add = super.addEntity(entity);
-        if (add) {
+    public boolean addEntity(Entity entity, boolean assignId) {
+        if (assignId) {
             entity.entityId = getUniqueEntityId();
+        }
+        boolean add = super.addEntity(entity, assignId);
+        if (add) {
             PixleServer.INSTANCE.getServer().sendPacketToAllClients(new AddEntityPacket(entity));
         }
         return add;

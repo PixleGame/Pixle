@@ -31,7 +31,7 @@ public class AddEntityPacket extends PixlePacket {
         if (entity != null) {
             entity.level = level;
             entity.entityId = entityId;
-            level.addEntity(entity);
+            level.addEntity(entity, false);
         }
     }
 

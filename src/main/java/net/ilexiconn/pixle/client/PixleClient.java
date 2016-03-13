@@ -51,8 +51,8 @@ public class PixleClient implements IClientListener {
         try {
             PixleClient.INSTANCE = this;
             this.username = username;
-            connect(host, port);
             init();
+            connect(host, port);
             try {
                 Display.setDisplayMode(new DisplayMode(854, 480));
                 Display.setTitle("Pixle");
@@ -117,10 +117,9 @@ public class PixleClient implements IClientListener {
 
     private void init() {
         textureManager = new TextureManager();
+        level = new ClientLevel();
         PixleNetworkManager.init();
         openGUI(new WorldGUI(this));
-
-        level = new ClientLevel();
 
         PixleClient.EVENT_BUS.register(this);
         PixleClient.EVENT_BUS.post(new InitializeEvent());

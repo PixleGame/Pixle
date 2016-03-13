@@ -89,6 +89,7 @@ public abstract class Entity {
     }
 
     public void writeToNBT(CompoundTag compound) {
+        compound.setInt("entityId", entityId);
         compound.setByte("id", (byte) EntityRegistry.getEntityID(getClass()));
         compound.setDouble("posX", posX);
         compound.setDouble("posY", posY);
@@ -97,6 +98,7 @@ public abstract class Entity {
     }
 
     public void readFromNBT(CompoundTag compound) {
+        this.entityId = compound.getInt("entityId");
         this.posX = compound.getDouble("posX");
         this.posY = compound.getDouble("posY");
         this.velX = compound.getFloat("velX");

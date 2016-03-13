@@ -31,7 +31,7 @@ public abstract class Level {
 
     public static final int PIXEL_SIZE = 6;
 
-    protected int nextEntityId;
+    public static int nextEntityId;
 
     public Level(long seed) {
         this.levelGenerator = new DefaultLevelGenerator();
@@ -99,12 +99,14 @@ public abstract class Level {
     }
 
     public void update() {
-        entities.forEach(Entity::update);
+        for (Entity entity : getEntities()) {
+            entity.update();
+        }
     }
 
-    public boolean addEntity(Entity entity) {
+    public boolean addEntity(Entity entity, boolean assignId) {
         if (entity != null) {
-            if (!entities.contains(entity)) {
+            if (!getEntities().contains(entity)) {
                 entities.add(entity);
                 if (entity instanceof PlayerEntity) {
                     players.add((PlayerEntity) entity);
@@ -180,7 +182,7 @@ public abstract class Level {
             Entity entity = EntityRegistry.initializeEntity(compoundTag.getByte("id"), this);
             if (entity != null) {
                 entity.readFromNBT(compoundTag);
-                addEntity(entity);
+                addEntity(entity, false);
             }
         });
         tagList = compound.getTagList("regions");
@@ -194,7 +196,9 @@ public abstract class Level {
     }
 
     protected int getUniqueEntityId() {
-        return nextEntityId++;
+        int id = Level.nextEntityId;
+        Level.nextEntityId++;
+        return id;
     }
 
     public PlayerEntity getPlayerByUsername(String username) {
