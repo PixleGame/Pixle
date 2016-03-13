@@ -1,5 +1,6 @@
 package net.ilexiconn.pixle.server;
 
+import net.ilexiconn.netconn.server.IServerListener;
 import net.ilexiconn.netconn.server.Server;
 import net.ilexiconn.pixle.crash.CrashReport;
 import net.ilexiconn.pixle.event.bus.EventBus;
@@ -8,11 +9,12 @@ import net.ilexiconn.pixle.level.ServerLevel;
 import net.ilexiconn.pixle.network.PixleNetworkManager;
 
 import java.io.IOException;
+import java.net.Socket;
 
-public class PixleServer {
+public class PixleServer implements IServerListener {
     private boolean closeRequested;
     private Server server;
-    private Level level;
+    private ServerLevel level;
 
     public static PixleServer INSTANCE;
     public static final EventBus EVENT_BUS = new EventBus();
@@ -30,7 +32,7 @@ public class PixleServer {
     private void init(int port) throws IOException {
         PixleNetworkManager.init();
         server = new Server(port);
-        server.addListener(new PixleNetworkManager());
+        server.addListener(this);
         level = new ServerLevel();
     }
 
@@ -84,7 +86,7 @@ public class PixleServer {
     }
 
     private void tick() {
-
+        level.update();
     }
 
     public boolean isCloseRequested() {
@@ -93,5 +95,23 @@ public class PixleServer {
 
     public Level getLevel() {
         return level;
+    }
+
+    public Server getServer() {
+        return server;
+    }
+
+    @Override
+    public void onClientConnected(Server server, Socket client) {
+    }
+
+    @Override
+    public void onClientDisconnected(Server server, Socket client) {
+        String username = PixleNetworkManager.clients.get(client);
+        PixleNetworkManager.clients.remove(client);
+        if (username != null) {
+            System.out.println(username + " has disconnected!");
+        }
+        level.removeEntity(level.getPlayerByUsername(username));
     }
 }

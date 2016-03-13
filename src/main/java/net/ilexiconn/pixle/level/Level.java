@@ -8,6 +8,9 @@ import net.ilexiconn.pixle.entity.PlayerEntity;
 import net.ilexiconn.pixle.level.generator.DefaultLevelGenerator;
 import net.ilexiconn.pixle.level.generator.ILevelGenerator;
 import net.ilexiconn.pixle.level.region.Region;
+import net.ilexiconn.pixle.network.AddEntityPacket;
+import net.ilexiconn.pixle.network.RemoveEntityPacket;
+import net.ilexiconn.pixle.server.PixleServer;
 import net.ilexiconn.pixle.util.Bounds;
 import net.ilexiconn.pixle.util.PixelBounds;
 import net.ilexiconn.pixle.util.Side;
@@ -99,12 +102,17 @@ public abstract class Level {
         entities.forEach(Entity::update);
     }
 
-    public void addEntity(Entity entity) {
-        entity.entityId = getUniqueEntityId();
-        entities.add(entity);
-        if (entity instanceof PlayerEntity) {
-            players.add((PlayerEntity) entity);
+    public boolean addEntity(Entity entity) {
+        if (entity != null) {
+            if (!entities.contains(entity)) {
+                entities.add(entity);
+                if (entity instanceof PlayerEntity) {
+                    players.add((PlayerEntity) entity);
+                }
+                return true;
+            }
         }
+        return false;
     }
 
     public Entity getEntityById(int entityId) {
@@ -185,7 +193,7 @@ public abstract class Level {
         });
     }
 
-    private int getUniqueEntityId() {
+    protected int getUniqueEntityId() {
         return nextEntityId++;
     }
 

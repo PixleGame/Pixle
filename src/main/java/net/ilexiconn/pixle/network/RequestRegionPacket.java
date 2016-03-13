@@ -3,7 +3,9 @@ package net.ilexiconn.pixle.network;
 import net.ilexiconn.netconn.ByteBuffer;
 import net.ilexiconn.netconn.INetworkManager;
 import net.ilexiconn.pixle.client.PixleClient;
+import net.ilexiconn.pixle.entity.Entity;
 import net.ilexiconn.pixle.entity.PlayerEntity;
+import net.ilexiconn.pixle.level.Level;
 import net.ilexiconn.pixle.level.PixelLayer;
 import net.ilexiconn.pixle.level.region.Region;
 import net.ilexiconn.pixle.server.PixleServer;
@@ -21,7 +23,13 @@ public class RequestRegionPacket extends PixlePacket {
 
     @Override
     public void handleServer(PixleServer server, Socket sender, PlayerEntity player, INetworkManager networkManager) {
-        Region region = server.getLevel().getRegion(x);
+        Level level = server.getLevel();
+        Region region = level.getRegion(x);
+        for (Entity entity : level.getEntities()) {
+            if (level.getRegionX((int) entity.posX) == x) {
+                networkManager.sendPacketToClient(new AddEntityPacket(entity), sender);
+            }
+        }
         for (PixelLayer layer : PixelLayer.values()) {
             networkManager.sendPacketToClient(new SendRegionPacket(region, layer), sender);
         }

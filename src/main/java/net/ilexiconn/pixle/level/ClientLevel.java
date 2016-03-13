@@ -1,6 +1,8 @@
 package net.ilexiconn.pixle.level;
 
 import net.ilexiconn.pixle.client.PixleClient;
+import net.ilexiconn.pixle.entity.Entity;
+import net.ilexiconn.pixle.entity.PlayerEntity;
 import net.ilexiconn.pixle.level.region.Region;
 import net.ilexiconn.pixle.network.RequestRegionPacket;
 import net.ilexiconn.pixle.util.Side;
@@ -22,6 +24,21 @@ public class ClientLevel extends Level {
             requestingRegions.add(regionX);
             PixleClient.INSTANCE.getClient().sendPacketToServer(new RequestRegionPacket(regionX));
         }
+    }
+
+    @Override
+    public boolean addEntity(Entity entity) {
+        boolean add = super.addEntity(entity);
+        if (add) {
+            if (entity instanceof PlayerEntity) {
+                PlayerEntity player = (PlayerEntity) entity;
+                PixleClient client = PixleClient.INSTANCE;
+                if (player.username.equals(client.getUsername())) {
+                    client.setPlayer(player);
+                }
+            }
+        }
+        return add;
     }
 
     public void receiveRegion(Region region) {

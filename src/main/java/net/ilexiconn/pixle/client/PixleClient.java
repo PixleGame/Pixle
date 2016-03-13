@@ -12,9 +12,9 @@ import net.ilexiconn.pixle.event.bus.EventBus;
 import net.ilexiconn.pixle.event.bus.EventHandler;
 import net.ilexiconn.pixle.event.event.InitializeEvent;
 import net.ilexiconn.pixle.level.ClientLevel;
-import net.ilexiconn.pixle.level.PixelLayer;
 import net.ilexiconn.pixle.network.ConnectPacket;
 import net.ilexiconn.pixle.network.PixleNetworkManager;
+import net.ilexiconn.pixle.network.PlayerMovePacket;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
@@ -121,9 +121,6 @@ public class PixleClient implements IClientListener {
         openGUI(new WorldGUI(this));
 
         level = new ClientLevel();
-        player = new PlayerEntity(level);
-        player.posY = level.getHeight((int) player.posX, PixelLayer.FOREGROUND) + 1;
-        level.addEntity(player);
 
         PixleClient.EVENT_BUS.register(this);
         PixleClient.EVENT_BUS.post(new InitializeEvent());
@@ -157,18 +154,21 @@ public class PixleClient implements IClientListener {
     }
 
     private void tick() {
-        float moveX = 0.0F;
-        if (Keyboard.isKeyDown(Keyboard.KEY_LEFT)) {
-            moveX = -0.25F;
-        } else if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) {
-            moveX = 0.25F;
-        }
-        if (player.onSurface) {
+        if (player != null) {
+            float moveX = 0.0F;
+            boolean jumping = false;
+            if (Keyboard.isKeyDown(Keyboard.KEY_LEFT)) {
+                moveX = -0.25F;
+            } else if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) {
+                moveX = 0.25F;
+            }
             if (Keyboard.isKeyDown(Keyboard.KEY_UP)) {
-                player.velY = 1.0F;
+                jumping = true;
+            }
+            if (moveX != 0 || jumping) {
+                client.sendPacketToServer(new PlayerMovePacket(moveX, jumping));
             }
         }
-        player.velX = moveX;
 
         level.update();
     }
@@ -224,6 +224,14 @@ public class PixleClient implements IClientListener {
     @Override
     public void onDisconnected(Client client) {
 
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setPlayer(PlayerEntity player) {
+        this.player = player;
     }
 }
 

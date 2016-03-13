@@ -1,16 +1,21 @@
 package net.ilexiconn.pixle.entity;
 
 import net.darkhax.opennbt.tags.CompoundTag;
+import net.ilexiconn.netconn.ByteBuffer;
 import net.ilexiconn.pixle.level.Level;
+import net.ilexiconn.pixle.network.EntityPositionUpdatePacket;
+import net.ilexiconn.pixle.server.PixleServer;
 import net.ilexiconn.pixle.util.Bounds;
 import net.ilexiconn.pixle.util.EntityBounds;
 
 import java.util.List;
 
-public class Entity {
+public abstract class Entity {
     public Level level;
     public double posX;
     public double posY;
+    public double prevPosX;
+    public double prevPosY;
     public float velX;
     public float velY;
 
@@ -33,21 +38,26 @@ public class Entity {
     }
 
     public void update() {
-        velY -= getGravity() * 0.1F;
+        if (level.getSide().isServer()) {
+            velY -= getGravity() * 0.1F;
 
-        if (velY < -1.0F) {
-            velY = -1.0F;
-        }
+            if (velY < -1.0F) {
+                velY = -1.0F;
+            }
 
-        move(velX, velY);
+            move(velX, velY);
 
-        float airFriction = getAirFriction();
+            float airFriction = getAirFriction();
 
-        velX *= airFriction;
-        velY *= airFriction;
+            velX *= airFriction;
+            velY *= airFriction;
 
-        if (onSurface) {
-//            velX *= standingOn.getMaterial().getFriction();
+            if (posX != prevPosX || posY != prevPosY) {
+                PixleServer.INSTANCE.getServer().sendPacketToAllClients(new EntityPositionUpdatePacket(this));
+            }
+
+            prevPosX = posX;
+            prevPosY = posY;
         }
     }
 
@@ -99,5 +109,17 @@ public class Entity {
 
     public int getEntityId() {
         return entityId;
+    }
+
+    public abstract void writeData(ByteBuffer buffer);
+    public abstract void readData(ByteBuffer buffer);
+
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof Entity) {
+            Entity entity = (Entity) o;
+            return entity.entityId == entityId;
+        }
+        return false;
     }
 }

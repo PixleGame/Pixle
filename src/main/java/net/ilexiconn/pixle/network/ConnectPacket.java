@@ -3,6 +3,10 @@ package net.ilexiconn.pixle.network;
 import net.ilexiconn.netconn.ByteBuffer;
 import net.ilexiconn.netconn.INetworkManager;
 import net.ilexiconn.netconn.IPacket;
+import net.ilexiconn.pixle.entity.PlayerEntity;
+import net.ilexiconn.pixle.level.Level;
+import net.ilexiconn.pixle.level.PixelLayer;
+import net.ilexiconn.pixle.server.PixleServer;
 
 import java.net.Socket;
 
@@ -27,8 +31,16 @@ public class ConnectPacket implements IPacket {
 
     @Override
     public void handleServer(Socket sender, INetworkManager networkManager) {
-        PixleNetworkManager.addClient(sender, username);
-        System.out.println(username + " has connected to the server!");
+        if (PixleNetworkManager.addClient(sender, username)) {
+            System.out.println(username + " has connected to the server!");
+            Level level = PixleServer.INSTANCE.getLevel();
+            PlayerEntity player = new PlayerEntity(level, username);
+            player.posY = level.getHeight((int) player.posX, PixelLayer.FOREGROUND) + 1;
+            level.addEntity(player);
+        } else {
+            System.out.println(username + " tried to join but somebody with that username is connected!");
+            PixleServer.INSTANCE.getServer().disconnectClient(sender);
+        }
     }
 
     @Override
