@@ -119,8 +119,8 @@ public abstract class Entity {
         return entityID;
     }
 
-    public abstract void writeData(ByteBuffer buffer);
-    public abstract void readData(ByteBuffer buffer);
+    public abstract String writeData();
+    public abstract void readData(String string);
 
     @Override
     public boolean equals(Object o) {

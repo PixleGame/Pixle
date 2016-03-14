@@ -50,12 +50,12 @@ public class PlayerEntity extends Entity {
     }
 
     @Override
-    public void writeData(ByteBuffer buffer) {
-        buffer.writeStringByte(username);
+    public String writeData() {
+        return username;
     }
 
     @Override
-    public void readData(ByteBuffer buffer) {
-        username = buffer.readStringByte();
+    public void readData(String string) {
+        username = string;
     }
 }
