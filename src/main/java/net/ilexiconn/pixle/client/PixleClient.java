@@ -85,6 +85,13 @@ public class PixleClient extends Listener {
             GL11.glMatrixMode(GL11.GL_MODELVIEW);
 
             while (!Display.isCloseRequested() && !isCloseRequested()) {
+                if (Display.wasResized()) {
+                    int width = Display.getWidth();
+                    int height = Display.getHeight();
+                    GL11.glScissor(0, 0, width, height);
+                    GL11.glViewport(0, 0, width, height);
+                }
+
                 long currentTime = System.nanoTime();
                 delta += (currentTime - previousTime) / nanoUpdates;
                 previousTime = currentTime;
