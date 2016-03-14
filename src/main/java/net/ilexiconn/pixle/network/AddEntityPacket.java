@@ -17,7 +17,8 @@ public class AddEntityPacket extends PixlePacket {
     private double posY;
     private String entityData;
 
-    public AddEntityPacket() {}
+    public AddEntityPacket() {
+    }
 
     public AddEntityPacket(Entity entity) {
         this.entityInWorldID = entity.getEntityID();

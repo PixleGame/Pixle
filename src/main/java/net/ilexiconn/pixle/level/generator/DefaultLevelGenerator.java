@@ -20,7 +20,7 @@ public class DefaultLevelGenerator implements ILevelGenerator {
             int scaledXInt = fastFloor(scaledX);
             float fractionX = scaledX - scaledXInt;
 
-            int height = (int) cubicInterpolate(new double[] { getHeight(seed, scaledXInt - 1), getHeight(seed, scaledXInt), getHeight(seed, scaledXInt + 1), getHeight(seed, scaledXInt + 2) }, fractionX);
+            int height = (int) cubicInterpolate(new double[]{getHeight(seed, scaledXInt - 1), getHeight(seed, scaledXInt), getHeight(seed, scaledXInt + 1), getHeight(seed, scaledXInt + 2)}, fractionX);
             int dirtLayer = height - 10;
 
             Random bedrockRand = new Random(worldX * seed);

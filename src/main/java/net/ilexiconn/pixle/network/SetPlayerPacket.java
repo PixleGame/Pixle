@@ -8,7 +8,8 @@ import net.ilexiconn.pixle.server.PixleServer;
 public class SetPlayerPacket extends PixlePacket {
     private int playerId;
 
-    public SetPlayerPacket() {}
+    public SetPlayerPacket() {
+    }
 
     public SetPlayerPacket(PlayerEntity entity) {
         playerId = entity.getEntityID();

@@ -120,6 +120,7 @@ public abstract class Entity {
     }
 
     public abstract String writeData();
+
     public abstract void readData(String string);
 
     @Override

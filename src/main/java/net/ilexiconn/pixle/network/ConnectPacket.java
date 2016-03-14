@@ -12,7 +12,8 @@ import net.ilexiconn.pixle.server.PixleServer;
 public class ConnectPacket extends PixlePacket {
     private String username;
 
-    public ConnectPacket() {}
+    public ConnectPacket() {
+    }
 
     public ConnectPacket(String username) {
         this.username = username;

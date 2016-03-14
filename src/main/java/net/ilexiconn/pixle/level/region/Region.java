@@ -66,7 +66,7 @@ public class Region {
         for (int layer = 0; layer < pixels.length; layer++) {
             CompoundTag layerTag = compound.getCompoundTag("layer" + layer);
             for (int x = 0; x < pixels[layer].length; x++) {
-                pixels[layer][x] =  layerTag.getIntArray(x + "");
+                pixels[layer][x] = layerTag.getIntArray(x + "");
             }
         }
     }

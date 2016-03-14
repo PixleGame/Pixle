@@ -10,7 +10,8 @@ import net.ilexiconn.pixle.server.PixleServer;
 public class RemoveEntityPacket extends PixlePacket {
     private int entityId;
 
-    public RemoveEntityPacket() {}
+    public RemoveEntityPacket() {
+    }
 
     public RemoveEntityPacket(Entity entity) {
         entityId = entity.getEntityID();

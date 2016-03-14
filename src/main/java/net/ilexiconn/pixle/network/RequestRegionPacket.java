@@ -12,7 +12,8 @@ import net.ilexiconn.pixle.server.PixleServer;
 public class RequestRegionPacket extends PixlePacket {
     private int x;
 
-    public RequestRegionPacket() {}
+    public RequestRegionPacket() {
+    }
 
     public RequestRegionPacket(int x) {
         this.x = x;

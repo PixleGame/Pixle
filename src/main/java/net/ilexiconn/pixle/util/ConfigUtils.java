@@ -13,7 +13,8 @@ public class ConfigUtils {
     public static <T> T loadConfig(File f, Class<T> t) {
         if (!f.exists()) {
             try {
-                T i = t.newInstance();;
+                T i = t.newInstance();
+                ;
                 String json = gson.toJson(i);
                 f.createNewFile();
                 IOUtils.write(json.getBytes(), new FileOutputStream(f));

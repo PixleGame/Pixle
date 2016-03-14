@@ -32,11 +32,14 @@ public abstract class Bounds {
     }
 
     public abstract float getMaxX();
+
     public abstract float getMinX();
 
     public abstract float getMaxY();
+
     public abstract float getMinY();
 
     public abstract float getSizeX();
+
     public abstract float getSizeY();
 }

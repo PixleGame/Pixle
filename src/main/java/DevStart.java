@@ -1,4 +1,3 @@
-import com.esotericsoftware.minlog.Log;
 import net.ilexiconn.pixle.util.StartupUtils;
 
 import java.util.Map;
@@ -8,7 +7,6 @@ public abstract class DevStart {
         Map<String, String> properties = StartupUtils.argsToMap(args);
         applyDefaults(properties);
         preInit(properties);
-        Log.set(Log.LEVEL_DEBUG);
         Class<?> clazz = Class.forName(getStartupClassName());
         clazz.getMethod("main", String[].class).invoke(null, new Object[]{
                 StartupUtils.mapToArgs(properties)

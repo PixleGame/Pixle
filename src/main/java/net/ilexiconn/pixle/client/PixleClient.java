@@ -239,12 +239,12 @@ public class PixleClient extends Listener {
     }
 
     @Override
-    public void disconnected (Connection connection) {
+    public void disconnected(Connection connection) {
         System.exit(1); //bye world
     }
 
     @Override
-    public void received (Connection connection, Object object) {
+    public void received(Connection connection, Object object) {
         if (object instanceof PixlePacket) {
             PixlePacket packet = (PixlePacket) object;
             packet.handleClient(connection);

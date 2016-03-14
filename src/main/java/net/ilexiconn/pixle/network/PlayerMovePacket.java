@@ -11,7 +11,8 @@ public class PlayerMovePacket extends PixlePacket {
     private boolean jumping;
     private int entityId;
 
-    public PlayerMovePacket() {}
+    public PlayerMovePacket() {
+    }
 
     public PlayerMovePacket(PlayerEntity player, float moveX, boolean jumping) {
         this.entityId = player.getEntityID();

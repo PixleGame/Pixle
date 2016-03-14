@@ -12,7 +12,8 @@ public class SetPixelPacket extends PixlePacket {
     private int y;
     private byte layer;
 
-    public SetPixelPacket() {}
+    public SetPixelPacket() {
+    }
 
     public SetPixelPacket(int pixel, int x, int y, PixelLayer layer) {
         this.pixel = pixel;

@@ -1,7 +1,9 @@
+import com.esotericsoftware.minlog.Log;
 import net.ilexiconn.pixle.util.SystemUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.Map;
 
 public class ClientDevStart extends DevStart {
@@ -17,6 +19,14 @@ public class ClientDevStart extends DevStart {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        int level = Log.LEVEL_INFO;
+        try {
+            Field field = Log.class.getField("LEVEL_" + properties.get("log"));
+            level = field.getInt(null);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        Log.set(level);
     }
 
     @Override
@@ -25,6 +35,7 @@ public class ClientDevStart extends DevStart {
         applyDefault(properties, "gamefolder", SystemUtils.getGameFolder().getAbsolutePath());
         applyDefault(properties, "host", "localhost");
         applyDefault(properties, "port", 25565);
+        applyDefault(properties, "log", "INFO");
     }
 
     @Override

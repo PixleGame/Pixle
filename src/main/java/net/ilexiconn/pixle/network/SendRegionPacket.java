@@ -17,7 +17,8 @@ public class SendRegionPacket extends PixlePacket {
     private Map<Byte, Integer> ids;
     private byte[][] pixels;
 
-    public SendRegionPacket() {}
+    public SendRegionPacket() {
+    }
 
     public SendRegionPacket(Region region, PixelLayer layer) {
         this.layer = (byte) layer.ordinal();
