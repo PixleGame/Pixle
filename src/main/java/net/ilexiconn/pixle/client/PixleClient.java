@@ -88,6 +88,10 @@ public class PixleClient extends Listener {
                 if (Display.wasResized()) {
                     int width = Display.getWidth();
                     int height = Display.getHeight();
+                    GL11.glMatrixMode(GL11.GL_PROJECTION);
+                    GL11.glLoadIdentity();
+                    GL11.glOrtho(0, width, 0, height, 1, -1);
+                    GL11.glMatrixMode(GL11.GL_MODELVIEW);
                     GL11.glScissor(0, 0, width, height);
                     GL11.glViewport(0, 0, width, height);
                 }
