@@ -12,6 +12,9 @@ public class PixleNetworkManager {
 
     public static void init(EndPoint endPoint) {
         Kryo kryo = endPoint.getKryo();
+        kryo.register(byte[].class);
+        kryo.register(byte[][].class);
+        kryo.register(HashMap.class);
         kryo.register(ConnectPacket.class);
         kryo.register(RequestRegionPacket.class);
         kryo.register(ConnectPacket.class);
