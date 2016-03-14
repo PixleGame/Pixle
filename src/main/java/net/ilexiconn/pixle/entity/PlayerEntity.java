@@ -8,6 +8,8 @@ import net.ilexiconn.pixle.level.Level;
 public class PlayerEntity extends Entity {
     private PlayerInventory inventory;
     public String username;
+    public boolean jumping;
+    public float moveX;
 
     public PlayerEntity(Level level) {
         super(level);
@@ -17,6 +19,15 @@ public class PlayerEntity extends Entity {
     public PlayerEntity(Level level, String username) {
         this(level);
         this.username = username;
+    }
+
+    @Override
+    public void update() {
+        super.update();
+        if (jumping && onSurface) {
+            velY = 1.0F;
+        }
+        velX = moveX;
     }
 
     public PlayerInventory getInventory() {

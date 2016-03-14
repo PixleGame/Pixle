@@ -35,10 +35,8 @@ public class PlayerMovePacket extends PixlePacket {
     }
 
     private void handle(PlayerEntity player) {
-        player.velX = moveX;
-        if (player.onSurface && jumping) {
-            player.velY = 1.0F;
-        }
+        player.moveX = moveX;
+        player.jumping = jumping;
     }
 
     @Override

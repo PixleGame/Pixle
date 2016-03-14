@@ -164,7 +164,7 @@ public class PixleClient implements IClientListener {
             if (Keyboard.isKeyDown(Keyboard.KEY_UP)) {
                 jumping = true;
             }
-            if (moveX != 0 || jumping) {
+            if (jumping != player.jumping || moveX != player.moveX) {
                 client.sendPacketToServer(new PlayerMovePacket(player, moveX, jumping));
             }
         }
