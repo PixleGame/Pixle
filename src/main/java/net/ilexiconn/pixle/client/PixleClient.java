@@ -6,6 +6,7 @@ import net.ilexiconn.pixle.client.gl.GLStateManager;
 import net.ilexiconn.pixle.client.gui.GUI;
 import net.ilexiconn.pixle.client.gui.WorldGUI;
 import net.ilexiconn.pixle.client.render.TextureManager;
+import net.ilexiconn.pixle.client.config.ClientConfig;
 import net.ilexiconn.pixle.crash.CrashReport;
 import net.ilexiconn.pixle.entity.PlayerEntity;
 import net.ilexiconn.pixle.event.bus.EventBus;
@@ -15,6 +16,8 @@ import net.ilexiconn.pixle.level.ClientLevel;
 import net.ilexiconn.pixle.network.ConnectPacket;
 import net.ilexiconn.pixle.network.PixleNetworkManager;
 import net.ilexiconn.pixle.network.PlayerMovePacket;
+import net.ilexiconn.pixle.util.ConfigUtils;
+import net.ilexiconn.pixle.util.SystemUtils;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
@@ -22,6 +25,7 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -47,9 +51,13 @@ public class PixleClient implements IClientListener {
 
     public static PixleClient INSTANCE;
 
+    public File configFile = new File(SystemUtils.getGameFolder(), "config.json");
+    public ClientConfig config;
+
     public void start(String username, String host, int port) {
         try {
             PixleClient.INSTANCE = this;
+            config = ConfigUtils.loadConfig(configFile, ClientConfig.class);
             this.username = username;
             init();
             connect(host, port);
@@ -107,6 +115,9 @@ public class PixleClient implements IClientListener {
                 GLStateManager.popMatrix();
 
                 Display.update();
+                if (config.maxFPS != -1) {
+                    Display.sync(config.maxFPS);
+                }
             }
 
             System.exit(-1);

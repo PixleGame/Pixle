@@ -23,7 +23,7 @@ public class ServerLevel extends Level {
     @Override
     public boolean addEntity(Entity entity, boolean assignId) {
         if (assignId) {
-            entity.entityId = getUniqueEntityId();
+            entity.entityID = getUniqueEntityId();
         }
         boolean add = super.addEntity(entity, assignId);
         if (add) {

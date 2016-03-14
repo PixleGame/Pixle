@@ -19,7 +19,7 @@ public class AddEntityPacket extends PixlePacket {
 
     public AddEntityPacket(Entity entity) {
         this.entity = entity;
-        this.entityId = entity.getEntityId();
+        this.entityId = entity.getEntityID();
     }
 
     @Override
@@ -31,7 +31,7 @@ public class AddEntityPacket extends PixlePacket {
         ClientLevel level = client.getLevel();
         if (entity != null) {
             entity.level = level;
-            entity.entityId = entityId;
+            entity.entityID = entityId;
             level.addEntity(entity, false);
         }
     }

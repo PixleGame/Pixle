@@ -116,7 +116,7 @@ public abstract class Level {
 
     public Entity getEntityById(int entityId) {
         for (Entity entity : getEntities()) {
-            if (entity.entityId == entityId) {
+            if (entity.entityID == entityId) {
                 return entity;
             }
         }

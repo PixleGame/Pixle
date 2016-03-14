@@ -2,11 +2,8 @@ package net.ilexiconn.pixle.network;
 
 import net.ilexiconn.netconn.ByteBuffer;
 import net.ilexiconn.netconn.INetworkManager;
-import net.ilexiconn.netconn.IPacket;
 import net.ilexiconn.pixle.client.PixleClient;
 import net.ilexiconn.pixle.entity.PlayerEntity;
-import net.ilexiconn.pixle.level.Level;
-import net.ilexiconn.pixle.level.PixelLayer;
 import net.ilexiconn.pixle.server.PixleServer;
 
 import java.net.Socket;
@@ -17,7 +14,7 @@ public class SetPlayerPacket extends PixlePacket {
     public SetPlayerPacket() {}
 
     public SetPlayerPacket(PlayerEntity entity) {
-        playerId = entity.getEntityId();
+        playerId = entity.getEntityID();
     }
 
     @Override

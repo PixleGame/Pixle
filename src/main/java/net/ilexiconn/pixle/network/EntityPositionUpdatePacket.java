@@ -20,7 +20,7 @@ public class EntityPositionUpdatePacket extends PixlePacket {
     public EntityPositionUpdatePacket() {}
 
     public EntityPositionUpdatePacket(Entity entity) {
-        entityId = entity.getEntityId();
+        entityId = entity.getEntityID();
         posX = entity.posX;
         posY = entity.posY;
         velX = entity.velX;

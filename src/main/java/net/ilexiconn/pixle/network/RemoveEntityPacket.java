@@ -4,7 +4,6 @@ import net.ilexiconn.netconn.ByteBuffer;
 import net.ilexiconn.netconn.INetworkManager;
 import net.ilexiconn.pixle.client.PixleClient;
 import net.ilexiconn.pixle.entity.Entity;
-import net.ilexiconn.pixle.entity.EntityRegistry;
 import net.ilexiconn.pixle.entity.PlayerEntity;
 import net.ilexiconn.pixle.level.ClientLevel;
 import net.ilexiconn.pixle.server.PixleServer;
@@ -17,7 +16,7 @@ public class RemoveEntityPacket extends PixlePacket {
     public RemoveEntityPacket() {}
 
     public RemoveEntityPacket(Entity entity) {
-        entityId = entity.getEntityId();
+        entityId = entity.getEntityID();
     }
 
     @Override

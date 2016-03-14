@@ -19,7 +19,7 @@ public abstract class Entity {
     public float velX;
     public float velY;
 
-    public int entityId;
+    public int entityID;
 
     public EntityBounds bounds;
 
@@ -96,7 +96,7 @@ public abstract class Entity {
     }
 
     public void writeToNBT(CompoundTag compound) {
-        compound.setInt("entityId", entityId);
+        compound.setInt("entityID", entityID);
         compound.setByte("id", (byte) EntityRegistry.getEntityID(getClass()));
         compound.setDouble("posX", posX);
         compound.setDouble("posY", posY);
@@ -105,7 +105,7 @@ public abstract class Entity {
     }
 
     public void readFromNBT(CompoundTag compound) {
-        this.entityId = compound.getInt("entityId");
+        this.entityID = compound.getInt("entityID");
         this.posX = compound.getDouble("posX");
         this.posY = compound.getDouble("posY");
         this.velX = compound.getFloat("velX");
@@ -116,8 +116,8 @@ public abstract class Entity {
         level.removeEntity(this);
     }
 
-    public int getEntityId() {
-        return entityId;
+    public int getEntityID() {
+        return entityID;
     }
 
     public abstract void writeData(ByteBuffer buffer);
@@ -127,7 +127,7 @@ public abstract class Entity {
     public boolean equals(Object o) {
         if (o instanceof Entity) {
             Entity entity = (Entity) o;
-            return entity.entityId == entityId;
+            return entity.entityID == entityID;
         }
         return false;
     }

@@ -3,9 +3,7 @@ package net.ilexiconn.pixle.network;
 import net.ilexiconn.netconn.ByteBuffer;
 import net.ilexiconn.netconn.INetworkManager;
 import net.ilexiconn.pixle.client.PixleClient;
-import net.ilexiconn.pixle.entity.Entity;
 import net.ilexiconn.pixle.entity.PlayerEntity;
-import net.ilexiconn.pixle.level.Level;
 import net.ilexiconn.pixle.server.PixleServer;
 
 import java.net.Socket;
@@ -18,7 +16,7 @@ public class PlayerMovePacket extends PixlePacket {
     public PlayerMovePacket() {}
 
     public PlayerMovePacket(PlayerEntity player, float moveX, boolean jumping) {
-        this.entityId = player.getEntityId();
+        this.entityId = player.getEntityID();
         this.moveX = moveX;
         this.jumping = jumping;
     }
