@@ -1,35 +1,39 @@
 package net.ilexiconn.pixle.network;
 
-import net.ilexiconn.netconn.NetconnRegistry;
+import com.esotericsoftware.kryo.Kryo;
+import com.esotericsoftware.kryonet.Connection;
+import com.esotericsoftware.kryonet.EndPoint;
 
-import java.net.Socket;
 import java.util.HashMap;
 import java.util.Map;
 
 public class PixleNetworkManager {
-    public static Map<Socket, String> clients = new HashMap<>();
+    public static Map<Connection, String> clients = new HashMap<>();
 
-    public static void init() {
-        NetconnRegistry.registerPacket(0, ConnectPacket.class);
-        NetconnRegistry.registerPacket(1, RequestRegionPacket.class);
-        NetconnRegistry.registerPacket(2, SendRegionPacket.class);
-        NetconnRegistry.registerPacket(3, AddEntityPacket.class);
-        NetconnRegistry.registerPacket(4, RemoveEntityPacket.class);
-        NetconnRegistry.registerPacket(5, EntityPositionUpdatePacket.class);
-        NetconnRegistry.registerPacket(6, PlayerMovePacket.class);
-        NetconnRegistry.registerPacket(7, SetPlayerPacket.class);
-        NetconnRegistry.registerPacket(8, SetPixelPacket.class);
+    public static void init(EndPoint endPoint) {
+        Kryo kryo = endPoint.getKryo();
+        kryo.register(ConnectPacket.class);
+        kryo.register(RequestRegionPacket.class);
+        kryo.register(ConnectPacket.class);
+        kryo.register(RequestRegionPacket.class);
+        kryo.register(SendRegionPacket.class);
+        kryo.register(AddEntityPacket.class);
+        kryo.register(RemoveEntityPacket.class);
+        kryo.register(EntityPositionUpdatePacket.class);
+        kryo.register(PlayerMovePacket.class);
+        kryo.register(SetPlayerPacket.class);
+        kryo.register(SetPixelPacket.class);
     }
 
-    public static boolean addClient(Socket socket, String username) {
+    public static boolean addClient(Connection connection, String username) {
         if (!clients.containsValue(username)) {
-            clients.put(socket, username);
+            clients.put(connection, username);
             return true;
         }
         return false;
     }
 
-    public static String getUsername(Socket sender) {
-        return clients.get(sender);
+    public static String getUsername(Connection connection) {
+        return clients.get(connection);
     }
 }

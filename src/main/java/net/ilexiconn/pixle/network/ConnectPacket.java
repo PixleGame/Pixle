@@ -1,17 +1,14 @@
 package net.ilexiconn.pixle.network;
 
-import net.ilexiconn.netconn.ByteBuffer;
-import net.ilexiconn.netconn.INetworkManager;
-import net.ilexiconn.netconn.IPacket;
+import com.esotericsoftware.kryonet.Connection;
+import com.esotericsoftware.kryonet.Server;
 import net.ilexiconn.pixle.entity.Entity;
 import net.ilexiconn.pixle.entity.PlayerEntity;
 import net.ilexiconn.pixle.level.Level;
 import net.ilexiconn.pixle.level.PixelLayer;
 import net.ilexiconn.pixle.server.PixleServer;
 
-import java.net.Socket;
-
-public class ConnectPacket implements IPacket {
+public class ConnectPacket {
     private String username;
 
     public ConnectPacket() {}
@@ -20,36 +17,23 @@ public class ConnectPacket implements IPacket {
         this.username = username;
     }
 
-    @Override
-    public void encode(ByteBuffer buffer) {
-        buffer.writeStringByte(username);
-    }
-
-    @Override
-    public void decode(ByteBuffer buffer) {
-        username = buffer.readStringByte();
-    }
-
-    @Override
-    public void handleServer(Socket sender, INetworkManager networkManager) {
-        PixleServer server = PixleServer.INSTANCE;
-        if (PixleNetworkManager.addClient(sender, username)) {
+    public void receive(Connection connection) {
+        PixleServer instance = PixleServer.INSTANCE;
+        int connectionId = connection.getID();
+        Server server = (Server) connection.getEndPoint();
+        if (PixleNetworkManager.addClient(connection, username)) {
             System.out.println(username + " has connected to the server!");
-            Level level = server.getLevel();
+            Level level = instance.getLevel();
             PlayerEntity player = new PlayerEntity(level, username);
             player.posY = level.getHeight((int) player.posX, PixelLayer.FOREGROUND) + 1;
             level.addEntity(player, true);
-            networkManager.sendPacketToClient(new SetPlayerPacket(player), sender);
+            server.sendToTCP(connectionId, new SetPlayerPacket(player));
             for (Entity entity : level.getEntities()) {
-                networkManager.sendPacketToClient(new AddEntityPacket(entity), sender);
+                server.sendToTCP(connectionId, new AddEntityPacket(entity));
             }
         } else {
             System.out.println(username + " tried to join but somebody with that username is connected!");
-            server.getServer().disconnectClient(sender);
+            connection.close();
         }
-    }
-
-    @Override
-    public void handleClient(Socket server, INetworkManager networkManager) {
     }
 }

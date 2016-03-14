@@ -17,7 +17,7 @@ public class ServerLevel extends Level {
     @Override
     public void setPixel(int pixel, int x, int y, PixelLayer layer) {
         super.setPixel(pixel, x, y, layer);
-        PixleServer.INSTANCE.getServer().sendPacketToAllClients(new SetPixelPacket(pixel, x, y, layer));
+        PixleServer.INSTANCE.getServer().sendToAllTCP(new SetPixelPacket(pixel, x, y, layer));
     }
 
     @Override
@@ -27,7 +27,7 @@ public class ServerLevel extends Level {
         }
         boolean add = super.addEntity(entity, assignId);
         if (add) {
-            PixleServer.INSTANCE.getServer().sendPacketToAllClients(new AddEntityPacket(entity));
+            PixleServer.INSTANCE.getServer().sendToAllTCP(new AddEntityPacket(entity));
         }
         return add;
     }
@@ -36,7 +36,7 @@ public class ServerLevel extends Level {
     public void removeEntity(Entity entity) {
         super.removeEntity(entity);
         if (entity != null) {
-            PixleServer.INSTANCE.getServer().sendPacketToAllClients(new RemoveEntityPacket(entity));
+            PixleServer.INSTANCE.getServer().sendToAllTCP(new RemoveEntityPacket(entity));
         }
     }
 

@@ -1,7 +1,6 @@
 package net.ilexiconn.pixle.entity;
 
 import net.darkhax.opennbt.tags.CompoundTag;
-import net.ilexiconn.netconn.ByteBuffer;
 import net.ilexiconn.pixle.entity.inventory.PlayerInventory;
 import net.ilexiconn.pixle.level.Level;
 

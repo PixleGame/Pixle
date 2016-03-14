@@ -1,17 +1,20 @@
 package net.ilexiconn.pixle.server;
 
-import net.ilexiconn.netconn.server.IServerListener;
-import net.ilexiconn.netconn.server.Server;
+import com.esotericsoftware.kryonet.Connection;
+import com.esotericsoftware.kryonet.Listener;
+import com.esotericsoftware.kryonet.Server;
 import net.ilexiconn.pixle.crash.CrashReport;
 import net.ilexiconn.pixle.event.bus.EventBus;
 import net.ilexiconn.pixle.level.Level;
 import net.ilexiconn.pixle.level.ServerLevel;
+import net.ilexiconn.pixle.network.ConnectPacket;
 import net.ilexiconn.pixle.network.PixleNetworkManager;
+import net.ilexiconn.pixle.network.PixlePacket;
 
 import java.io.IOException;
 import java.net.Socket;
 
-public class PixleServer implements IServerListener {
+public class PixleServer extends Listener {
     private boolean closeRequested;
     private Server server;
     private ServerLevel level;
@@ -30,8 +33,9 @@ public class PixleServer implements IServerListener {
     }
 
     private void init(int port) throws IOException {
-        PixleNetworkManager.init();
-        server = new Server(port);
+        PixleNetworkManager.init(server);
+        server = new Server();
+        server.bind(port);
         server.addListener(this);
         level = new ServerLevel();
     }
@@ -47,16 +51,6 @@ public class PixleServer implements IServerListener {
         long timer = System.currentTimeMillis();
         int ups = 0;
         double nanoUpdates = 1000000000.0 / 60.0;
-
-        new Thread(() -> {
-            while (server.isRunning()) {
-                try {
-                    server.waitForConnection();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }).start();
 
         while (!isCloseRequested() && !closeRequested) {
             long currentTime = System.nanoTime();
@@ -94,16 +88,23 @@ public class PixleServer implements IServerListener {
     }
 
     @Override
-    public void onClientConnected(Server server, Socket client) {
-    }
-
-    @Override
-    public void onClientDisconnected(Server server, Socket client) {
-        String username = PixleNetworkManager.clients.get(client);
-        PixleNetworkManager.clients.remove(client);
+    public void disconnected(Connection connection) {
+        String username = PixleNetworkManager.clients.get(connection);
+        PixleNetworkManager.clients.remove(connection);
         if (username != null) {
             System.out.println(username + " has disconnected!");
         }
         level.removeEntity(level.getPlayerByUsername(username));
+    }
+
+    @Override
+    public void received (Connection connection, Object object) {
+        if (object instanceof PixlePacket) {
+            PixlePacket packet = (PixlePacket) object;
+            packet.handleServer(connection);
+        } else if (object instanceof ConnectPacket) {
+            ConnectPacket connectPacket = (ConnectPacket) object;
+            connectPacket.receive(connection);
+        }
     }
 }

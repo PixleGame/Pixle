@@ -1,7 +1,8 @@
 package net.ilexiconn.pixle.client;
 
-import net.ilexiconn.netconn.client.Client;
-import net.ilexiconn.netconn.client.IClientListener;
+import com.esotericsoftware.kryonet.Client;
+import com.esotericsoftware.kryonet.Connection;
+import com.esotericsoftware.kryonet.Listener;
 import net.ilexiconn.pixle.client.gl.GLStateManager;
 import net.ilexiconn.pixle.client.gui.GUI;
 import net.ilexiconn.pixle.client.gui.WorldGUI;
@@ -27,11 +28,10 @@ import org.lwjgl.opengl.GL11;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PixleClient implements IClientListener {
+public class PixleClient extends Listener {
     private boolean closeRequested;
     private int fps;
     private double delta;
@@ -129,7 +129,7 @@ public class PixleClient implements IClientListener {
     private void init() {
         textureManager = new TextureManager();
         level = new ClientLevel();
-        PixleNetworkManager.init();
+        PixleNetworkManager.init(client);
         openGUI(new WorldGUI(this));
 
         PixleClient.EVENT_BUS.register(this);
@@ -142,19 +142,14 @@ public class PixleClient implements IClientListener {
     }
 
     public void connect(String host, int port) throws IOException {
-        client = new Client(host, port);
+        client = new Client();
+        client.connect(5000, host, port);
         client.addListener(this);
-
-        new Thread(() -> {
-            while (client.isRunning()) {
-                client.listen();
-            }
-        }).start();
     }
 
     public void disconnect() {
         if (client != null) {
-            client.disconnect();
+            client.close();
             client = null;
         }
     }
@@ -176,7 +171,7 @@ public class PixleClient implements IClientListener {
                 jumping = true;
             }
             if (jumping != player.jumping || moveX != player.moveX) {
-                client.sendPacketToServer(new PlayerMovePacket(player, moveX, jumping));
+                client.sendTCP(new PlayerMovePacket(player, moveX, jumping));
             }
         }
 
@@ -227,13 +222,8 @@ public class PixleClient implements IClientListener {
     }
 
     @Override
-    public void onConnected(Client client, Socket socket) {
-        client.sendPacketToServer(new ConnectPacket(username));
-    }
-
-    @Override
-    public void onDisconnected(Client client) {
-
+    public void connected(Connection connection) {
+        client.sendTCP(new ConnectPacket(username));
     }
 
     public String getUsername() {

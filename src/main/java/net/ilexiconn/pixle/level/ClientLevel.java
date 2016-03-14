@@ -22,7 +22,7 @@ public class ClientLevel extends Level {
     public void requestRegion(Region region, int regionX) {
         if (!requestingRegions.contains(regionX)) {
             requestingRegions.add(regionX);
-            PixleClient.INSTANCE.getClient().sendPacketToServer(new RequestRegionPacket(regionX));
+            PixleClient.INSTANCE.getClient().sendTCP(new RequestRegionPacket(regionX));
         }
     }
 

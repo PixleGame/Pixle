@@ -1,12 +1,9 @@
 package net.ilexiconn.pixle.network;
 
-import net.ilexiconn.netconn.ByteBuffer;
-import net.ilexiconn.netconn.INetworkManager;
+import com.esotericsoftware.kryonet.Connection;
 import net.ilexiconn.pixle.client.PixleClient;
 import net.ilexiconn.pixle.entity.PlayerEntity;
 import net.ilexiconn.pixle.server.PixleServer;
-
-import java.net.Socket;
 
 public class SetPlayerPacket extends PixlePacket {
     private int playerId;
@@ -18,21 +15,11 @@ public class SetPlayerPacket extends PixlePacket {
     }
 
     @Override
-    public void encode(ByteBuffer buffer) {
-        buffer.writeInteger(playerId);
+    public void handleServer(PixleServer pixleServer, PlayerEntity player, Connection connection, long estimatedSendTime) {
     }
 
     @Override
-    public void decode(ByteBuffer buffer) {
-        playerId = buffer.readInteger();
-    }
-
-    @Override
-    public void handleServer(PixleServer server, Socket sender, PlayerEntity player, INetworkManager networkManager, long estimatedSendTime) {
-    }
-
-    @Override
-    public void handleClient(PixleClient client, INetworkManager networkManager, long estimatedSendTime) {
+    public void handleClient(PixleClient client, Connection connection, long estimatedSendTime) {
         client.setPlayer(playerId);
     }
 }

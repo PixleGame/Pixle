@@ -1,12 +1,10 @@
 package net.ilexiconn.pixle.network;
 
-import net.ilexiconn.netconn.ByteBuffer;
-import net.ilexiconn.netconn.INetworkManager;
+import com.esotericsoftware.kryonet.Connection;
+import com.esotericsoftware.kryonet.Server;
 import net.ilexiconn.pixle.client.PixleClient;
 import net.ilexiconn.pixle.entity.PlayerEntity;
 import net.ilexiconn.pixle.server.PixleServer;
-
-import java.net.Socket;
 
 public class PlayerMovePacket extends PixlePacket {
     private float moveX;
@@ -22,13 +20,14 @@ public class PlayerMovePacket extends PixlePacket {
     }
 
     @Override
-    public void handleServer(PixleServer server, Socket sender, PlayerEntity player, INetworkManager networkManager, long estimatedSendTime) {
-        handle((PlayerEntity) server.getLevel().getEntityById(entityId), estimatedSendTime, false);
-        networkManager.sendPacketToAllClients(this);
+    public void handleServer(PixleServer pixleServer, PlayerEntity player, Connection connection, long estimatedSendTime) {
+        handle((PlayerEntity) pixleServer.getLevel().getEntityById(entityId), estimatedSendTime, false);
+        Server server = (Server) connection.getEndPoint();
+        server.sendToAllTCP(this);
     }
 
     @Override
-    public void handleClient(PixleClient client, INetworkManager networkManager, long estimatedSendTime) {
+    public void handleClient(PixleClient client, Connection connection, long estimatedSendTime) {
         handle((PlayerEntity) client.getLevel().getEntityById(entityId), estimatedSendTime, true);
     }
 
@@ -46,17 +45,4 @@ public class PlayerMovePacket extends PixlePacket {
         }
     }
 
-    @Override
-    public void encode(ByteBuffer buffer) {
-        buffer.writeInteger(entityId);
-        buffer.writeFloat(moveX);
-        buffer.writeByte((byte) (jumping ? 1 : 0));
-    }
-
-    @Override
-    public void decode(ByteBuffer buffer) {
-        entityId = buffer.readInteger();
-        moveX = buffer.readFloat();
-        jumping = buffer.readByte() == 1;
-    }
 }

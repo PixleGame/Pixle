@@ -1,7 +1,5 @@
 package net.ilexiconn.pixle.network;
 
-import net.ilexiconn.netconn.ByteBuffer;
-import net.ilexiconn.netconn.INetworkManager;
 import net.ilexiconn.pixle.client.PixleClient;
 import net.ilexiconn.pixle.entity.PlayerEntity;
 import net.ilexiconn.pixle.level.ClientLevel;

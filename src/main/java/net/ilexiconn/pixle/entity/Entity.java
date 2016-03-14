@@ -1,7 +1,6 @@
 package net.ilexiconn.pixle.entity;
 
 import net.darkhax.opennbt.tags.CompoundTag;
-import net.ilexiconn.netconn.ByteBuffer;
 import net.ilexiconn.pixle.level.Level;
 import net.ilexiconn.pixle.network.EntityPositionUpdatePacket;
 import net.ilexiconn.pixle.server.PixleServer;
@@ -46,7 +45,7 @@ public abstract class Entity {
 
         if (level.getSide().isServer() && ticks % 4 == 0) {
             if (posX != prevPosX || posY != prevPosY) {
-                PixleServer.INSTANCE.getServer().sendPacketToAllClients(new EntityPositionUpdatePacket(this));
+                PixleServer.INSTANCE.getServer().sendToAllTCP(new EntityPositionUpdatePacket(this));
             }
             prevPosX = posX;
             prevPosY = posY;

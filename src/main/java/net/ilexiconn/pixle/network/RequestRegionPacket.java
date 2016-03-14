@@ -1,16 +1,13 @@
 package net.ilexiconn.pixle.network;
 
-import net.ilexiconn.netconn.ByteBuffer;
-import net.ilexiconn.netconn.INetworkManager;
+import com.esotericsoftware.kryonet.Connection;
+import com.esotericsoftware.kryonet.Server;
 import net.ilexiconn.pixle.client.PixleClient;
-import net.ilexiconn.pixle.entity.Entity;
 import net.ilexiconn.pixle.entity.PlayerEntity;
 import net.ilexiconn.pixle.level.Level;
 import net.ilexiconn.pixle.level.PixelLayer;
 import net.ilexiconn.pixle.level.region.Region;
 import net.ilexiconn.pixle.server.PixleServer;
-
-import java.net.Socket;
 
 public class RequestRegionPacket extends PixlePacket {
     private int x;
@@ -22,25 +19,16 @@ public class RequestRegionPacket extends PixlePacket {
     }
 
     @Override
-    public void handleServer(PixleServer server, Socket sender, PlayerEntity player, INetworkManager networkManager, long estimatedSendTime) {
-        Level level = server.getLevel();
+    public void handleServer(PixleServer pixleServer, PlayerEntity player, Connection connection, long estimatedSendTime) {
+        Server server = (Server) connection.getEndPoint();
+        Level level = pixleServer.getLevel();
         Region region = level.getRegion(x);
         for (PixelLayer layer : PixelLayer.values()) {
-            networkManager.sendPacketToClient(new SendRegionPacket(region, layer), sender);
+            server.sendToTCP(connection.getID(), new SendRegionPacket(region, layer));
         }
     }
 
     @Override
-    public void handleClient(PixleClient client, INetworkManager networkManager, long estimatedSendTime) {
-    }
-
-    @Override
-    public void encode(ByteBuffer buffer) {
-        buffer.writeInteger(x);
-    }
-
-    @Override
-    public void decode(ByteBuffer buffer) {
-        x = buffer.readInteger();
+    public void handleClient(PixleClient client, Connection connection, long estimatedSendTime) {
     }
 }

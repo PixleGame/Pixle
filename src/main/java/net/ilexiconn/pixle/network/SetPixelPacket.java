@@ -1,19 +1,16 @@
 package net.ilexiconn.pixle.network;
 
-import net.ilexiconn.netconn.ByteBuffer;
-import net.ilexiconn.netconn.INetworkManager;
+import com.esotericsoftware.kryonet.Connection;
 import net.ilexiconn.pixle.client.PixleClient;
 import net.ilexiconn.pixle.entity.PlayerEntity;
 import net.ilexiconn.pixle.level.PixelLayer;
 import net.ilexiconn.pixle.server.PixleServer;
 
-import java.net.Socket;
-
 public class SetPixelPacket extends PixlePacket {
     private int pixel;
     private int x;
     private int y;
-    private PixelLayer layer;
+    private byte layer;
 
     public SetPixelPacket() {}
 
@@ -21,31 +18,16 @@ public class SetPixelPacket extends PixlePacket {
         this.pixel = pixel;
         this.x = x;
         this.y = y;
-        this.layer = layer;
+        this.layer = (byte) layer.ordinal();
     }
 
     @Override
-    public void handleServer(PixleServer server, Socket sender, PlayerEntity player, INetworkManager networkManager, long estimatedSendTime) {
+    public void handleServer(PixleServer pixleServer, PlayerEntity player, Connection connection, long estimatedSendTime) {
+
     }
 
     @Override
-    public void handleClient(PixleClient client, INetworkManager networkManager, long estimatedSendTime) {
-        client.getLevel().setPixel(pixel, x, y, layer);
-    }
-
-    @Override
-    public void encode(ByteBuffer buffer) {
-        buffer.writeInteger(pixel);
-        buffer.writeInteger(x);
-        buffer.writeInteger(y);
-        buffer.writeByte((byte) layer.ordinal());
-    }
-
-    @Override
-    public void decode(ByteBuffer buffer) {
-        pixel = buffer.readInteger();
-        x = buffer.readInteger();
-        y = buffer.readInteger();
-        layer = PixelLayer.values()[buffer.readByte()];
+    public void handleClient(PixleClient client, Connection connection, long estimatedSendTime) {
+        client.getLevel().setPixel(pixel, x, y, PixelLayer.values()[layer]);
     }
 }

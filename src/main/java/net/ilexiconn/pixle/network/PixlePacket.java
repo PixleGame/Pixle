@@ -1,30 +1,25 @@
 package net.ilexiconn.pixle.network;
 
-import net.ilexiconn.netconn.INetworkManager;
-import net.ilexiconn.netconn.IPacket;
-import net.ilexiconn.netconn.client.Client;
-import net.ilexiconn.netconn.server.Server;
+import com.esotericsoftware.kryonet.Connection;
 import net.ilexiconn.pixle.client.PixleClient;
 import net.ilexiconn.pixle.entity.PlayerEntity;
 import net.ilexiconn.pixle.server.PixleServer;
 
-import java.net.Socket;
-
-public abstract class PixlePacket implements IPacket {
-    public void handleServer(Socket sender, INetworkManager networkManager) {
+public abstract class PixlePacket {
+    public void handleServer(Connection connection) {
         PixleServer instance = PixleServer.INSTANCE;
-        handleServer(instance, sender, instance.getLevel().getPlayerByUsername(PixleNetworkManager.getUsername(sender)), networkManager, getEstimatedSendTime(((Server) networkManager).getPingTime(sender)));
+        handleServer(instance, instance.getLevel().getPlayerByUsername(PixleNetworkManager.getUsername(connection)), connection, getEstimatedSendTime(connection));
     }
 
-    public void handleClient(Socket server, INetworkManager networkManager) {
-        handleClient(PixleClient.INSTANCE, networkManager, getEstimatedSendTime(((Client) networkManager).getPingTime()));
+    public void handleClient(Connection connection) {
+        handleClient(PixleClient.INSTANCE, connection, getEstimatedSendTime(connection));
     }
 
-    private long getEstimatedSendTime(int ping) {
-        return System.currentTimeMillis() - (ping / 2);
+    private long getEstimatedSendTime(Connection connection) {
+        return System.currentTimeMillis() - (connection.getReturnTripTime() / 2);
     }
 
-    public abstract void handleServer(PixleServer server, Socket sender, PlayerEntity player, INetworkManager networkManager, long estimatedSendTime);
+    public abstract void handleServer(PixleServer pixleServer, PlayerEntity player, Connection connection, long estimatedSendTime);
 
-    public abstract void handleClient(PixleClient client, INetworkManager networkManager, long estimatedSendTime);
+    public abstract void handleClient(PixleClient client, Connection connection, long estimatedSendTime);
 }
