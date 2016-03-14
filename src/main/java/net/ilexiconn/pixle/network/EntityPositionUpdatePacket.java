@@ -14,6 +14,8 @@ public class EntityPositionUpdatePacket extends PixlePacket {
     private int entityId;
     private double posX;
     private double posY;
+    private float velX;
+    private float velY;
 
     public EntityPositionUpdatePacket() {}
 
@@ -21,6 +23,8 @@ public class EntityPositionUpdatePacket extends PixlePacket {
         entityId = entity.getEntityId();
         posX = entity.posX;
         posY = entity.posY;
+        velX = entity.velX;
+        velY = entity.velY;
     }
 
     @Override
@@ -32,8 +36,12 @@ public class EntityPositionUpdatePacket extends PixlePacket {
         Level level = client.getLevel();
         Entity entity = level.getEntityById(entityId);
         if (entity != null) {
+            entity.prevPosX = entity.posX;
+            entity.prevPosY = entity.posY;
             entity.posX = posX;
             entity.posY = posY;
+            entity.velX = velX;
+            entity.velY = velY;
         }
     }
 
@@ -42,6 +50,8 @@ public class EntityPositionUpdatePacket extends PixlePacket {
         buffer.writeInteger(entityId);
         buffer.writeDouble(posX);
         buffer.writeDouble(posY);
+        buffer.writeFloat(velX);
+        buffer.writeFloat(velY);
     }
 
     @Override
@@ -49,5 +59,7 @@ public class EntityPositionUpdatePacket extends PixlePacket {
         entityId = buffer.readInteger();
         posX = buffer.readDouble();
         posY = buffer.readDouble();
+        velX = buffer.readFloat();
+        velY = buffer.readFloat();
     }
 }

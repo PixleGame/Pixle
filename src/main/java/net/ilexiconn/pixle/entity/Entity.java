@@ -55,11 +55,10 @@ public abstract class Entity {
         velX *= airFriction;
         velY *= airFriction;
 
-        if (level.getSide().isServer() && ticks % 3 == 0) {
+        if (level.getSide().isServer() && ticks % 4 == 0) {
             if (posX != prevPosX || posY != prevPosY) {
                 PixleServer.INSTANCE.getServer().sendPacketToAllClients(new EntityPositionUpdatePacket(this));
             }
-
             prevPosX = posX;
             prevPosY = posY;
         }
