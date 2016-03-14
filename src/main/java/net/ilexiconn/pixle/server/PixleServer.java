@@ -34,6 +34,7 @@ public class PixleServer extends Listener {
 
     private void init(int port) throws IOException {
         server = new Server();
+        server.start();
         server.bind(port);
         server.addListener(this);
         PixleNetworkManager.init(server);
