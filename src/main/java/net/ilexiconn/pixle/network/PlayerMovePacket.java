@@ -23,20 +23,23 @@ public class PlayerMovePacket extends PixlePacket {
 
     @Override
     public void handleServer(PixleServer server, Socket sender, PlayerEntity player, INetworkManager networkManager, long estimatedSendTime) {
-        handle((PlayerEntity) server.getLevel().getEntityById(entityId), estimatedSendTime);
+        handle((PlayerEntity) server.getLevel().getEntityById(entityId), estimatedSendTime, false);
         networkManager.sendPacketToAllClients(this);
     }
 
     @Override
     public void handleClient(PixleClient client, INetworkManager networkManager, long estimatedSendTime) {
-        handle((PlayerEntity) client.getLevel().getEntityById(entityId), estimatedSendTime);
+        handle((PlayerEntity) client.getLevel().getEntityById(entityId), estimatedSendTime, true);
     }
 
-    private void handle(PlayerEntity player, long estimatedSendTime) {
+    private void handle(PlayerEntity player, long estimatedSendTime, boolean client) {
         if (player != null) {
             player.moveX = moveX;
             player.jumping = jumping;
             int timeDifference = (int) (System.currentTimeMillis() - estimatedSendTime);
+            if (client) {
+                timeDifference *= 2;
+            }
             for (int i = 0; i < (int) (timeDifference * 0.06F); i++) {
                 player.updateMovement();
             }
