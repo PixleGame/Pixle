@@ -25,11 +25,11 @@ public class SetPixelPacket extends PixlePacket {
     }
 
     @Override
-    public void handleServer(PixleServer server, Socket sender, PlayerEntity player, INetworkManager networkManager) {
+    public void handleServer(PixleServer server, Socket sender, PlayerEntity player, INetworkManager networkManager, long estimatedSendTime) {
     }
 
     @Override
-    public void handleClient(PixleClient client, INetworkManager networkManager) {
+    public void handleClient(PixleClient client, INetworkManager networkManager, long estimatedSendTime) {
         client.getLevel().setPixel(pixel, x, y, layer);
     }
 

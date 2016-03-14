@@ -28,13 +28,14 @@ public class EntityPositionUpdatePacket extends PixlePacket {
     }
 
     @Override
-    public void handleServer(PixleServer server, Socket sender, PlayerEntity player, INetworkManager networkManager) {
+    public void handleServer(PixleServer server, Socket sender, PlayerEntity player, INetworkManager networkManager, long estimatedSendTime) {
     }
 
     @Override
-    public void handleClient(PixleClient client, INetworkManager networkManager) {
+    public void handleClient(PixleClient client, INetworkManager networkManager, long estimatedSendTime) {
         Level level = client.getLevel();
         Entity entity = level.getEntityById(entityId);
+        int timeDifference = (int) (System.currentTimeMillis() - estimatedSendTime);
         if (entity != null) {
             entity.prevPosX = entity.posX;
             entity.prevPosY = entity.posY;
@@ -42,6 +43,9 @@ public class EntityPositionUpdatePacket extends PixlePacket {
             entity.posY = posY;
             entity.velX = velX;
             entity.velY = velY;
+            for (int i = 0; i < (int) (timeDifference * 0.06F); i++) {
+                entity.updateMovement();
+            }
         }
     }
 

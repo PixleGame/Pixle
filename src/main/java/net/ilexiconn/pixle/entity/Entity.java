@@ -42,6 +42,18 @@ public abstract class Entity {
     public void update() {
         ticks++;
 
+        updateMovement();
+
+        if (level.getSide().isServer() && ticks % 4 == 0) {
+            if (posX != prevPosX || posY != prevPosY) {
+                PixleServer.INSTANCE.getServer().sendPacketToAllClients(new EntityPositionUpdatePacket(this));
+            }
+            prevPosX = posX;
+            prevPosY = posY;
+        }
+    }
+
+    public void updateMovement() {
         velY -= getGravity() * 0.1F;
 
         if (velY < -1.0F) {
@@ -54,14 +66,6 @@ public abstract class Entity {
 
         velX *= airFriction;
         velY *= airFriction;
-
-        if (level.getSide().isServer() && ticks % 4 == 0) {
-            if (posX != prevPosX || posY != prevPosY) {
-                PixleServer.INSTANCE.getServer().sendPacketToAllClients(new EntityPositionUpdatePacket(this));
-            }
-            prevPosX = posX;
-            prevPosY = posY;
-        }
     }
 
     public void move(float velX, float velY) {
