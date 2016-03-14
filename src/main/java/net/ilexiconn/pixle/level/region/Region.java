@@ -9,8 +9,8 @@ import net.ilexiconn.pixle.pixel.Pixel;
 import java.util.Random;
 
 public class Region {
-    public static final int REGION_WIDTH = 4;
-    public static final int REGION_HEIGHT = 256;
+    public static final int REGION_WIDTH = 16;
+    public static final int REGION_HEIGHT = 1024;
 
     private Level level;
     private int[][][] pixels = new int[PixelLayer.values().length][REGION_WIDTH][REGION_HEIGHT];

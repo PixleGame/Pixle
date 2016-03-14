@@ -130,7 +130,7 @@ public class PixleClient extends Listener {
     private void init() throws IOException {
         textureManager = new TextureManager();
         level = new ClientLevel();
-        client = new Client();
+        client = new Client(17408, 17408);
         client.start();
         PixleNetworkManager.init(client);
         openGUI(new WorldGUI(this));
