@@ -103,9 +103,6 @@ public class PixleServer extends Listener {
         if (object instanceof PixlePacket) {
             PixlePacket packet = (PixlePacket) object;
             packet.handleServer(connection);
-        } else if (object instanceof ConnectPacket) {
-            ConnectPacket connectPacket = (ConnectPacket) object;
-            connectPacket.receive(connection);
         }
     }
 }

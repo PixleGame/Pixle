@@ -16,6 +16,7 @@ import net.ilexiconn.pixle.event.event.InitializeEvent;
 import net.ilexiconn.pixle.level.ClientLevel;
 import net.ilexiconn.pixle.network.ConnectPacket;
 import net.ilexiconn.pixle.network.PixleNetworkManager;
+import net.ilexiconn.pixle.network.PixlePacket;
 import net.ilexiconn.pixle.network.PlayerMovePacket;
 import net.ilexiconn.pixle.util.ConfigUtils;
 import net.ilexiconn.pixle.util.SystemUtils;
@@ -224,6 +225,19 @@ public class PixleClient extends Listener {
     @Override
     public void connected(Connection connection) {
         client.sendTCP(new ConnectPacket(username));
+    }
+
+    @Override
+    public void disconnected (Connection connection) {
+        System.exit(1); //bye world
+    }
+
+    @Override
+    public void received (Connection connection, Object object) {
+        if (object instanceof PixlePacket) {
+            PixlePacket packet = (PixlePacket) object;
+            packet.handleClient(connection);
+        }
     }
 
     public String getUsername() {
