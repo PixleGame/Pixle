@@ -126,9 +126,11 @@ public class PixleClient extends Listener {
         }
     }
 
-    private void init() {
+    private void init() throws IOException {
         textureManager = new TextureManager();
         level = new ClientLevel();
+        client = new Client();
+        client.start();
         PixleNetworkManager.init(client);
         openGUI(new WorldGUI(this));
 
@@ -142,7 +144,6 @@ public class PixleClient extends Listener {
     }
 
     public void connect(String host, int port) throws IOException {
-        client = new Client();
         client.connect(5000, host, port);
         client.addListener(this);
     }
@@ -150,7 +151,6 @@ public class PixleClient extends Listener {
     public void disconnect() {
         if (client != null) {
             client.close();
-            client = null;
         }
     }
 

@@ -33,10 +33,10 @@ public class PixleServer extends Listener {
     }
 
     private void init(int port) throws IOException {
-        PixleNetworkManager.init(server);
         server = new Server();
         server.bind(port);
         server.addListener(this);
+        PixleNetworkManager.init(server);
         level = new ServerLevel();
     }
 
