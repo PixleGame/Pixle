@@ -165,7 +165,7 @@ public class PixleClient implements IClientListener {
                 jumping = true;
             }
             if (moveX != 0 || jumping) {
-                client.sendPacketToServer(new PlayerMovePacket(moveX, jumping));
+                client.sendPacketToServer(new PlayerMovePacket(player, moveX, jumping));
             }
         }
 

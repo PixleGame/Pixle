@@ -28,6 +28,8 @@ public abstract class Entity {
 
     public boolean onSurface;
 
+    public int ticks;
+
     public Entity(Level level) {
         this.level = level;
         this.setBounds(1.0F, 2.0F);
@@ -38,20 +40,22 @@ public abstract class Entity {
     }
 
     public void update() {
-        if (level.getSide().isServer()) {
-            velY -= getGravity() * 0.1F;
+        ticks++;
 
-            if (velY < -1.0F) {
-                velY = -1.0F;
-            }
+        velY -= getGravity() * 0.1F;
 
-            move(velX, velY);
+        if (velY < -1.0F) {
+            velY = -1.0F;
+        }
 
-            float airFriction = getAirFriction();
+        move(velX, velY);
 
-            velX *= airFriction;
-            velY *= airFriction;
+        float airFriction = getAirFriction();
 
+        velX *= airFriction;
+        velY *= airFriction;
+
+        if (level.getSide().isServer() && ticks % 3 == 0) {
             if (posX != prevPosX || posY != prevPosY) {
                 PixleServer.INSTANCE.getServer().sendPacketToAllClients(new EntityPositionUpdatePacket(this));
             }

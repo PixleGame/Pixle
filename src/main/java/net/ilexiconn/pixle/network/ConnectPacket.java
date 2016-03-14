@@ -39,9 +39,9 @@ public class ConnectPacket implements IPacket {
             PlayerEntity player = new PlayerEntity(level, username);
             player.posY = level.getHeight((int) player.posX, PixelLayer.FOREGROUND) + 1;
             level.addEntity(player, true);
-            server.getServer().sendPacketToClient(new SetPlayerPacket(player), sender);
-            for (Entity entity : server.getLevel().getEntities()) {
-                server.getServer().sendPacketToClient(new AddEntityPacket(entity), sender);
+            networkManager.sendPacketToClient(new SetPlayerPacket(player), sender);
+            for (Entity entity : level.getEntities()) {
+                networkManager.sendPacketToClient(new AddEntityPacket(entity), sender);
             }
         } else {
             System.out.println(username + " tried to join but somebody with that username is connected!");
