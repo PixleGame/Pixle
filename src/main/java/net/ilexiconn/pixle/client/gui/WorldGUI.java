@@ -1,6 +1,7 @@
 package net.ilexiconn.pixle.client.gui;
 
 import net.ilexiconn.pixle.client.PixleClient;
+import net.ilexiconn.pixle.client.event.RenderEntityEvent;
 import net.ilexiconn.pixle.client.gl.GLStateManager;
 import net.ilexiconn.pixle.client.render.RenderHelper;
 import net.ilexiconn.pixle.client.render.RenderingRegistry;
@@ -50,7 +51,10 @@ public class WorldGUI extends GUI {
             for (Entity entity : level.getEntities()) {
                 IEntityRenderer entityRenderer = RenderingRegistry.getEntityRenderer(entity.getClass());
                 if (entityRenderer != null) {
-                    entityRenderer.render(entity, centerX - (int) ((player.posX - entity.posX) * pixelSize), centerY - (int) Math.round((entity.posY - player.posY) * pixelSize), level, (float) pixle.getDelta());
+                    if (pixle.eventBus.post(new RenderEntityEvent.Pre(pixle, entity))) {
+                        entityRenderer.render(entity, centerX - (int) ((player.posX - entity.posX) * pixelSize), centerY - (int) Math.round((entity.posY - player.posY) * pixelSize), level, (float) pixle.getDelta());
+                    }
+                    pixle.eventBus.post(new RenderEntityEvent.Post(pixle, entity));
                 }
             }
         }

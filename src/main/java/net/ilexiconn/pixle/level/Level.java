@@ -2,9 +2,11 @@ package net.ilexiconn.pixle.level;
 
 import net.darkhax.opennbt.tags.CompoundTag;
 import net.darkhax.opennbt.tags.Tag;
+import net.ilexiconn.pixle.client.PixleClient;
 import net.ilexiconn.pixle.entity.Entity;
 import net.ilexiconn.pixle.entity.EntityRegistry;
 import net.ilexiconn.pixle.entity.PlayerEntity;
+import net.ilexiconn.pixle.event.event.SetPixelEvent;
 import net.ilexiconn.pixle.level.generator.DefaultLevelGenerator;
 import net.ilexiconn.pixle.level.generator.ILevelGenerator;
 import net.ilexiconn.pixle.level.region.Region;
@@ -49,9 +51,11 @@ public abstract class Level {
     public void setPixel(Pixel pixel, int x, int y, PixelLayer layer) {
         if (y >= 0 && y < LEVEL_HEIGHT) {
             Region regionForPixel = getRegionForPixel(x, y);
-            x = x & (Region.REGION_WIDTH - 1);
-            y = y & (Region.REGION_HEIGHT - 1);
-            regionForPixel.setPixel(pixel, x, y, layer);
+            int regionX = x & (Region.REGION_WIDTH - 1);
+            int regionY = y & (Region.REGION_HEIGHT - 1);
+            if (PixleClient.INSTANCE.eventBus.post(new SetPixelEvent.Pre(pixel, x, y, this, regionForPixel, layer))) {
+                regionForPixel.setPixel(pixel, regionX, regionY, layer);
+            }
         }
     }
 

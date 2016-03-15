@@ -5,6 +5,7 @@ import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.minlog.Log;
 import net.ilexiconn.pixle.client.config.ClientConfig;
+import net.ilexiconn.pixle.client.event.RenderEvent;
 import net.ilexiconn.pixle.client.gl.GLStateManager;
 import net.ilexiconn.pixle.client.gui.GUI;
 import net.ilexiconn.pixle.client.gui.WorldGUI;
@@ -231,8 +232,11 @@ public class PixleClient extends Listener {
     }
 
     private void render() {
-        GLStateManager.enableColor();
-        new ArrayList<>(getOpenGUIs()).forEach(GUI::render);
+        if (eventBus.post(new RenderEvent.Pre(this))) {
+            GLStateManager.enableColor();
+            new ArrayList<>(getOpenGUIs()).forEach(GUI::render);
+        }
+        eventBus.post(new RenderEvent.Post(this));
     }
 
     public void openGUI(GUI gui) {
