@@ -2,6 +2,7 @@ package net.ilexiconn.pixle.level.generator;
 
 import net.ilexiconn.pixle.level.Level;
 import net.ilexiconn.pixle.level.PixelLayer;
+import net.ilexiconn.pixle.pixel.Pixel;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -34,7 +35,7 @@ public class ImageStructureGenerator {
                 int argb = image.getRGB(pixelX, pixelY);
                 int alpha = (argb >> 24) & 0xFF;
                 int color = argb & 0xFFFFFF;
-                pixels[alpha > 128 ? PixelLayer.FOREGROUND.ordinal() : PixelLayer.BACKGROUND.ordinal()][pixelX][pixelY] = color;
+                pixels[alpha > 128 ? PixelLayer.FOREGROUND.ordinal() : PixelLayer.BACKGROUND.ordinal()][pixelX][pixelY] = Pixel.fromColor(color).getPixelID();
             }
         }
         return new Structure(pixels);

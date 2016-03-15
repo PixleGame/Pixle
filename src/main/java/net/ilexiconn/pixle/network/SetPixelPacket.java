@@ -8,7 +8,7 @@ import net.ilexiconn.pixle.pixel.Pixel;
 import net.ilexiconn.pixle.server.PixleServer;
 
 public class SetPixelPacket extends PixlePacket {
-    private int pixel;
+    private byte pixel;
     private int x;
     private int y;
     private byte layer;
@@ -17,7 +17,7 @@ public class SetPixelPacket extends PixlePacket {
     }
 
     public SetPixelPacket(int pixel, int x, int y, PixelLayer layer) {
-        this.pixel = pixel;
+        this.pixel = (byte) pixel;
         this.x = x;
         this.y = y;
         this.layer = (byte) layer.ordinal();
