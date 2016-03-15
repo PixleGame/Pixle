@@ -1,0 +1,6 @@
+{
+  "mainClass": "net.ilexiconn.pixle.plugin.TestPlugin",
+  "id": "test",
+  "name": "Test",
+  "version": "0.1.0"
+}

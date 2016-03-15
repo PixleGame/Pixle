@@ -3,16 +3,15 @@ package net.ilexiconn.pixle.server;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
+import com.esotericsoftware.minlog.Log;
 import net.ilexiconn.pixle.crash.CrashReport;
 import net.ilexiconn.pixle.event.bus.EventBus;
 import net.ilexiconn.pixle.level.Level;
 import net.ilexiconn.pixle.level.ServerLevel;
-import net.ilexiconn.pixle.network.ConnectPacket;
 import net.ilexiconn.pixle.network.PixleNetworkManager;
 import net.ilexiconn.pixle.network.PixlePacket;
 
 import java.io.IOException;
-import java.net.Socket;
 
 public class PixleServer extends Listener {
     private boolean closeRequested;
@@ -93,7 +92,7 @@ public class PixleServer extends Listener {
         String username = PixleNetworkManager.clients.get(connection);
         PixleNetworkManager.clients.remove(connection);
         if (username != null) {
-            System.out.println(username + " has disconnected!");
+            Log.info("Server", username + " has disconnected!");
         }
         level.removeEntity(level.getPlayerByUsername(username));
     }

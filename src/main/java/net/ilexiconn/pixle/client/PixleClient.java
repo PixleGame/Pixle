@@ -3,6 +3,9 @@ package net.ilexiconn.pixle.client;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
+import com.esotericsoftware.minlog.Log;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import net.ilexiconn.pixle.client.config.ClientConfig;
 import net.ilexiconn.pixle.client.gl.GLStateManager;
 import net.ilexiconn.pixle.client.gui.GUI;
@@ -11,16 +14,18 @@ import net.ilexiconn.pixle.client.render.TextureManager;
 import net.ilexiconn.pixle.crash.CrashReport;
 import net.ilexiconn.pixle.entity.PlayerEntity;
 import net.ilexiconn.pixle.event.bus.EventBus;
-import net.ilexiconn.pixle.event.bus.EventHandler;
-import net.ilexiconn.pixle.event.event.InitializeEvent;
+import net.ilexiconn.pixle.event.event.PixleInitializeEvent;
 import net.ilexiconn.pixle.level.ClientLevel;
 import net.ilexiconn.pixle.network.ConnectPacket;
 import net.ilexiconn.pixle.network.PixleNetworkManager;
 import net.ilexiconn.pixle.network.PixlePacket;
 import net.ilexiconn.pixle.network.PlayerMovePacket;
+import net.ilexiconn.pixle.plugin.PluginJson;
+import net.ilexiconn.pixle.plugin.PluginJsonAdapter;
 import net.ilexiconn.pixle.server.PixleServer;
 import net.ilexiconn.pixle.util.ConfigUtils;
 import net.ilexiconn.pixle.util.SystemUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
@@ -33,11 +38,19 @@ import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 
 public class PixleClient extends Listener {
+    private final Gson pluginGson = new GsonBuilder().registerTypeAdapter(PluginJson.class, new PluginJsonAdapter()).create();
+
+    private List<PluginJson> pluginList = new ArrayList<>();
+
     private boolean closeRequested;
     private int fps;
     private double delta;
@@ -70,12 +83,13 @@ public class PixleClient extends Listener {
             PixleClient.INSTANCE = this;
             config = ConfigUtils.loadConfig(configFile, ClientConfig.class);
             this.username = properties.get("username");
+            loadPlugins();
             init();
             int port = properties.containsKey("port") ? Integer.parseInt(properties.get("port")) : 25565;
             if (properties.containsKey("host")) {
                 connect(properties.get("host"), port);
             } else {
-                System.out.println("Starting integrated server on port " + port);
+                Log.info("Client", "Starting integrated server on port " + port);
                 hasIntegratedServer = true;
                 integratedServer = new PixleServer();
                 new Thread() {
@@ -187,13 +201,39 @@ public class PixleClient extends Listener {
         PixleNetworkManager.init(client);
         openGUI(new WorldGUI(this));
 
-        PixleClient.EVENT_BUS.register(this);
-        PixleClient.EVENT_BUS.post(new InitializeEvent());
+        PixleClient.EVENT_BUS.post(new PixleInitializeEvent());
     }
 
-    @EventHandler
-    public void onInitialize(InitializeEvent event) {
-        System.out.println("Event bus test!");
+    private void loadPlugins() {
+        File modDir = new File(SystemUtils.getGameFolder(), "plugins");
+        if (!modDir.exists()) {
+            modDir.mkdir();
+        }
+        for (File file : modDir.listFiles()) {
+            if (FilenameUtils.getExtension(file.getAbsolutePath()).equals("pxlm")) {
+                try {
+                    ZipFile zipFile = new ZipFile(file);
+                    Enumeration<? extends ZipEntry> entries = zipFile.entries();
+                    while (entries.hasMoreElements()) {
+                        ZipEntry zipEntry = entries.nextElement();
+                        if (zipEntry.getName().equals("plugin.json")) {
+                            InputStream stream = zipFile.getInputStream(zipEntry);
+                            PluginJson plugin = pluginGson.fromJson(new InputStreamReader(stream), PluginJson.class);
+                            pluginList.add(plugin);
+                            EVENT_BUS.register(plugin.getInstance());
+                        }
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        InputStream stream = PixleClient.class.getResourceAsStream("/plugin.json");
+        if (stream != null) {
+            PluginJson plugin = pluginGson.fromJson(new InputStreamReader(stream), PluginJson.class);
+            pluginList.add(plugin);
+            EVENT_BUS.register(plugin.getInstance());
+        }
     }
 
     public void connect(String host, int port) throws IOException {

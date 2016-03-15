@@ -24,7 +24,7 @@ public class Pixel {
     private final int pixelID;
     private int color;
 
-    protected Pixel(int id) {
+    public Pixel(int id) {
         if (pixels[id] != null) {
             throw new RuntimeException("Pixel ID " + id + " already occupied by pixel " + Pixel.pixels[id] + " when adding pixel " + this);
         }
