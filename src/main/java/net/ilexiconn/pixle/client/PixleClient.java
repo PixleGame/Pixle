@@ -66,7 +66,7 @@ public class PixleClient extends Listener {
 
     private String username;
 
-    public static final EventBus EVENT_BUS = new EventBus();
+    public static EventBus EVENT_BUS = new EventBus();
 
     public static PixleClient INSTANCE;
 
@@ -92,6 +92,7 @@ public class PixleClient extends Listener {
                 Log.info("Client", "Starting integrated server on port " + port);
                 hasIntegratedServer = true;
                 integratedServer = new PixleServer();
+                PixleServer.EVENT_BUS = EVENT_BUS;
                 new Thread() {
                     @Override
                     public void run() {
@@ -100,7 +101,7 @@ public class PixleClient extends Listener {
                 }.start();
                 connect("localhost", port);
             }
-            //connect(host, port);
+
             try {
                 Display.setDisplayMode(new DisplayMode(854, 480));
                 Display.setTitle("Pixle");

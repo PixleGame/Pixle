@@ -6,6 +6,7 @@ import com.esotericsoftware.kryonet.Server;
 import com.esotericsoftware.minlog.Log;
 import net.ilexiconn.pixle.crash.CrashReport;
 import net.ilexiconn.pixle.event.bus.EventBus;
+import net.ilexiconn.pixle.event.event.PixleInitializeEvent;
 import net.ilexiconn.pixle.level.Level;
 import net.ilexiconn.pixle.level.ServerLevel;
 import net.ilexiconn.pixle.network.PixleNetworkManager;
@@ -19,7 +20,7 @@ public class PixleServer extends Listener {
     private ServerLevel level;
 
     public static PixleServer INSTANCE;
-    public static final EventBus EVENT_BUS = new EventBus();
+    public static EventBus EVENT_BUS = new EventBus();
 
     public void start(int port) {
         try {
@@ -38,6 +39,8 @@ public class PixleServer extends Listener {
         server.addListener(this);
         PixleNetworkManager.init(server);
         level = new ServerLevel();
+
+        PixleServer.EVENT_BUS.post(new PixleInitializeEvent());
     }
 
     public void stop() {
