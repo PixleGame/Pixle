@@ -4,7 +4,6 @@ import com.esotericsoftware.kryonet.Connection;
 import net.ilexiconn.pixle.client.PixleClient;
 import net.ilexiconn.pixle.entity.PlayerEntity;
 import net.ilexiconn.pixle.level.ClientLevel;
-import net.ilexiconn.pixle.level.PixelLayer;
 import net.ilexiconn.pixle.level.region.Region;
 import net.ilexiconn.pixle.server.PixleServer;
 
@@ -17,13 +16,13 @@ public class SendRegionPacket extends PixlePacket {
     public SendRegionPacket() {
     }
 
-    public SendRegionPacket(Region region, PixelLayer layer, int ySection) {
-        this.layer = (byte) layer.ordinal();
+    public SendRegionPacket(Region region, byte layer, int ySection) {
+        this.layer = layer;
         this.regionX = region.getX();
         this.ySection = (byte) ySection;
 
         pixels = new byte[Region.REGION_WIDTH][Region.REGION_HEIGHT];
-        int[][] regionPixels = region.getPixels()[layer.ordinal()];
+        int[][] regionPixels = region.getPixels()[layer];
 
         int yOffset = ySection * 16;
 
@@ -40,23 +39,7 @@ public class SendRegionPacket extends PixlePacket {
 
     @Override
     public void handleClient(PixleClient client, Connection connection, long estimatedSendTime) {
-        PixelLayer layer = PixelLayer.values()[this.layer];
-
-        int width = Region.REGION_WIDTH;
-
-        int[][] pixels = new int[width][16];
-
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < 16; y++) {
-                pixels[x][y] = this.pixels[x][y];
-            }
-        }
-
-        int yOffset = ySection * 16;
-
         ClientLevel level = client.getLevel();
-        Region region = level.getRegion(regionX);
-        region.setPixels(pixels, layer, yOffset);
-        level.receiveRegion(region);
+        level.getReceivingRegion(regionX).receivePart(level, layer, ySection, pixels);
     }
 }

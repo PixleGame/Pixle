@@ -1,17 +1,14 @@
 package net.ilexiconn.pixle.level;
 
-import net.ilexiconn.pixle.client.PixleClient;
-import net.ilexiconn.pixle.entity.Entity;
-import net.ilexiconn.pixle.entity.PlayerEntity;
+import net.ilexiconn.pixle.level.region.ReceivingRegion;
 import net.ilexiconn.pixle.level.region.Region;
-import net.ilexiconn.pixle.network.RequestRegionPacket;
 import net.ilexiconn.pixle.util.Side;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ClientLevel extends Level {
-    private List<Integer> requestingRegions = new ArrayList<>();
+    private List<ReceivingRegion> requestingRegions = new ArrayList<>();
 
     @Override
     public Side getSide() {
@@ -20,14 +17,23 @@ public class ClientLevel extends Level {
 
     @Override
     public void requestRegion(Region region, int regionX) {
-        if (!requestingRegions.contains(regionX)) {
-            requestingRegions.add(regionX);
-            PixleClient.INSTANCE.getClient().sendTCP(new RequestRegionPacket(regionX));
+        ReceivingRegion receivingRegion = new ReceivingRegion(regionX);
+        if (!requestingRegions.contains(receivingRegion)) {
+            requestingRegions.add(receivingRegion);
+            receivingRegion.requestNext();
         }
     }
 
-    public void receiveRegion(Region region) {
-        Integer x = region.getX();
-        requestingRegions.remove(x);
+    public ReceivingRegion getReceivingRegion(int x) {
+        for (ReceivingRegion receivingRegion : new ArrayList<>(requestingRegions)) {
+            if (receivingRegion.getX() == x) {
+                return receivingRegion;
+            }
+        }
+        return null;
+    }
+
+    public void completeRegion(ReceivingRegion receivingRegion) {
+        requestingRegions.remove(receivingRegion);
     }
 }

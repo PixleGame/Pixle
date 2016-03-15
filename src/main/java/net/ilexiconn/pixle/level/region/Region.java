@@ -79,20 +79,19 @@ public class Region {
         return pixels;
     }
 
-    public void setPixels(int[][] pixels, PixelLayer layer, int yOffset) {
-        for (int x = 0; x < pixels.length; x++) {
-            System.arraycopy(pixels[x], 0, this.pixels[layer.ordinal()][x], yOffset, 16);
-        }
-        loadHeights(layer);
+    public void setPixels(int[][][] pixels) {
+        this.pixels = pixels;
+        loadHeights();
     }
 
-    private void loadHeights(PixelLayer layer) {
-        int layerIndex = layer.ordinal();
-        for (int x = 0; x < pixels[layerIndex].length; x++) {
-            for (int y = REGION_HEIGHT - 1; y >= 0; y--) {
-                Pixel pixel = Pixel.getPixelByID(pixels[layerIndex][x][y]);
-                if (pixel != Pixel.air) {
-                    heights[layerIndex][x] = y;
+    private void loadHeights() {
+        for (int layer = 0; layer < pixels.length; layer++) {
+            for (int x = 0; x < pixels[layer].length; x++) {
+                for (int y = REGION_HEIGHT - 1; y >= 0; y--) {
+                    Pixel pixel = Pixel.getPixelByID(pixels[layer][x][y]);
+                    if (pixel != Pixel.air) {
+                        heights[layer][x] = y;
+                    }
                 }
             }
         }
