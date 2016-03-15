@@ -21,7 +21,7 @@ public class ClientDevStart extends DevStart {
         }
         int level = Log.LEVEL_INFO;
         try {
-            Field field = Log.class.getField("LEVEL_" + properties.get("log"));
+            Field field = Log.class.getField("LEVEL_" + properties.get("log").toUpperCase());
             level = field.getInt(null);
         } catch (Exception e) {
             e.printStackTrace();
@@ -35,7 +35,7 @@ public class ClientDevStart extends DevStart {
         applyDefault(properties, "gamefolder", SystemUtils.getGameFolder().getAbsolutePath());
         applyDefault(properties, "host", "localhost");
         applyDefault(properties, "port", 25565);
-        applyDefault(properties, "log", "INFO");
+        applyDefault(properties, "log", "info");
     }
 
     @Override

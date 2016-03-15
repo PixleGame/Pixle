@@ -13,7 +13,7 @@ public class ServerDevStart extends DevStart {
     public void preInit(Map<String, String> properties) {
         int level = Log.LEVEL_INFO;
         try {
-            Field field = Log.class.getField("LEVEL_" + properties.get("log"));
+            Field field = Log.class.getField("LEVEL_" + properties.get("log").toUpperCase());
             level = field.getInt(null);
         } catch (Exception e) {
             e.printStackTrace();
@@ -25,7 +25,7 @@ public class ServerDevStart extends DevStart {
     public void applyDefaults(Map<String, String> properties) {
         applyDefault(properties, "port", 25565);
         applyDefault(properties, "gamefolder", SystemUtils.getGameFolder().getAbsolutePath());
-        applyDefault(properties, "log", "INFO");
+        applyDefault(properties, "log", "info");
     }
 
     @Override
