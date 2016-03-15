@@ -22,18 +22,18 @@ public class Region {
         this.x = x;
     }
 
-    public int getPixel(int x, int y, PixelLayer layer) {
+    public Pixel getPixel(int x, int y, PixelLayer layer) {
         if (x >= 0 && x < REGION_WIDTH && y >= 0 && y < REGION_HEIGHT) {
-            return pixels[layer.ordinal()][x][y];
+            return Pixel.getPixelByID(pixels[layer.ordinal()][x][y]);
         } else {
-            return Pixel.AIR;
+            return Pixel.air;
         }
     }
 
-    public void setPixel(int pixel, int x, int y, PixelLayer layer) {
+    public void setPixel(Pixel pixel, int x, int y, PixelLayer layer) {
         if (x >= 0 && x < REGION_WIDTH && y >= 0 && y < REGION_HEIGHT) {
             int layerOrdinal = layer.ordinal();
-            pixels[layerOrdinal][x][y] = pixel;
+            pixels[layerOrdinal][x][y] = pixel.getPixelID();
             if (y > heights[layerOrdinal][x]) {
                 heights[layerOrdinal][x] = y;
             }
@@ -88,8 +88,8 @@ public class Region {
         int layerIndex = layer.ordinal();
         for (int x = 0; x < pixels[layerIndex].length; x++) {
             for (int y = REGION_HEIGHT - 1; y >= 0; y--) {
-                int pixel = pixels[layerIndex][x][y];
-                if (pixel != Pixel.AIR) {
+                Pixel pixel = Pixel.getPixelByID(pixels[layerIndex][x][y]);
+                if (pixel != Pixel.air) {
                     heights[layerIndex][x] = y;
                 }
             }

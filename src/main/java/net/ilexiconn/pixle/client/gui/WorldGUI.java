@@ -40,7 +40,7 @@ public class WorldGUI extends GUI {
                     if (Math.abs(relativeY) <= halfPixelsInHeight) {
                         for (int x = (int) (player.posX - (pixelsInWidth / 2)) - 1; x < player.posX + (pixelsInWidth / 2) + 1; x++) {
                             if (level.hasPixel(x, y, layer)) {
-                                GLStateManager.setColor(level.getPixel(x, y, layer));
+                                GLStateManager.setColor(level.getPixel(x, y, layer).getColor());
                                 RenderHelper.drawRect((int) (centerX - Math.round((player.posX - x) * pixelSize)), Display.getHeight() - (centerY - (int) Math.round((player.posY - y) * pixelSize)), pixelSize, pixelSize);
                             }
                         }

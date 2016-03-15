@@ -4,6 +4,7 @@ import com.esotericsoftware.kryonet.Connection;
 import net.ilexiconn.pixle.client.PixleClient;
 import net.ilexiconn.pixle.entity.PlayerEntity;
 import net.ilexiconn.pixle.level.PixelLayer;
+import net.ilexiconn.pixle.pixel.Pixel;
 import net.ilexiconn.pixle.server.PixleServer;
 
 public class SetPixelPacket extends PixlePacket {
@@ -29,6 +30,6 @@ public class SetPixelPacket extends PixlePacket {
 
     @Override
     public void handleClient(PixleClient client, Connection connection, long estimatedSendTime) {
-        client.getLevel().setPixel(pixel, x, y, PixelLayer.values()[layer]);
+        client.getLevel().setPixel(Pixel.getPixelByID(pixel), x, y, PixelLayer.values()[layer]);
     }
 }
