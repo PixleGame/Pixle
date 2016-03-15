@@ -10,7 +10,7 @@ import java.util.Random;
 
 public class Region {
     public static final int REGION_WIDTH = 16;
-    public static final int REGION_HEIGHT = 1024;
+    public static final int REGION_HEIGHT = 512;
 
     private Level level;
     private int[][][] pixels = new int[PixelLayer.values().length][REGION_WIDTH][REGION_HEIGHT];
