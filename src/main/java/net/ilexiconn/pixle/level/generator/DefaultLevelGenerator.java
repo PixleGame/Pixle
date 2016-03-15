@@ -15,7 +15,7 @@ public class DefaultLevelGenerator implements ILevelGenerator {
         for (int x = 0; x < Region.REGION_WIDTH; x++) {
             int worldX = x + regionOffset;
 
-            float scaledX = worldX / 16.0F;
+            float scaledX = worldX / 32.0F;
 
             int scaledXInt = fastFloor(scaledX);
             float fractionX = scaledX - scaledXInt;
@@ -61,6 +61,6 @@ public class DefaultLevelGenerator implements ILevelGenerator {
     }
 
     private int getHeight(long seed, int x) {
-        return new Random(seed * x).nextInt(10) + Region.REGION_HEIGHT / 2;
+        return new Random(seed * x).nextInt(20) + Region.REGION_HEIGHT / 2;
     }
 }
