@@ -21,7 +21,7 @@ public class SendRegionPacket extends PixlePacket {
         this.regionX = region.getX();
         this.ySection = (byte) ySection;
 
-        pixels = new byte[Region.REGION_WIDTH][Region.REGION_HEIGHT];
+        pixels = new byte[Region.REGION_WIDTH][16];
         int[][] regionPixels = region.getPixels()[layer];
 
         int yOffset = ySection * 16;

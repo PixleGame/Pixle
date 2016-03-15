@@ -28,6 +28,7 @@ public class ReceivingRegion {
         } else {
             if (currentLayer < PixelLayer.values().length - 1) {
                 currentLayer++;
+                currentYSection = 0;
             } else {
                 Region region = level.getRegion(x);
                 region.setPixels(this.pixels);
@@ -41,7 +42,7 @@ public class ReceivingRegion {
     }
 
     public void requestNext() {
-        PixleClient.INSTANCE.getClient().sendTCP(new RequestRegionPacket(x, currentYSection, PixelLayer.values()[currentLayer]));
+        PixleClient.INSTANCE.getClient().sendTCP(new RequestRegionPacket(x, currentYSection, currentLayer));
     }
 
     public int getX() {

@@ -4,7 +4,6 @@ import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Server;
 import net.ilexiconn.pixle.client.PixleClient;
 import net.ilexiconn.pixle.entity.PlayerEntity;
-import net.ilexiconn.pixle.level.PixelLayer;
 import net.ilexiconn.pixle.server.PixleServer;
 
 public class RequestRegionPacket extends PixlePacket {
@@ -15,10 +14,10 @@ public class RequestRegionPacket extends PixlePacket {
     public RequestRegionPacket() {
     }
 
-    public RequestRegionPacket(int x, int ySection, PixelLayer layer) {
+    public RequestRegionPacket(int x, int ySection, int layer) {
         this.x = x;
         this.ySection = (byte) ySection;
-        this.layer = (byte) layer.ordinal();
+        this.layer = (byte) layer;
     }
 
     @Override

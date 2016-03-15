@@ -59,12 +59,12 @@ public abstract class Entity {
             velY = -1.0F;
         }
 
-        move(velX, velY);
-
         float airFriction = getAirFriction();
 
         velX *= airFriction;
         velY *= airFriction;
+
+        move(velX, velY);
     }
 
     public void move(float velX, float velY) {
