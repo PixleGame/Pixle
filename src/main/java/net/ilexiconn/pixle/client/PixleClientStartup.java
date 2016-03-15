@@ -1,5 +1,6 @@
 package net.ilexiconn.pixle.client;
 
+import com.esotericsoftware.minlog.Log;
 import net.ilexiconn.pixle.util.StartupUtils;
 import net.ilexiconn.pixle.util.SystemUtils;
 import org.lwjgl.Sys;
@@ -12,9 +13,9 @@ public class PixleClientStartup {
         Thread.currentThread().setName("Client");
         Map<String, String> properties = StartupUtils.argsToMap(args);
         SystemUtils.setGameFolder(new File(properties.get("gamefolder")));
-        System.out.println("Setting user: " + properties.get("username"));
-        System.out.println("LWJGL version: " + Sys.getVersion());
+        Log.info("Startup", "Setting user: " + properties.get("username"));
+        Log.info("Startup", "LWJGL version: " + Sys.getVersion());
         PixleClient client = new PixleClient();
-        client.start(properties.get("username"), properties.get("host"), Integer.parseInt(properties.get("port")));
+        client.start(properties);
     }
 }

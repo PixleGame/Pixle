@@ -18,6 +18,7 @@ import net.ilexiconn.pixle.network.ConnectPacket;
 import net.ilexiconn.pixle.network.PixleNetworkManager;
 import net.ilexiconn.pixle.network.PixlePacket;
 import net.ilexiconn.pixle.network.PlayerMovePacket;
+import net.ilexiconn.pixle.server.PixleServer;
 import net.ilexiconn.pixle.util.ConfigUtils;
 import net.ilexiconn.pixle.util.SystemUtils;
 import org.lwjgl.LWJGLException;
@@ -34,6 +35,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class PixleClient extends Listener {
     private boolean closeRequested;
@@ -60,13 +62,31 @@ public class PixleClient extends Listener {
 
     private TrueTypeFont fontRenderer;
 
-    public void start(String username, String host, int port) {
+    private boolean hasIntegratedServer;
+    private PixleServer integratedServer;
+
+    public void start(Map<String, String> properties) {
         try {
             PixleClient.INSTANCE = this;
             config = ConfigUtils.loadConfig(configFile, ClientConfig.class);
-            this.username = username;
+            this.username = properties.get("username");
             init();
-            connect(host, port);
+            int port = properties.containsKey("port") ? Integer.parseInt(properties.get("port")) : 25565;
+            if (properties.containsKey("host")) {
+                connect(properties.get("host"), port);
+            } else {
+                System.out.println("Starting integrated server on port " + port);
+                hasIntegratedServer = true;
+                integratedServer = new PixleServer();
+                new Thread() {
+                    @Override
+                    public void run() {
+                        integratedServer.start(port);
+                    }
+                }.start();
+                connect("localhost", port);
+            }
+            //connect(host, port);
             try {
                 Display.setDisplayMode(new DisplayMode(854, 480));
                 Display.setTitle("Pixle");
@@ -282,6 +302,14 @@ public class PixleClient extends Listener {
 
     public TrueTypeFont getFontRenderer() {
         return fontRenderer;
+    }
+
+    public boolean hasIntegratedServer() {
+        return hasIntegratedServer;
+    }
+
+    public PixleServer getIntegratedServer() {
+        return integratedServer;
     }
 }
 
