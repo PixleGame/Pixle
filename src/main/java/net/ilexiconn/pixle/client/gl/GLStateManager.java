@@ -60,7 +60,7 @@ public class GLStateManager {
 
     static class BooleanState {
         private int capability;
-        private boolean currentState;
+        private Boolean currentState;
 
         public BooleanState(int capability) {
             this.capability = capability;
@@ -75,7 +75,7 @@ public class GLStateManager {
         }
 
         private void setState(boolean state) {
-            if (state != currentState) {
+            if (currentState == null || state != currentState) {
                 currentState = state;
                 if (state) {
                     GL11.glEnable(capability);

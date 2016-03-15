@@ -5,11 +5,10 @@ import net.ilexiconn.pixle.client.gl.GLStateManager;
 import net.ilexiconn.pixle.client.render.RenderHelper;
 import net.ilexiconn.pixle.client.render.RenderingRegistry;
 import net.ilexiconn.pixle.client.render.entity.IEntityRenderer;
-import net.ilexiconn.pixle.level.Level;
 import net.ilexiconn.pixle.entity.Entity;
 import net.ilexiconn.pixle.entity.PlayerEntity;
+import net.ilexiconn.pixle.level.Level;
 import net.ilexiconn.pixle.level.PixelLayer;
-import net.ilexiconn.pixle.level.region.Region;
 import org.lwjgl.opengl.Display;
 
 public class WorldGUI extends GUI {

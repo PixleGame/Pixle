@@ -1,7 +1,6 @@
 package net.ilexiconn.pixle.client.render;
 
 import net.ilexiconn.pixle.client.gl.GLStateManager;
-import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 
 public class RenderHelper {
@@ -37,6 +36,6 @@ public class RenderHelper {
 
     public static void drawVertex(int x, int y, int u, int v, float uMultiplier, float vMultiplier) {
         GL11.glTexCoord2f(u * uMultiplier, v * vMultiplier);
-        GL11.glVertex2f(x, Display.getHeight() - y);
+        GL11.glVertex2f(x, y);
     }
 }
