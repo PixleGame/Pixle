@@ -35,7 +35,7 @@ public class WorldGUI extends GUI {
             RenderHelper.drawRect(0, 0, Display.getWidth(), (int) (Display.getHeight() - (centerY - ((player.posY + 1) * pixelSize))));
 
             for (PixelLayer layer : PixelLayer.values()) {
-                for (int y = 0; y < Region.REGION_HEIGHT; y++) {
+                for (int y = 0; y < Level.LEVEL_HEIGHT; y++) {
                     int relativeY = (int) player.posY - y;
                     if (Math.abs(relativeY) <= halfPixelsInHeight) {
                         for (int x = (int) (player.posX - (pixelsInWidth / 2)) - 1; x < player.posX + (pixelsInWidth / 2) + 1; x++) {
