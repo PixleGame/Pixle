@@ -4,6 +4,7 @@ import com.esotericsoftware.minlog.Log;
 import net.ilexiconn.pixle.event.bus.EventHandler;
 import net.ilexiconn.pixle.event.event.PixleInitializeEvent;
 import net.ilexiconn.pixle.pixel.Pixel;
+import net.ilexiconn.pixle.util.Side;
 
 public class TestPlugin {
     public static final Pixel custom;
@@ -14,6 +15,6 @@ public class TestPlugin {
 
     @EventHandler
     public void onInitialize(PixleInitializeEvent event) {
-        Log.info("TestPlugin", "Hello world!");
+        Log.info("TestPlugin/" + Side.get(), "Hello world!");
     }
 }

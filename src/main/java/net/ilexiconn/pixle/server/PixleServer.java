@@ -11,16 +11,21 @@ import net.ilexiconn.pixle.level.Level;
 import net.ilexiconn.pixle.level.ServerLevel;
 import net.ilexiconn.pixle.network.PixleNetworkManager;
 import net.ilexiconn.pixle.network.PixlePacket;
+import net.ilexiconn.pixle.plugin.PluginJson;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PixleServer extends Listener {
+    public List<PluginJson> pluginList = new ArrayList<>();
+
     private boolean closeRequested;
     private Server server;
     private ServerLevel level;
 
     public static PixleServer INSTANCE;
-    public static EventBus EVENT_BUS = new EventBus();
+    public EventBus eventBus = new EventBus();
 
     public void start(int port) {
         try {
@@ -40,7 +45,7 @@ public class PixleServer extends Listener {
         PixleNetworkManager.init(server);
         level = new ServerLevel();
 
-        PixleServer.EVENT_BUS.post(new PixleInitializeEvent());
+        eventBus.post(new PixleInitializeEvent());
     }
 
     public void stop() {
