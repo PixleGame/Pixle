@@ -10,7 +10,7 @@ import java.util.Random;
 
 public class Region {
     public static final int REGION_WIDTH = 16;
-    public static final int REGION_HEIGHT = 512;
+    public static final int REGION_HEIGHT = 1024;
 
     private Level level;
     private int[][][] pixels = new int[PixelLayer.values().length][REGION_WIDTH][REGION_HEIGHT];
@@ -79,8 +79,10 @@ public class Region {
         return pixels;
     }
 
-    public void setPixels(int[][] pixels, PixelLayer layer) {
-        this.pixels[layer.ordinal()] = pixels;
+    public void setPixels(int[][] pixels, PixelLayer layer, int yOffset) {
+        for (int x = 0; x < pixels.length; x++) {
+            System.arraycopy(pixels[x], 0, this.pixels[layer.ordinal()][x], yOffset, 16);
+        }
         loadHeights(layer);
     }
 

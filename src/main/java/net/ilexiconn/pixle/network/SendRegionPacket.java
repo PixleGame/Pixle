@@ -10,22 +10,26 @@ import net.ilexiconn.pixle.server.PixleServer;
 
 public class SendRegionPacket extends PixlePacket {
     private byte layer;
+    private byte ySection;
     private int regionX;
     private byte[][] pixels;
 
     public SendRegionPacket() {
     }
 
-    public SendRegionPacket(Region region, PixelLayer layer) {
+    public SendRegionPacket(Region region, PixelLayer layer, int ySection) {
         this.layer = (byte) layer.ordinal();
         this.regionX = region.getX();
+        this.ySection = (byte) ySection;
 
         pixels = new byte[Region.REGION_WIDTH][Region.REGION_HEIGHT];
         int[][] regionPixels = region.getPixels()[layer.ordinal()];
 
+        int yOffset = ySection * 16;
+
         for (int x = 0; x < pixels.length; x++) {
-            for (int y = 0; y < pixels[x].length; y++) {
-                pixels[x][y] = (byte) regionPixels[x][y];
+            for (int y = 0; y < 16; y++) {
+                pixels[x][y] = (byte) regionPixels[x][y + yOffset];
             }
         }
     }
@@ -39,19 +43,20 @@ public class SendRegionPacket extends PixlePacket {
         PixelLayer layer = PixelLayer.values()[this.layer];
 
         int width = Region.REGION_WIDTH;
-        int height = Region.REGION_HEIGHT;
 
-        int[][] pixels = new int[width][height];
+        int[][] pixels = new int[width][16];
 
         for (int x = 0; x < width; x++) {
-            for (int y = 0; y < height; y++) {
+            for (int y = 0; y < 16; y++) {
                 pixels[x][y] = this.pixels[x][y];
             }
         }
 
+        int yOffset = ySection * 16;
+
         ClientLevel level = client.getLevel();
         Region region = level.getRegion(regionX);
-        region.setPixels(pixels, layer);
+        region.setPixels(pixels, layer, yOffset);
         level.receiveRegion(region);
     }
 }

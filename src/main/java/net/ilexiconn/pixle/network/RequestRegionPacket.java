@@ -25,7 +25,9 @@ public class RequestRegionPacket extends PixlePacket {
         Level level = pixleServer.getLevel();
         Region region = level.getRegion(x);
         for (PixelLayer layer : PixelLayer.values()) {
-            server.sendToTCP(connection.getID(), new SendRegionPacket(region, layer));
+            for (int y = 0; y < Region.REGION_HEIGHT; y += 16) {
+                server.sendToTCP(connection.getID(), new SendRegionPacket(region, layer, y / 16));
+            }
         }
     }
 
