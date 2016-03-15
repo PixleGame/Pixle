@@ -2,7 +2,6 @@ package net.ilexiconn.pixle.util;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import net.ilexiconn.pixle.crash.CrashReport;
 import org.apache.commons.io.IOUtils;
 
 import java.io.*;

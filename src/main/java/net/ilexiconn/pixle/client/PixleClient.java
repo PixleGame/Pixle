@@ -9,7 +9,7 @@ import net.ilexiconn.pixle.client.gl.GLStateManager;
 import net.ilexiconn.pixle.client.gui.GUI;
 import net.ilexiconn.pixle.client.gui.WorldGUI;
 import net.ilexiconn.pixle.client.render.TextureManager;
-import net.ilexiconn.pixle.crash.CrashReport;
+import net.ilexiconn.pixle.util.CrashReport;
 import net.ilexiconn.pixle.entity.PlayerEntity;
 import net.ilexiconn.pixle.event.bus.EventBus;
 import net.ilexiconn.pixle.event.event.PixleInitializeEvent;

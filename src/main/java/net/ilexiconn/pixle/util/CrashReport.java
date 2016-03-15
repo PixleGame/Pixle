@@ -1,6 +1,5 @@
-package net.ilexiconn.pixle.crash;
+package net.ilexiconn.pixle.util;
 
-import net.ilexiconn.pixle.util.Side;
 import org.apache.commons.io.IOUtils;
 
 import java.io.PrintWriter;

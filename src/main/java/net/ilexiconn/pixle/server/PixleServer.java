@@ -4,7 +4,7 @@ import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
 import com.esotericsoftware.minlog.Log;
-import net.ilexiconn.pixle.crash.CrashReport;
+import net.ilexiconn.pixle.util.CrashReport;
 import net.ilexiconn.pixle.event.bus.EventBus;
 import net.ilexiconn.pixle.event.event.PixleInitializeEvent;
 import net.ilexiconn.pixle.level.Level;
