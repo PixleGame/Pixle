@@ -19,7 +19,7 @@ import java.util.List;
 public abstract class Level {
     protected static final int LEVEL_REGION_WIDTH = 62500;
 
-    protected Region[] regions = new Region[LEVEL_REGION_WIDTH];
+    protected Region[][] regions = new Region[LEVEL_REGION_WIDTH][getRegionY(LEVEL_HEIGHT)];
 
     protected ILevelGenerator levelGenerator;
     protected long seed;
@@ -30,6 +30,8 @@ public abstract class Level {
     public static final int PIXEL_SIZE = 6;
 
     public static int nextEntityId;
+
+    public static final int LEVEL_HEIGHT = 1024;
 
     public Level(long seed) {
         this.levelGenerator = new DefaultLevelGenerator();
@@ -45,15 +47,22 @@ public abstract class Level {
     }
 
     public void setPixel(Pixel pixel, int x, int y, PixelLayer layer) {
-        Region regionForPixel = getRegionForPixel(x);
-        x = x & (Region.REGION_WIDTH - 1);
-        regionForPixel.setPixel(pixel, x, y, layer);
+        if (y >= 0 && y < LEVEL_HEIGHT) {
+            Region regionForPixel = getRegionForPixel(x, y);
+            x = x & (Region.REGION_WIDTH - 1);
+            y = y & (Region.REGION_HEIGHT - 1);
+            regionForPixel.setPixel(pixel, x, y, layer);
+        }
     }
 
     public Pixel getPixel(int x, int y, PixelLayer layer) {
-        Region region = getRegionForPixel(x);
-        x = x & (Region.REGION_WIDTH - 1);
-        return region.getPixel(x, y, layer);
+        if (y >= 0 && y < LEVEL_HEIGHT) {
+            Region region = getRegionForPixel(x, y);
+            x = x & (Region.REGION_WIDTH - 1);
+            y = y & (Region.REGION_HEIGHT - 1);
+            return region.getPixel(x, y, layer);
+        }
+        return Pixel.air;
     }
 
     public boolean hasPixel(int x, int y, PixelLayer layer) {
@@ -61,34 +70,41 @@ public abstract class Level {
     }
 
     public int getRegionX(int x) {
-        return x >> 4;
+        return x >> 5;
     }
 
-    public Region getRegionForPixel(int x) {
-        return getRegion(getRegionX(x));
+    public Region getRegionForPixel(int x, int y) {
+        return getRegion(getRegionX(x), getRegionY(y));
     }
 
-    public Region getRegion(int x) {
-        Region region = regions[getRegionIndex(x)];
+    private int getRegionY(int y) {
+        return y / Region.REGION_HEIGHT;
+    }
+
+    public Region getRegion(int x, int y) {
+        Region region = regions[getRegionXIndex(x)][y];
         if (region == null) {
-            region = new Region(x, this);
-            setRegion(region, x);
-            requestRegion(region, x);
+            region = new Region(x, y, this);
+            setRegion(region, x, y);
+            requestRegion(region, x, y);
         }
         return region;
     }
 
     public int getHeight(int x, PixelLayer layer) {
-        Region region = getRegionForPixel(x);
-        x = x & (Region.REGION_WIDTH - 1);
-        return region.getHeight(x, layer);
+        for (int y = LEVEL_HEIGHT - 1; y >= 0; y--) {
+            if (hasPixel(x, y, layer)) {
+                return y;
+            }
+        }
+        return 0;
     }
 
-    public void setRegion(Region region, int x) {
-        regions[getRegionIndex(x)] = region;
+    public void setRegion(Region region, int x, int y) {
+        regions[getRegionXIndex(x)][y] = region;
     }
 
-    protected int getRegionIndex(int x) {
+    protected int getRegionXIndex(int x) {
         return x + (LEVEL_REGION_WIDTH / 2);
     }
 
@@ -163,11 +179,13 @@ public abstract class Level {
         });
         compound.setTagList("entities", tagList);
         tagList.clear();
-        for (Region region : regions) {
-            if (region != null) {
-                CompoundTag compoundTag = new CompoundTag("");
-                region.writeToNBT(compoundTag);
-                tagList.add(compoundTag);
+        for (Region[] regionX : regions) {
+            for (Region region : regionX) {
+                if (region != null) {
+                    CompoundTag compoundTag = new CompoundTag("");
+                    region.writeToNBT(compoundTag);
+                    tagList.add(compoundTag);
+                }
             }
         }
         compound.setTagList("regions", tagList);
@@ -187,9 +205,10 @@ public abstract class Level {
         tagList.forEach(tag -> {
             CompoundTag compoundTag = (CompoundTag) tag;
             int regionX = compoundTag.getInt("regionX");
-            Region region = new Region(regionX, this);
+            int regionY = compoundTag.getByte("regionY");
+            Region region = new Region(regionX, regionY, this);
             region.readFromNBT(compoundTag);
-            regions[regionX] = region;
+            regions[regionX][regionY] = region;
         });
     }
 
@@ -210,5 +229,5 @@ public abstract class Level {
 
     public abstract Side getSide();
 
-    public abstract void requestRegion(Region region, int regionX);
+    public abstract void requestRegion(Region region, int regionX, int regionY);
 }

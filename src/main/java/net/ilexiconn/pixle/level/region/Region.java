@@ -9,17 +9,18 @@ import net.ilexiconn.pixle.pixel.Pixel;
 import java.util.Random;
 
 public class Region {
-    public static final int REGION_WIDTH = 16;
-    public static final int REGION_HEIGHT = 1024;
+    public static final int REGION_WIDTH = 32;
+    public static final int REGION_HEIGHT = 32;
 
     private Level level;
     private int[][][] pixels = new int[PixelLayer.values().length][REGION_WIDTH][REGION_HEIGHT];
-    private int[][] heights = new int[PixelLayer.values().length][REGION_WIDTH];
     private int x;
+    private int y;
 
-    public Region(int x, Level level) {
+    public Region(int x, int y, Level level) {
         this.level = level;
         this.x = x;
+        this.y = y;
     }
 
     public Pixel getPixel(int x, int y, PixelLayer layer) {
@@ -34,16 +35,13 @@ public class Region {
         if (x >= 0 && x < REGION_WIDTH && y >= 0 && y < REGION_HEIGHT) {
             int layerOrdinal = layer.ordinal();
             pixels[layerOrdinal][x][y] = pixel.getPixelID();
-            if (y > heights[layerOrdinal][x]) {
-                heights[layerOrdinal][x] = y;
-            }
         }
     }
 
     public void generate(long seed) {
         ILevelGenerator levelGenerator = level.getLevelGenerator();
-        levelGenerator.generate(this, x, seed);
-        levelGenerator.decorate(this, x, new Random(seed * x));
+        levelGenerator.generate(this, x, y, seed);
+        levelGenerator.decorate(this, x, y, new Random(seed * x));
     }
 
     public Level getLevel() {
@@ -52,6 +50,7 @@ public class Region {
 
     public void writeToNBT(CompoundTag compound) {
         compound.setInt("regionX", x);
+        compound.setByte("regionY", (byte) y);
         for (int layer = 0; layer < pixels.length; layer++) {
             CompoundTag layerTag = new CompoundTag("layer" + layer);
             int[][] pixelsForLayer = pixels[layer];
@@ -71,33 +70,27 @@ public class Region {
         }
     }
 
-    public int getHeight(int x, PixelLayer layer) {
-        return heights[layer.ordinal()][x];
-    }
-
     public int[][][] getPixels() {
         return pixels;
     }
 
     public void setPixels(int[][][] pixels) {
         this.pixels = pixels;
-        loadHeights();
-    }
-
-    private void loadHeights() {
-        for (int layer = 0; layer < pixels.length; layer++) {
-            for (int x = 0; x < pixels[layer].length; x++) {
-                for (int y = REGION_HEIGHT - 1; y >= 0; y--) {
-                    Pixel pixel = Pixel.getPixelByID(pixels[layer][x][y]);
-                    if (pixel != Pixel.air) {
-                        heights[layer][x] = y;
-                    }
-                }
-            }
-        }
     }
 
     public int getX() {
         return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public void setPixels(byte[][] pixels, int layer) {
+        for (int x = 0; x < pixels.length; x++) {
+            for (int y = 0; y < pixels[0].length; y++) {
+                this.pixels[layer][x][y] = pixels[x][y];
+            }
+        }
     }
 }

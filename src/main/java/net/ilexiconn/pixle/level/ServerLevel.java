@@ -42,7 +42,7 @@ public class ServerLevel extends Level {
     }
 
     @Override
-    public void requestRegion(Region region, int regionX) {
+    public void requestRegion(Region region, int regionX, int regionY) {
         region.generate(seed);
     }
 }

@@ -1,14 +1,15 @@
 package net.ilexiconn.pixle.level;
 
-import net.ilexiconn.pixle.level.region.ReceivingRegion;
+import net.ilexiconn.pixle.client.PixleClient;
 import net.ilexiconn.pixle.level.region.Region;
+import net.ilexiconn.pixle.network.RequestRegionPacket;
 import net.ilexiconn.pixle.util.Side;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ClientLevel extends Level {
-    private List<ReceivingRegion> requestingRegions = new ArrayList<>();
+    private List<Position> requestingRegions = new ArrayList<>();
 
     @Override
     public Side getSide() {
@@ -16,24 +17,17 @@ public class ClientLevel extends Level {
     }
 
     @Override
-    public void requestRegion(Region region, int regionX) {
-        ReceivingRegion receivingRegion = new ReceivingRegion(regionX);
-        if (!requestingRegions.contains(receivingRegion)) {
-            requestingRegions.add(receivingRegion);
-            receivingRegion.requestNext();
-        }
-    }
-
-    public ReceivingRegion getReceivingRegion(int x) {
-        for (ReceivingRegion receivingRegion : new ArrayList<>(requestingRegions)) {
-            if (receivingRegion.getX() == x) {
-                return receivingRegion;
+    public void requestRegion(Region region, int regionX, int regionY) {
+        Position position = new Position(regionX, regionY);
+        if (!requestingRegions.contains(position)) {
+            requestingRegions.add(position);
+            for (PixelLayer layer : PixelLayer.values()) {
+                PixleClient.INSTANCE.getClient().sendTCP(new RequestRegionPacket(regionX, regionY, layer.ordinal()));
             }
         }
-        return null;
     }
 
-    public void completeRegion(ReceivingRegion receivingRegion) {
-        requestingRegions.remove(receivingRegion);
+    public void completeRegion(int regionX, int regionY) {
+        requestingRegions.remove(new Position(regionX, regionY));
     }
 }
