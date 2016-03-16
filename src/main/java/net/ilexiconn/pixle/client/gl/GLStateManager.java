@@ -6,6 +6,8 @@ public class GLStateManager {
     private static BooleanState blendState = new BooleanState(GL11.GL_BLEND);
     private static ColorState colorState = new ColorState();
     private static BooleanState textureState = new BooleanState(GL11.GL_TEXTURE_2D);
+    private static ScaleState scaleState = new ScaleState();
+    private static BooleanState rescaleNormalState = new BooleanState(0x803A);
 
     public static void enableBlend() {
         blendState.setEnabled();
@@ -40,6 +42,22 @@ public class GLStateManager {
 
     public static void disableTexture() {
         textureState.setDisabled();
+    }
+
+    public static void disableRescaleNormal() {
+        rescaleNormalState.setDisabled();
+    }
+
+    public static void enableRescaleNormal() {
+        rescaleNormalState.setEnabled();
+    }
+
+    public static void scale(double x, double y) {
+        scaleState.setState(x, y);
+    }
+
+    public static void scale(float x, float y) {
+        scale((double) x, (double) y);
     }
 
     public static void startDrawingQuads() {
@@ -112,6 +130,34 @@ public class GLStateManager {
 
         public float getBlue() {
             return blue;
+        }
+    }
+
+    static class ScaleState {
+        private double x;
+        private double y;
+
+        public ScaleState() {
+            this(1.0, 1.0);
+        }
+
+        public ScaleState(double x, double y) {
+            this.x = x;
+            this.y = y;
+        }
+
+        public void setState(double x, double y) {
+            if (x != getX() || y != getY()) {
+                GL11.glScaled(x, y, 1.0);
+            }
+        }
+
+        public double getX() {
+            return x;
+        }
+
+        public double getY() {
+            return y;
         }
     }
 }
