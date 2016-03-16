@@ -47,24 +47,8 @@ public class SelectServerGUI extends GUI {
         int height = Display.getHeight();
         GLStateManager.setColor(0x0094FF);
         RenderHelper.drawRect(0, 0, width, height);
-        drawCenteredScaledStringWithShadow(width / 2, 40, "Join Server", 2.0F);
-        drawCenteredScaledStringWithShadow(width / 2, height / 2 - 50, "IP", 1.0F);
+        RenderHelper.drawCenteredScaledStringWithShadow(width / 2, 40, "Join Server", 2.0F);
+        RenderHelper.drawCenteredScaledStringWithShadow(width / 2, height / 2 - 50, "IP", 1.0F);
         super.render(mouseX, mouseY);
-    }
-
-    private void drawCenteredScaledStringWithShadow(int x, int y, String text, float scale) {
-        TrueTypeFont font = PixleClient.INSTANCE.getFontRenderer();
-
-        GLStateManager.pushMatrix();
-        GLStateManager.enableTexture();
-        GLStateManager.scale(scale, scale);
-
-        float drawX = (x / scale) - (font.getWidth(text) / 2);
-        float drawY = (y - (font.getHeight(text) / 2)) / scale;
-
-        font.drawString(drawX + 2, drawY + 2, text, new Color(0x606060));
-        font.drawString(drawX, drawY, text);
-
-        GLStateManager.popMatrix();
     }
 }

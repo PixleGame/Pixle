@@ -12,16 +12,22 @@ public class MainMenuGUI extends GUI {
     public void updateComponents() {
         int width = Display.getWidth();
         int height = Display.getHeight();
-        addComponent(new ButtonComponent((width / 2) - 200, (height / 3) - 20, 400, 40, "Play Singleplayer", button -> {
+        int centerButtonX = (width / 2) - 200;
+        addComponent(new ButtonComponent(centerButtonX, (height / 3) - 20, 400, 40, "Play Singleplayer", button -> {
             PixleClient client = PixleClient.INSTANCE;
             MainMenuGUI.this.close();
             client.openGUI(new WorldGUI());
             client.startGame();
         }));
-        addComponent(new ButtonComponent((width / 2) - 200, (height / 3) + 40, 400, 40, "Play Multiplayer", button -> {
+        addComponent(new ButtonComponent(centerButtonX, (height / 3) + 40, 400, 40, "Play Multiplayer", button -> {
             PixleClient client = PixleClient.INSTANCE;
             MainMenuGUI.this.close();
             client.openGUI(new SelectServerGUI());
+        }));
+        addComponent(new ButtonComponent(centerButtonX, (height / 3) + 100, 400, 40, "Options", button -> {
+            PixleClient client = PixleClient.INSTANCE;
+            MainMenuGUI.this.close();
+            client.openGUI(new OptionsGUI());
         }));
     }
 
