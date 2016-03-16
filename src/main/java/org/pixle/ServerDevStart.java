@@ -32,6 +32,6 @@ public class ServerDevStart extends DevStart {
 
     @Override
     public String getStartupClassName() {
-        return "PixleServerStartup";
+        return "org.pixle.server.PixleServerStartup";
     }
 }

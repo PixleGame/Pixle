@@ -40,6 +40,6 @@ public class ClientDevStart extends DevStart {
 
     @Override
     public String getStartupClassName() {
-        return "PixleClientStartup";
+        return "org.pixle.client.PixleClientStartup";
     }
 }
