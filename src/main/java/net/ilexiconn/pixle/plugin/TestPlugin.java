@@ -5,9 +5,6 @@ import net.ilexiconn.pixle.event.bus.EventHandler;
 import net.ilexiconn.pixle.event.event.GenerateRegionEvent;
 import net.ilexiconn.pixle.event.event.PixleInitializeEvent;
 import net.ilexiconn.pixle.event.event.SetPixelEvent;
-import net.ilexiconn.pixle.level.PixelLayer;
-import net.ilexiconn.pixle.level.region.Region;
-import net.ilexiconn.pixle.pixel.Pixel;
 import net.ilexiconn.pixle.util.Side;
 
 /**

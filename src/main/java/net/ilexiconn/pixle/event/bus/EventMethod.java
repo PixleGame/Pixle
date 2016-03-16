@@ -1,7 +1,7 @@
 package net.ilexiconn.pixle.event.bus;
 
-import net.ilexiconn.pixle.util.CrashReport;
 import net.ilexiconn.pixle.event.Event;
+import net.ilexiconn.pixle.util.CrashReport;
 
 import java.lang.reflect.Method;
 

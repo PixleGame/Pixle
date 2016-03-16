@@ -1,7 +1,6 @@
 package net.ilexiconn.pixle.level.generator.tree;
 
 import net.ilexiconn.pixle.level.Level;
-import net.ilexiconn.pixle.level.PixelLayer;
 import net.ilexiconn.pixle.level.generator.ImageStructureGenerator;
 
 import java.io.IOException;

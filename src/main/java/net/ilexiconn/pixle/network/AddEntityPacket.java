@@ -8,8 +8,6 @@ import net.ilexiconn.pixle.entity.PlayerEntity;
 import net.ilexiconn.pixle.level.ClientLevel;
 import net.ilexiconn.pixle.server.PixleServer;
 
-import java.net.Socket;
-
 public class AddEntityPacket extends PixlePacket {
     private int entityInWorldID;
     private byte entityID;

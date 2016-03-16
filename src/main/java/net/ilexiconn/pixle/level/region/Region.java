@@ -1,12 +1,12 @@
 package net.ilexiconn.pixle.level.region;
 
 import net.darkhax.opennbt.tags.CompoundTag;
+import net.ilexiconn.pixle.event.bus.EventBus;
 import net.ilexiconn.pixle.event.event.GenerateRegionEvent;
 import net.ilexiconn.pixle.level.Level;
 import net.ilexiconn.pixle.level.PixelLayer;
 import net.ilexiconn.pixle.level.generator.ILevelGenerator;
 import net.ilexiconn.pixle.pixel.Pixel;
-import net.ilexiconn.pixle.server.PixleServer;
 
 import java.util.Random;
 
@@ -42,11 +42,12 @@ public class Region {
 
     public void generate(long seed) {
         ILevelGenerator levelGenerator = level.getLevelGenerator();
-        if (PixleServer.INSTANCE.eventBus.post(new GenerateRegionEvent.Pre(level, this, levelGenerator, seed))) {
+        EventBus eventBus = EventBus.get();
+        if (eventBus.post(new GenerateRegionEvent.Pre(level, this, levelGenerator, seed))) {
             levelGenerator.generate(this, x, y, seed);
             levelGenerator.decorate(this, x, y, new Random(seed * x));
         }
-        PixleServer.INSTANCE.eventBus.post(new GenerateRegionEvent.Post(level, this, levelGenerator, seed));
+        eventBus.post(new GenerateRegionEvent.Post(level, this, levelGenerator, seed));
     }
 
     public Level getLevel() {

@@ -1,7 +1,10 @@
 package net.ilexiconn.pixle.event.bus;
 
 import com.esotericsoftware.minlog.Log;
+import net.ilexiconn.pixle.client.PixleClient;
 import net.ilexiconn.pixle.event.Event;
+import net.ilexiconn.pixle.server.PixleServer;
+import net.ilexiconn.pixle.util.Side;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
@@ -29,5 +32,9 @@ public class EventBus {
     public boolean post(Event event) {
         eventMethodList.stream().filter(eventMethod -> eventMethod.canHandleEvent(event)).forEach(eventMethod -> eventMethod.invoke(event));
         return !event.isCanceled();
+    }
+
+    public static EventBus get() {
+        return Side.get().isServer() ? PixleServer.INSTANCE.eventBus : PixleClient.INSTANCE.eventBus;
     }
 }

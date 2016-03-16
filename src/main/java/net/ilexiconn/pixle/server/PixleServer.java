@@ -4,7 +4,6 @@ import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
 import com.esotericsoftware.minlog.Log;
-import net.ilexiconn.pixle.util.CrashReport;
 import net.ilexiconn.pixle.event.bus.EventBus;
 import net.ilexiconn.pixle.event.event.PixleInitializeEvent;
 import net.ilexiconn.pixle.level.Level;
@@ -12,6 +11,7 @@ import net.ilexiconn.pixle.level.ServerLevel;
 import net.ilexiconn.pixle.network.PixleNetworkManager;
 import net.ilexiconn.pixle.network.PixlePacket;
 import net.ilexiconn.pixle.plugin.PluginJson;
+import net.ilexiconn.pixle.util.CrashReport;
 
 import java.io.IOException;
 import java.util.ArrayList;
