@@ -34,6 +34,13 @@ public class RenderHelper {
         GLStateManager.end();
     }
 
+    public static void drawOutline(int x, int y, int width, int height, int outlineSize) {
+        drawRect(x, y, width, outlineSize);
+        drawRect(x + width, y, outlineSize, height);
+        drawRect(x, y + height, width + outlineSize, outlineSize);
+        drawRect(x, y, outlineSize, height);
+    }
+
     public static void drawVertex(int x, int y, int u, int v, float uMultiplier, float vMultiplier) {
         GL11.glTexCoord2f(u * uMultiplier, v * vMultiplier);
         GL11.glVertex2f(x, y);

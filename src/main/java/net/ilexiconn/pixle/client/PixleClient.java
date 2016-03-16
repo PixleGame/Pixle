@@ -8,6 +8,7 @@ import net.ilexiconn.pixle.client.config.ClientConfig;
 import net.ilexiconn.pixle.client.event.RenderEvent;
 import net.ilexiconn.pixle.client.gl.GLStateManager;
 import net.ilexiconn.pixle.client.gui.GUI;
+import net.ilexiconn.pixle.client.gui.MainMenuGUI;
 import net.ilexiconn.pixle.client.gui.WorldGUI;
 import net.ilexiconn.pixle.client.render.TextureManager;
 import net.ilexiconn.pixle.entity.PlayerEntity;
@@ -67,29 +68,15 @@ public class PixleClient extends Listener {
     private boolean hasIntegratedServer;
     private PixleServer integratedServer;
 
+    private String host;
+    private int port = 25565;
+
     public void start(Map<String, String> properties) {
         try {
             PixleClient.INSTANCE = this;
             config = ConfigUtils.loadConfig(configFile, ClientConfig.class);
             this.username = properties.get("username");
             init();
-            int port = properties.containsKey("port") ? Integer.parseInt(properties.get("port")) : 25565;
-            if (properties.containsKey("host")) {
-                connect(properties.get("host"), port);
-            } else {
-                Log.info("Client", "Starting integrated server on port " + port);
-                hasIntegratedServer = true;
-                integratedServer = new PixleServer();
-                integratedServer.pluginList = pluginList;
-                new Thread("Server") {
-                    @Override
-                    public void run() {
-                        integratedServer.start(port);
-                    }
-                }.start();
-                connect("localhost", port);
-            }
-
             try {
                 Display.setDisplayMode(new DisplayMode(854, 480));
                 Display.setTitle("Pixle");
@@ -138,6 +125,10 @@ public class PixleClient extends Listener {
                     GL11.glMatrixMode(GL11.GL_MODELVIEW);
                     GL11.glScissor(0, 0, width, height);
                     GL11.glViewport(0, 0, width, height);
+                    for (GUI gui : getOpenGUIs()) {
+                        gui.clearComponents();
+                        gui.updateComponents();
+                    }
                 }
 
                 long currentTime = System.nanoTime();
@@ -182,13 +173,40 @@ public class PixleClient extends Listener {
         }
     }
 
+    public void startGame() {
+        try {
+            if (host != null) {
+                connect(host, port);
+            } else {
+                Log.info("Client", "Starting integrated server on port " + port);
+                hasIntegratedServer = true;
+                integratedServer = new PixleServer();
+                integratedServer.pluginList = pluginList;
+                new Thread("Server") {
+                    @Override
+                    public void run() {
+                        integratedServer.start(port);
+                    }
+                }.start();
+                connect("localhost", port);
+            }
+        } catch (Exception e) {
+            System.err.println(CrashReport.makeCrashReport(e, e.getLocalizedMessage()));
+        }
+    }
+
+    public void setServer(String host, int port) {
+        this.host = host;
+        this.port = port;
+    }
+
     private void init() throws IOException {
         textureManager = new TextureManager();
         level = new ClientLevel();
         client = new Client(32767, 32767);
         client.start();
         PixleNetworkManager.init(client);
-        openGUI(new WorldGUI(this));
+        openGUI(new MainMenuGUI());
 
         EventBus.get().post(new PixleInitializeEvent());
     }
@@ -224,19 +242,46 @@ public class PixleClient extends Listener {
                 client.sendTCP(new PlayerMovePacket(player, moveX, jumping));
             }
         }
-
+        while (Keyboard.next()) {
+            if (Keyboard.getEventKeyState()) {
+                char c = Keyboard.getEventCharacter();
+                int key = Keyboard.getEventKey();
+                for (GUI gui : getOpenGUIs()) {
+                    gui.keyTyped(c, key);
+                }
+            }
+        }
+        int mouseX = Mouse.getX();
+        int mouseY = Display.getHeight() - Mouse.getY();
+        boolean mouseClicked = false;
+        while(Mouse.next()) {
+            if (Mouse.getEventButton() == 0) {
+                mouseClicked = Mouse.getEventButtonState();
+            }
+        }
+        if (mouseClicked) {
+            for (GUI gui : getOpenGUIs()) {
+                gui.mouseClicked(mouseX, mouseY);
+            }
+        }
         level.update();
     }
 
     private void render() {
         if (EventBus.get().post(new RenderEvent.Pre(this))) {
             GLStateManager.enableColor();
-            new ArrayList<>(getOpenGUIs()).forEach(GUI::render);
+            int mouseX = Mouse.getX();
+            int mouseY = Display.getHeight() - Mouse.getY();
+            for (GUI gui : getOpenGUIs()) {
+                gui.render(mouseX, mouseY);
+            }
         }
         EventBus.get().post(new RenderEvent.Post(this));
     }
 
     public void openGUI(GUI gui) {
+        gui.clearComponents();
+        gui.updateComponents();
         if (!openGUIs.contains(gui)) {
             openGUIs.add(gui);
         }
@@ -247,7 +292,7 @@ public class PixleClient extends Listener {
     }
 
     public List<GUI> getOpenGUIs() {
-        return openGUIs;
+        return new ArrayList<>(openGUIs);
     }
 
     public boolean isCloseRequested() {

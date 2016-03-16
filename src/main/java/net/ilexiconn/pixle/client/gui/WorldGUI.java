@@ -14,12 +14,16 @@ import net.ilexiconn.pixle.level.PixelLayer;
 import org.lwjgl.opengl.Display;
 
 public class WorldGUI extends GUI {
-    public WorldGUI(PixleClient pixle) {
-        super(pixle);
+    @Override
+    public void updateComponents() {
     }
 
     @Override
-    public void render() {
+    public void render(int mouseX, int mouseY) {
+        super.render(mouseX, mouseY);
+
+        PixleClient pixle = PixleClient.INSTANCE;
+
         Level level = pixle.getLevel();
         PlayerEntity player = pixle.getPlayer();
 
