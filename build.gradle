@@ -7,9 +7,9 @@ plugins {
 }
 
 version = "0.1.0"
-group = "net.ilexiconn"
+group = "org.pixle"
 archivesBaseName = "pixle"
-mainClassName = "net.ilexiconn.pixle.client.PixleClientStartup"
+mainClassName = "org.pixle.client.PixleClientStartup"
 sourceCompatibility = targetCompatibility = "1.8"
 
 repositories {
