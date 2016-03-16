@@ -16,12 +16,12 @@ public class SelectServerGUI extends GUI {
     public void updateComponents() {
         int width = Display.getWidth();
         int height = Display.getHeight();
-        addComponenent(new ButtonComponent(width / 2 + 25, (height - (height / 8)) - 20, 200, 40, "Back", button -> {
+        addComponenent(new ButtonComponent(width / 2 - 225, (height - (height / 8)) - 20, 200, 40, "Back", button -> {
             PixleClient client = PixleClient.INSTANCE;
             SelectServerGUI.this.close();
             client.openGUI(new MainMenuGUI());
         }));
-        addComponenent(new ButtonComponent(width / 2 - 225, (height - (height / 8)) - 20, 200, 40, "Connect", button -> {
+        addComponenent(new ButtonComponent(width / 2 + 25, (height - (height / 8)) - 20, 200, 40, "Connect", button -> {
             PixleClient client = PixleClient.INSTANCE;
             SelectServerGUI.this.close();
             client.openGUI(new WorldGUI());
