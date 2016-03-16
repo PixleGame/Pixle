@@ -47,7 +47,7 @@ public class TextBox extends GUIComponent {
         GLStateManager.enableTexture();
         TrueTypeFont font = PixleClient.INSTANCE.getFontRenderer();
         String drawText = text;
-        if (System.currentTimeMillis() % 1000 > 500) {
+        if (selected && System.currentTimeMillis() % 1000 > 500) {
             drawText += "|";
         }
         font.drawString((x + (width / 2)) - (font.getWidth(text) / 2), (y + (height / 2)) - (font.getHeight(text) / 2) + 6, drawText);
