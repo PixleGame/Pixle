@@ -22,10 +22,7 @@ public class GLStateManager {
     }
 
     public static void setColor(float red, float green, float blue) {
-        if (red != colorState.getRed() && green != colorState.getGreen() && blue != colorState.getBlue()) {
-            colorState = new ColorState(red, green, blue);
-            GL11.glColor3f(colorState.getRed(), colorState.getGreen(), colorState.getBlue());
-        }
+        colorState.setState(red, green, blue);
     }
 
     public static void enableColor() {
@@ -105,59 +102,34 @@ public class GLStateManager {
     }
 
     static class ColorState extends BooleanState {
-        private float red;
-        private float green;
-        private float blue;
+        private Float red;
+        private Float green;
+        private Float blue;
 
         public ColorState() {
-            this(-1.0F, -1.0F, -1.0F);
-        }
-
-        public ColorState(float red, float green, float blue) {
             super(GL11.GL_COLOR);
-            this.red = red;
-            this.green = green;
-            this.blue = blue;
         }
 
-        public float getRed() {
-            return red;
-        }
-
-        public float getGreen() {
-            return green;
-        }
-
-        public float getBlue() {
-            return blue;
+        public void setState(float red, float green, float blue) {
+            if ((this.red == null || this.red != red) || (this.green == null || this.green != green) || (this.blue == null || this.blue != blue)) {
+                this.red = red;
+                this.green = green;
+                this.blue = blue;
+                GL11.glColor4f(red, green, blue, 1.0F);
+            }
         }
     }
 
     static class ScaleState {
-        private double x;
-        private double y;
-
-        public ScaleState() {
-            this(1.0, 1.0);
-        }
-
-        public ScaleState(double x, double y) {
-            this.x = x;
-            this.y = y;
-        }
+        private Double x;
+        private Double y;
 
         public void setState(double x, double y) {
-            if (x != getX() || y != getY()) {
+            if ((this.x == null || this.x != x) || (this.y == null || this.y != y)) {
+                this.x = x;
+                this.y = y;
                 GL11.glScaled(x, y, 1.0);
             }
-        }
-
-        public double getX() {
-            return x;
-        }
-
-        public double getY() {
-            return y;
         }
     }
 }
