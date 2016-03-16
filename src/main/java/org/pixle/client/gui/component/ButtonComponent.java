@@ -78,6 +78,7 @@ public class ButtonComponent extends GUIComponent {
         return height;
     }
 
+    @FunctionalInterface
     public interface IButtonActionHandler {
         void clicked(ButtonComponent button);
     }

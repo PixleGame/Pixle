@@ -12,6 +12,7 @@ import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.TrueTypeFont;
 import org.pixle.client.config.ClientConfig;
+import org.pixle.client.event.GUIInitializationEvent;
 import org.pixle.client.event.RenderEvent;
 import org.pixle.client.gl.GLStateManager;
 import org.pixle.client.gui.GUI;
@@ -279,11 +280,14 @@ public class PixleClient extends Listener {
     }
 
     public void openGUI(GUI gui) {
-        gui.clearComponents();
-        gui.updateComponents();
-        if (!openGUIs.contains(gui)) {
-            openGUIs.add(gui);
+        if (EventBus.get().post(new GUIInitializationEvent.Pre(gui))) {
+            gui.clearComponents();
+            gui.updateComponents();
+            if (!openGUIs.contains(gui)) {
+                openGUIs.add(gui);
+            }
         }
+        EventBus.get().post(new GUIInitializationEvent.Post(gui));
     }
 
     public void closeGUI(GUI gui) {

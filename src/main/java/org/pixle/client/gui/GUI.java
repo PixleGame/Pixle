@@ -29,7 +29,7 @@ public abstract class GUI {
         }
     }
 
-    protected void addComponenent(GUIComponent component) {
+    protected void addComponent(GUIComponent component) {
         components.add(component);
     }
 
