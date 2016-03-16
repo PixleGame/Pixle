@@ -16,7 +16,7 @@ public class SetPlayerPacket extends PixlePacket {
     }
 
     @Override
-    public void handleServer(PixleServer pixleServer, PlayerEntity player, Connection connection, long estimatedSendTime) {
+    public void handleServer(PixleServer server, PlayerEntity player, Connection connection, long estimatedSendTime) {
     }
 
     @Override

@@ -1,8 +1,6 @@
 package org.pixle.client.gui;
 
 import org.lwjgl.opengl.Display;
-import org.newdawn.slick.Color;
-import org.newdawn.slick.TrueTypeFont;
 import org.pixle.client.PixleClient;
 import org.pixle.client.gl.GLStateManager;
 import org.pixle.client.gui.component.ButtonComponent;
@@ -24,7 +22,7 @@ public class SelectServerGUI extends GUI {
         addComponent(new ButtonComponent(width / 2 + 25, (height - (height / 8)) - 20, 200, 40, "Connect", button -> {
             PixleClient client = PixleClient.INSTANCE;
             SelectServerGUI.this.close();
-            client.openGUI(new WorldGUI());
+            client.openGUI(new LevelGUI());
             String ip = ipTextBox.getText();
             String host = ip;
             int port = 25565;

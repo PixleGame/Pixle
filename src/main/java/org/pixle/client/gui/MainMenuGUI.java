@@ -16,7 +16,7 @@ public class MainMenuGUI extends GUI {
         addComponent(new ButtonComponent(centerButtonX, (height / 3) - 20, 400, 40, "Play Singleplayer", button -> {
             PixleClient client = PixleClient.INSTANCE;
             MainMenuGUI.this.close();
-            client.openGUI(new WorldGUI());
+            client.openGUI(new LevelGUI());
             client.startGame();
         }));
         addComponent(new ButtonComponent(centerButtonX, (height / 3) + 40, 400, 40, "Play Multiplayer", button -> {

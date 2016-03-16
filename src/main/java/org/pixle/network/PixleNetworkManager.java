@@ -26,6 +26,7 @@ public class PixleNetworkManager {
         kryo.register(PlayerMovePacket.class);
         kryo.register(SetPlayerPacket.class);
         kryo.register(SetPixelPacket.class);
+        kryo.register(SendMessagePacket.class);
     }
 
     public static boolean addClient(Connection connection, String username) {

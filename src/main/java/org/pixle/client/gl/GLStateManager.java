@@ -71,6 +71,11 @@ public class GLStateManager {
 
     public static void popMatrix() {
         GL11.glPopMatrix();
+        blendState.reset();
+        colorState.reset();
+        textureState.reset();
+        scaleState.reset();
+        rescaleNormalState.reset();
     }
 
     static class BooleanState {
@@ -99,6 +104,10 @@ public class GLStateManager {
                 }
             }
         }
+
+        public void reset() {
+            currentState = null;
+        }
     }
 
     static class ColorState extends BooleanState {
@@ -118,6 +127,14 @@ public class GLStateManager {
                 GL11.glColor4f(red, green, blue, 1.0F);
             }
         }
+
+        @Override
+        public void reset() {
+            super.reset();
+            red = null;
+            green = null;
+            blue = null;
+        }
     }
 
     static class ScaleState {
@@ -130,6 +147,11 @@ public class GLStateManager {
                 this.y = y;
                 GL11.glScaled(x, y, 1.0);
             }
+        }
+
+        public void reset() {
+            x = null;
+            y = null;
         }
     }
 }

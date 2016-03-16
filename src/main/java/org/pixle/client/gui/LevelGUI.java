@@ -1,9 +1,11 @@
 package org.pixle.client.gui;
 
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.pixle.client.PixleClient;
 import org.pixle.client.event.RenderEntityEvent;
 import org.pixle.client.gl.GLStateManager;
+import org.pixle.client.message.MessageBubble;
 import org.pixle.client.render.RenderHelper;
 import org.pixle.client.render.RenderingRegistry;
 import org.pixle.client.render.entity.IEntityRenderer;
@@ -12,8 +14,14 @@ import org.pixle.entity.PlayerEntity;
 import org.pixle.event.bus.EventBus;
 import org.pixle.level.Level;
 import org.pixle.level.PixelLayer;
+import org.pixle.network.SendMessagePacket;
 
-public class WorldGUI extends GUI {
+import java.util.ArrayList;
+import java.util.List;
+
+public class LevelGUI extends GUI {
+    public List<MessageBubble> bubbleList = new ArrayList<>();
+
     @Override
     public void updateComponents() {
     }
@@ -62,6 +70,20 @@ public class WorldGUI extends GUI {
                     EventBus.get().post(new RenderEntityEvent.Post(pixle, entity));
                 }
             }
+        }
+
+        bubbleList.forEach(MessageBubble::render);
+    }
+
+    @Override
+    public void tick() {
+        bubbleList.forEach(MessageBubble::tick);
+    }
+
+    @Override
+    public void keyTyped(char c, int keyCode) {
+        if (keyCode == Keyboard.KEY_RETURN) {
+            PixleClient.INSTANCE.getClient().sendTCP(new SendMessagePacket(PixleClient.INSTANCE.getPlayer(), "Test!"));
         }
     }
 }

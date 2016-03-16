@@ -265,6 +265,7 @@ public class PixleClient extends Listener {
             }
         }
         level.update();
+        openGUIs.forEach(GUI::tick);
     }
 
     private void render() {

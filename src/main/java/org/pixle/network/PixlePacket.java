@@ -19,7 +19,7 @@ public abstract class PixlePacket {
         return System.currentTimeMillis() - (connection.getReturnTripTime() / 2);
     }
 
-    public abstract void handleServer(PixleServer pixleServer, PlayerEntity player, Connection connection, long estimatedSendTime);
+    public abstract void handleServer(PixleServer server, PlayerEntity player, Connection connection, long estimatedSendTime);
 
     public abstract void handleClient(PixleClient client, Connection connection, long estimatedSendTime);
 }

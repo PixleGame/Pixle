@@ -17,6 +17,10 @@ public abstract class GUI {
         }
     }
 
+    public void tick() {
+
+    }
+
     public void keyTyped(char c, int keyCode) {
         for (GUIComponent component : components) {
             component.keyPressed(c, keyCode);
