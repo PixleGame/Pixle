@@ -25,7 +25,6 @@ public class PixleServer extends Listener {
     private ServerLevel level;
 
     public static PixleServer INSTANCE;
-    public EventBus eventBus = new EventBus();
 
     public void start(int port) {
         try {
@@ -45,7 +44,7 @@ public class PixleServer extends Listener {
         PixleNetworkManager.init(server);
         level = new ServerLevel();
 
-        eventBus.post(new PixleInitializeEvent());
+        EventBus.get().post(new PixleInitializeEvent());
     }
 
     public void stop() {

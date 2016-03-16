@@ -14,6 +14,8 @@ import java.util.List;
 public class EventBus {
     private List<EventMethod> eventMethodList = new ArrayList<>();
 
+    private static EventBus eventBus = new EventBus();
+
     public void register(Object object) {
         Log.info("EventBus", "Attempting to register object " + object);
         if (object != null) {
@@ -35,6 +37,6 @@ public class EventBus {
     }
 
     public static EventBus get() {
-        return Side.get().isServer() ? PixleServer.INSTANCE.eventBus : PixleClient.INSTANCE.eventBus;
+        return eventBus;
     }
 }

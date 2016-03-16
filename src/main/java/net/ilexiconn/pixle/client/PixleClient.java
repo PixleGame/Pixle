@@ -57,8 +57,6 @@ public class PixleClient extends Listener {
 
     private String username;
 
-    public EventBus eventBus = new EventBus();
-
     public static PixleClient INSTANCE;
 
     public File configFile = new File(SystemUtils.getGameFolder(), "config.json");
@@ -82,7 +80,6 @@ public class PixleClient extends Listener {
                 Log.info("Client", "Starting integrated server on port " + port);
                 hasIntegratedServer = true;
                 integratedServer = new PixleServer();
-                integratedServer.eventBus = eventBus;
                 integratedServer.pluginList = pluginList;
                 new Thread("Server") {
                     @Override
@@ -193,7 +190,7 @@ public class PixleClient extends Listener {
         PixleNetworkManager.init(client);
         openGUI(new WorldGUI(this));
 
-        eventBus.post(new PixleInitializeEvent());
+        EventBus.get().post(new PixleInitializeEvent());
     }
 
     public void connect(String host, int port) throws IOException {
@@ -232,11 +229,11 @@ public class PixleClient extends Listener {
     }
 
     private void render() {
-        if (eventBus.post(new RenderEvent.Pre(this))) {
+        if (EventBus.get().post(new RenderEvent.Pre(this))) {
             GLStateManager.enableColor();
             new ArrayList<>(getOpenGUIs()).forEach(GUI::render);
         }
-        eventBus.post(new RenderEvent.Post(this));
+        EventBus.get().post(new RenderEvent.Post(this));
     }
 
     public void openGUI(GUI gui) {

@@ -8,6 +8,7 @@ import net.ilexiconn.pixle.client.render.RenderingRegistry;
 import net.ilexiconn.pixle.client.render.entity.IEntityRenderer;
 import net.ilexiconn.pixle.entity.Entity;
 import net.ilexiconn.pixle.entity.PlayerEntity;
+import net.ilexiconn.pixle.event.bus.EventBus;
 import net.ilexiconn.pixle.level.Level;
 import net.ilexiconn.pixle.level.PixelLayer;
 import org.lwjgl.opengl.Display;
@@ -51,10 +52,10 @@ public class WorldGUI extends GUI {
             for (Entity entity : level.getEntities()) {
                 IEntityRenderer entityRenderer = RenderingRegistry.getEntityRenderer(entity.getClass());
                 if (entityRenderer != null) {
-                    if (pixle.eventBus.post(new RenderEntityEvent.Pre(pixle, entity))) {
+                    if (EventBus.get().post(new RenderEntityEvent.Pre(pixle, entity))) {
                         entityRenderer.render(entity, centerX - (int) ((player.posX - entity.posX) * pixelSize), centerY - (int) Math.round((entity.posY - player.posY) * pixelSize), level, (float) pixle.getDelta());
                     }
-                    pixle.eventBus.post(new RenderEntityEvent.Post(pixle, entity));
+                    EventBus.get().post(new RenderEntityEvent.Post(pixle, entity));
                 }
             }
         }

@@ -4,6 +4,7 @@ import com.esotericsoftware.minlog.Log;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import net.ilexiconn.pixle.client.PixleClient;
+import net.ilexiconn.pixle.event.bus.EventBus;
 import net.ilexiconn.pixle.plugin.PluginJson;
 import net.ilexiconn.pixle.plugin.PluginJsonAdapter;
 import net.ilexiconn.pixle.util.StartupUtils;
@@ -48,7 +49,7 @@ public class PixleServerStartup {
                             InputStream stream = zipFile.getInputStream(zipEntry);
                             PluginJson plugin = pluginGson.fromJson(new InputStreamReader(stream), PluginJson.class);
                             server.pluginList.add(plugin);
-                            server.eventBus.register(plugin.getInstance());
+                            EventBus.get().register(plugin.getInstance());
                         }
                     }
                 } catch (IOException e) {
@@ -60,7 +61,7 @@ public class PixleServerStartup {
         if (stream != null) {
             PluginJson plugin = pluginGson.fromJson(new InputStreamReader(stream), PluginJson.class);
             server.pluginList.add(plugin);
-            server.eventBus.register(plugin.getInstance());
+            EventBus.get().register(plugin.getInstance());
         }
     }
 }
