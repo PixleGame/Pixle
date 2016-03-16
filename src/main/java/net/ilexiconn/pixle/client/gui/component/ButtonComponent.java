@@ -5,7 +5,7 @@ import net.ilexiconn.pixle.client.gl.GLStateManager;
 import net.ilexiconn.pixle.client.render.RenderHelper;
 import org.newdawn.slick.TrueTypeFont;
 
-public class Button extends GUIComponent {
+public class ButtonComponent extends GUIComponent {
     protected int width;
     protected int height;
     protected String text;
@@ -24,7 +24,7 @@ public class Button extends GUIComponent {
         }
     };
 
-    public Button(int x, int y, int width, int height, String text, IButtonActionHandler actionHandler, IComponentTheme theme) {
+    public ButtonComponent(int x, int y, int width, int height, String text, IButtonActionHandler actionHandler, IComponentTheme theme) {
         super(x, y);
         this.width = width;
         this.height = height;
@@ -33,7 +33,7 @@ public class Button extends GUIComponent {
         this.theme = theme;
     }
 
-    public Button(int x, int y, int width, int height, String text, IButtonActionHandler actionHandler) {
+    public ButtonComponent(int x, int y, int width, int height, String text, IButtonActionHandler actionHandler) {
         this(x, y, width, height, text, actionHandler, DEFAULT_THEME);
     }
 
@@ -79,6 +79,6 @@ public class Button extends GUIComponent {
     }
 
     public interface IButtonActionHandler {
-        void clicked(Button button);
+        void clicked(ButtonComponent button);
     }
 }

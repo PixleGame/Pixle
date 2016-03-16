@@ -2,14 +2,11 @@ package net.ilexiconn.pixle.plugin;
 
 import com.esotericsoftware.minlog.Log;
 import net.ilexiconn.pixle.event.bus.EventHandler;
-import net.ilexiconn.pixle.event.event.GenerateRegionEvent;
-import net.ilexiconn.pixle.event.event.PixleInitializeEvent;
-import net.ilexiconn.pixle.event.event.SetPixelEvent;
+import net.ilexiconn.pixle.event.GenerateRegionEvent;
+import net.ilexiconn.pixle.event.PixleInitializeEvent;
+import net.ilexiconn.pixle.event.SetPixelEvent;
 import net.ilexiconn.pixle.util.Side;
 
-/**
- * This plugin removes grass from the game.... rip
- */
 public class TestPlugin {
     @EventHandler
     public void onInitialize(PixleInitializeEvent event) {

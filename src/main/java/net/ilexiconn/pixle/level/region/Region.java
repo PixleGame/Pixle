@@ -2,7 +2,7 @@ package net.ilexiconn.pixle.level.region;
 
 import net.darkhax.opennbt.tags.CompoundTag;
 import net.ilexiconn.pixle.event.bus.EventBus;
-import net.ilexiconn.pixle.event.event.GenerateRegionEvent;
+import net.ilexiconn.pixle.event.GenerateRegionEvent;
 import net.ilexiconn.pixle.level.Level;
 import net.ilexiconn.pixle.level.PixelLayer;
 import net.ilexiconn.pixle.level.generator.ILevelGenerator;

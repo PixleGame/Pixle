@@ -2,26 +2,26 @@ package net.ilexiconn.pixle.client.gui;
 
 import net.ilexiconn.pixle.client.PixleClient;
 import net.ilexiconn.pixle.client.gl.GLStateManager;
-import net.ilexiconn.pixle.client.gui.component.Button;
-import net.ilexiconn.pixle.client.gui.component.TextBox;
+import net.ilexiconn.pixle.client.gui.component.ButtonComponent;
+import net.ilexiconn.pixle.client.gui.component.TextBoxComponent;
 import net.ilexiconn.pixle.client.render.RenderHelper;
 import org.lwjgl.opengl.Display;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.TrueTypeFont;
 
 public class SelectServerGUI extends GUI {
-    private TextBox ipTextBox;
+    private TextBoxComponent ipTextBox;
 
     @Override
     public void updateComponents() {
         int width = Display.getWidth();
         int height = Display.getHeight();
-        addComponenent(new Button(width / 2 + 25, (height - (height / 8)) - 20, 200, 40, "Back", button -> {
+        addComponenent(new ButtonComponent(width / 2 + 25, (height - (height / 8)) - 20, 200, 40, "Back", button -> {
             PixleClient client = PixleClient.INSTANCE;
             SelectServerGUI.this.close();
             client.openGUI(new MainMenuGUI());
         }));
-        addComponenent(new Button(width / 2 - 225, (height - (height / 8)) - 20, 200, 40, "Connect", button -> {
+        addComponenent(new ButtonComponent(width / 2 - 225, (height - (height / 8)) - 20, 200, 40, "Connect", button -> {
             PixleClient client = PixleClient.INSTANCE;
             SelectServerGUI.this.close();
             client.openGUI(new WorldGUI());
@@ -37,7 +37,7 @@ public class SelectServerGUI extends GUI {
             client.startGame();
         }));
 
-        ipTextBox = new TextBox((width / 2) - 200, height / 2 - 20, 400, 40, ipTextBox != null ? ipTextBox.getText() : "localhost");
+        ipTextBox = new TextBoxComponent((width / 2) - 200, height / 2 - 20, 400, 40, ipTextBox != null ? ipTextBox.getText() : "localhost");
         addComponenent(ipTextBox);
     }
 

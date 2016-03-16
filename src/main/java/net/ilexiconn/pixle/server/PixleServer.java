@@ -5,7 +5,7 @@ import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
 import com.esotericsoftware.minlog.Log;
 import net.ilexiconn.pixle.event.bus.EventBus;
-import net.ilexiconn.pixle.event.event.PixleInitializeEvent;
+import net.ilexiconn.pixle.event.PixleInitializeEvent;
 import net.ilexiconn.pixle.level.Level;
 import net.ilexiconn.pixle.level.ServerLevel;
 import net.ilexiconn.pixle.network.PixleNetworkManager;

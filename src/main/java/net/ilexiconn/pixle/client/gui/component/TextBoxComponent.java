@@ -6,7 +6,7 @@ import net.ilexiconn.pixle.client.render.RenderHelper;
 import org.lwjgl.input.Keyboard;
 import org.newdawn.slick.TrueTypeFont;
 
-public class TextBox extends GUIComponent {
+public class TextBoxComponent extends GUIComponent {
     private String text;
     private int width;
     private int height;
@@ -25,7 +25,7 @@ public class TextBox extends GUIComponent {
         }
     };
 
-    public TextBox(int x, int y, int width, int height, String startText, IComponentTheme theme) {
+    public TextBoxComponent(int x, int y, int width, int height, String startText, IComponentTheme theme) {
         super(x, y);
         this.width = width;
         this.height = height;
@@ -33,7 +33,7 @@ public class TextBox extends GUIComponent {
         this.theme = theme;
     }
 
-    public TextBox(int x, int y, int width, int height, String startText) {
+    public TextBoxComponent(int x, int y, int width, int height, String startText) {
         this(x, y, width, height, startText, DEFAULT_THEME);
     }
 

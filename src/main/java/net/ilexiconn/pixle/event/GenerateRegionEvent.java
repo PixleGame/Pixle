@@ -1,7 +1,5 @@
-package net.ilexiconn.pixle.event.event;
+package net.ilexiconn.pixle.event;
 
-import net.ilexiconn.pixle.event.Cancelable;
-import net.ilexiconn.pixle.event.Event;
 import net.ilexiconn.pixle.level.Level;
 import net.ilexiconn.pixle.level.generator.ILevelGenerator;
 import net.ilexiconn.pixle.level.region.Region;

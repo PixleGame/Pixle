@@ -6,7 +6,7 @@ import net.ilexiconn.pixle.entity.Entity;
 import net.ilexiconn.pixle.entity.EntityRegistry;
 import net.ilexiconn.pixle.entity.PlayerEntity;
 import net.ilexiconn.pixle.event.bus.EventBus;
-import net.ilexiconn.pixle.event.event.SetPixelEvent;
+import net.ilexiconn.pixle.event.SetPixelEvent;
 import net.ilexiconn.pixle.level.generator.DefaultLevelGenerator;
 import net.ilexiconn.pixle.level.generator.ILevelGenerator;
 import net.ilexiconn.pixle.level.region.Region;
