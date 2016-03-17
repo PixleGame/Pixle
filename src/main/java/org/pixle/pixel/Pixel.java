@@ -18,8 +18,8 @@ public class Pixel {
         GRASS = new Pixel(1).setColor(0x00A513);
         STONE = new Pixel(2).setColor(0x848484);
         DIRT = new Pixel(3).setColor(0x6D503C);
-        LOG = new Pixel(4).setColor(0xB97A57);
-        LEAVES = new Pixel(5).setColor(0x22B14C);
+        LOG = new Pixel(4).setColor(0x4C3C23);
+        LEAVES = new Pixel(5).setColor(0x2D8E00);
         BEDROCK = new Pixel(6).setColor(0x333333);
         GRAVEL = new Pixel(7).setColor(0x636363);
         SNOW = new Pixel(8).setColor(0xE8FFFF);
