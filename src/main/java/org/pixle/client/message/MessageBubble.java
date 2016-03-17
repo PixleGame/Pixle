@@ -18,13 +18,10 @@ public class MessageBubble {
 
     public void tick() {
         tick++;
-        if (tick % 60 == 1) {
-            y--;
-        }
     }
 
     public void render(int centerX, int centerY, PlayerEntity player) {
         int pixelSize = Level.PIXEL_SIZE;
-        RenderHelper.drawCenteredScaledStringWithShadow(centerX - (int) ((player.posX - x) * pixelSize), centerY - (int) ((y - player.posY) * pixelSize), message, 1.0F);
+        RenderHelper.drawCenteredScaledStringWithShadow(centerX - (int) ((player.posX - x) * pixelSize), centerY - (int) ((y - player.posY) * pixelSize - (tick / 4)), message, 1.0F);
     }
 }
