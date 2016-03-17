@@ -28,10 +28,10 @@ public class RenderHelper {
     }
 
     public static void drawOutline(int x, int y, int width, int height, int outlineSize) {
-        drawRect(x, y, width, outlineSize);
-        drawRect(x + width, y, outlineSize, height);
-        drawRect(x, y + height, width + outlineSize, outlineSize);
-        drawRect(x, y, outlineSize, height);
+        drawRect(x, y, width - outlineSize, outlineSize);
+        drawRect(x + width - outlineSize, y, outlineSize, height - outlineSize);
+        drawRect(x, y + height - outlineSize, width, outlineSize);
+        drawRect(x, y, outlineSize, height - outlineSize);
     }
 
     public static void drawVertex(int x, int y, int u, int v, float uMultiplier, float vMultiplier) {
