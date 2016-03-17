@@ -35,7 +35,7 @@ public class DefaultLevelGenerator implements ILevelGenerator {
                 if (y == 0 || (y < 15 && rand.nextInt(y + 1) == 0)) {
                     pixel = Pixel.BEDROCK;
                 } else if (y >= dirtLayer) {
-                    if (y >= grassLayer - 1) {
+                    if (y >= grassLayer - 2) {
                         pixel = Pixel.GRASS;
                     } else {
                         if (rand.nextInt(30) == 0) {
