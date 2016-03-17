@@ -77,12 +77,12 @@ public abstract class Level {
         return x >> 5;
     }
 
-    public Region getRegionForPixel(int x, int y) {
-        return getRegion(getRegionX(x), getRegionY(y));
+    public int getRegionY(int y) {
+        return y >> 5;
     }
 
-    private int getRegionY(int y) {
-        return y / Region.REGION_HEIGHT;
+    public Region getRegionForPixel(int x, int y) {
+        return getRegion(getRegionX(x), getRegionY(y));
     }
 
     public Region getRegion(int x, int y) {

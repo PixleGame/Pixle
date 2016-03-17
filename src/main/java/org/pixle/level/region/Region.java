@@ -18,11 +18,15 @@ public class Region {
     private int[][][] pixels = new int[PixelLayer.values().length][REGION_WIDTH][REGION_HEIGHT];
     private int x;
     private int y;
+    private boolean[] empty = new boolean[PixelLayer.values().length];
 
     public Region(int x, int y, Level level) {
         this.level = level;
         this.x = x;
         this.y = y;
+        for (int layer = 0; layer < empty.length; layer++) {
+            empty[layer] = true;
+        }
     }
 
     public Pixel getPixel(int x, int y, PixelLayer layer) {
@@ -33,10 +37,19 @@ public class Region {
         }
     }
 
+    public int getPixel(int x, int y, int layer) {
+        return pixels[layer][x][y];
+    }
+
     public void setPixel(Pixel pixel, int x, int y, PixelLayer layer) {
         if (x >= 0 && x < REGION_WIDTH && y >= 0 && y < REGION_HEIGHT) {
             int layerOrdinal = layer.ordinal();
             pixels[layerOrdinal][x][y] = pixel.getPixelID();
+            if (pixel != Pixel.air) {
+                empty[layerOrdinal] = false;
+            } else {
+                checkEmpty();
+            }
         }
     }
 
@@ -74,6 +87,7 @@ public class Region {
                 pixels[layer][x] = layerTag.getIntArray(x + "");
             }
         }
+        checkEmpty();
     }
 
     public int[][][] getPixels() {
@@ -82,6 +96,7 @@ public class Region {
 
     public void setPixels(int[][][] pixels) {
         this.pixels = pixels;
+        checkEmpty();
     }
 
     public int getX() {
@@ -98,5 +113,25 @@ public class Region {
                 this.pixels[layer][x][y] = pixels[x][y];
             }
         }
+        checkEmpty();
+    }
+
+    private void checkEmpty() {
+        for (int layer = 0; layer < pixels.length; layer++) {
+            boolean empty = true;
+            for (int x = 0; x < REGION_WIDTH && empty; x++) {
+                for (int y = 0; y < REGION_HEIGHT; y++) {
+                    if (pixels[layer][x][y] != 0) {
+                        empty = false;
+                        break;
+                    }
+                }
+            }
+            this.empty[layer] = empty;
+        }
+    }
+
+    public boolean isEmpty(PixelLayer layer) {
+        return empty[layer.ordinal()];
     }
 }
