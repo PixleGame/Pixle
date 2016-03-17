@@ -1,21 +1,29 @@
 package org.pixle.client.gl;
 
+import com.esotericsoftware.minlog.Log;
 import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.Color;
 
-public class GLStateManager {
-    private static BooleanState blendState = new BooleanState(GL11.GL_BLEND);
-    private static ColorState colorState = new ColorState();
-    private static BooleanState textureState = new BooleanState(GL11.GL_TEXTURE_2D);
-    private static ScaleState scaleState = new ScaleState();
-    private static BooleanState rescaleNormalState = new BooleanState(0x803A);
+import java.util.ArrayList;
+import java.util.List;
 
+public class GLStateManager {
+    private static List<GLStates> stateList = new ArrayList<>();
+    private static GLStates currentState;
+
+    static {
+        stateList.add(new GLStates("GLOBAL"));
+        currentState = stateList.get(0);
+    }
+    
     public static void enableBlend() {
-        blendState.setEnabled();
+        Log.debug("GLStateManager", "Enabling BLEND");
+        currentState.BLEND.setEnabled();
     }
 
     public static void disableBlend() {
-        blendState.setDisabled();
+        Log.debug("GLStateManager", "Disabling BLEND");
+        currentState.BLEND.setDisabled();
     }
 
     public static void setColor(int hex) {
@@ -23,35 +31,43 @@ public class GLStateManager {
     }
 
     public static void setColor(float red, float green, float blue) {
-        colorState.setState(red, green, blue);
+        Log.debug("GLStateManager", "Setting COLOR to " + red + "," + green + "," + blue);
+        currentState.COLOR.setState(red, green, blue);
     }
 
     public static void enableColor() {
-        colorState.setEnabled();
+        Log.debug("GLStateManager", "Enabling COLOR");
+        currentState.COLOR.setEnabled();
     }
 
     public static void disableColor() {
-        colorState.setDisabled();
+        Log.debug("GLStateManager", "Disabling COLOR");
+        currentState.COLOR.setDisabled();
     }
 
     public static void enableTexture() {
-        textureState.setEnabled();
+        Log.debug("GLStateManager", "Enabling TEXTURE");
+        currentState.TEXTURE.setEnabled();
     }
 
     public static void disableTexture() {
-        textureState.setDisabled();
-    }
-
-    public static void disableRescaleNormal() {
-        rescaleNormalState.setDisabled();
+        Log.debug("GLStateManager", "Disabling TEXTURE");
+        currentState.TEXTURE.setDisabled();
     }
 
     public static void enableRescaleNormal() {
-        rescaleNormalState.setEnabled();
+        Log.debug("GLStateManager", "Enabling RESCALE_NORMAL");
+        currentState.RESCALE_NORMAL.setEnabled();
+    }
+
+    public static void disableRescaleNormal() {
+        Log.debug("GLStateManager", "Disabling RESCALE_NORMAL");
+        currentState.RESCALE_NORMAL.setDisabled();
     }
 
     public static void scale(double x, double y) {
-        scaleState.setState(x, y);
+        Log.debug("GLStateManager", "Setting SCALE to " + x + "," + y);
+        currentState.SCALE.setState(x, y);
     }
 
     public static void scale(float x, float y) {
@@ -68,95 +84,26 @@ public class GLStateManager {
 
     public static void pushMatrix() {
         GL11.glPushMatrix();
+        GLStates matrixState = new GLStates("MATRIX_" + stateList.size());
+        stateList.add(matrixState);
+        currentState = matrixState;
+        Log.debug("GLStateManager", "Pushing " + currentState.getTag());
     }
 
     public static void popMatrix() {
         GL11.glPopMatrix();
-        blendState.reset();
-        colorState.reset();
-        textureState.reset();
-        scaleState.reset();
-        rescaleNormalState.reset();
+        GLStates newState = stateList.get(stateList.indexOf(currentState) - 1);
+        Log.debug("GLStateManager", "Popping " + currentState.getTag());
+        stateList.remove(currentState);
+        currentState = newState;
+        Log.debug("GLStateManager", "Pushing " + currentState.getTag());
     }
 
     public static Color getColor() {
-        return new Color(colorState.red, colorState.green, colorState.blue);
+        return currentState.COLOR.getColor();
     }
 
-    static class BooleanState {
-        private int capability;
-        private Boolean currentState;
-
-        public BooleanState(int capability) {
-            this.capability = capability;
-        }
-
-        public void setEnabled() {
-            setState(true);
-        }
-
-        public void setDisabled() {
-            setState(false);
-        }
-
-        private void setState(boolean state) {
-            if (currentState == null || state != currentState) {
-                currentState = state;
-                if (state) {
-                    GL11.glEnable(capability);
-                } else {
-                    GL11.glDisable(capability);
-                }
-            }
-        }
-
-        public void reset() {
-            currentState = null;
-        }
-    }
-
-    static class ColorState extends BooleanState {
-        private Float red;
-        private Float green;
-        private Float blue;
-
-        public ColorState() {
-            super(GL11.GL_COLOR);
-        }
-
-        public void setState(float red, float green, float blue) {
-            if ((this.red == null || this.red != red) || (this.green == null || this.green != green) || (this.blue == null || this.blue != blue)) {
-                this.red = red;
-                this.green = green;
-                this.blue = blue;
-                GL11.glColor4f(red, green, blue, 1.0F);
-            }
-        }
-
-        @Override
-        public void reset() {
-            super.reset();
-            red = null;
-            green = null;
-            blue = null;
-        }
-    }
-
-    static class ScaleState {
-        private Double x;
-        private Double y;
-
-        public void setState(double x, double y) {
-            if ((this.x == null || this.x != x) || (this.y == null || this.y != y)) {
-                this.x = x;
-                this.y = y;
-                GL11.glScaled(x, y, 1.0);
-            }
-        }
-
-        public void reset() {
-            x = null;
-            y = null;
-        }
+    public static GLStates getCurrentState() {
+        return currentState;
     }
 }
