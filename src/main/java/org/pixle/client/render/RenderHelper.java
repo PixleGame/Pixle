@@ -59,7 +59,8 @@ public class RenderHelper {
         float drawX = (x / scale) - (font.getWidth(text) / 2);
         float drawY = (y - (font.getHeight(text) / 2)) / scale;
 
-        font.drawString(drawX, drawY, text);
+        GLStateManager.setColor(0xFFFFFF);
+        drawString(drawX, drawY, text);
 
         GLStateManager.popMatrix();
     }
@@ -74,15 +75,15 @@ public class RenderHelper {
         float drawX = (x / scale) - (font.getWidth(text) / 2);
         float drawY = (y - (font.getHeight(text) / 2)) / scale;
 
-        font.drawString(drawX + 2, drawY + 2, text, new Color(0x606060));
-        font.drawString(drawX, drawY, text);
+        GLStateManager.setColor(0x606060);
+        drawString(drawX + 2, drawY + 2, text);
+        GLStateManager.setColor(0xFFFFFF);
+        drawString(drawX, drawY, text);
 
         GLStateManager.popMatrix();
     }
 
     public static void drawScaledStringWithShadow(int x, int y, String text, float scale) {
-        TrueTypeFont font = PixleClient.INSTANCE.getFontRenderer();
-
         GLStateManager.pushMatrix();
         GLStateManager.enableTexture();
         GLStateManager.scale(scale, scale);
@@ -90,9 +91,16 @@ public class RenderHelper {
         float drawX = x / scale;
         float drawY = y / scale;
 
-        font.drawString(drawX + 2, drawY + 2, text, new Color(0x606060));
-        font.drawString(drawX, drawY, text);
+        GLStateManager.setColor(0x606060);
+        drawString(drawX + 2, drawY + 2, text);
+        GLStateManager.setColor(0xFFFFFF);
+        drawString(drawX, drawY, text);
 
         GLStateManager.popMatrix();
+    }
+
+    public static void drawString(float x, float y, String text) {
+        TrueTypeFont font = PixleClient.INSTANCE.getFontRenderer();
+        font.drawString(x, y, text, GLStateManager.getColor());
     }
 }

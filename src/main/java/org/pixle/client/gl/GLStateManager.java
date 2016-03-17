@@ -1,6 +1,7 @@
 package org.pixle.client.gl;
 
 import org.lwjgl.opengl.GL11;
+import org.newdawn.slick.Color;
 
 public class GLStateManager {
     private static BooleanState blendState = new BooleanState(GL11.GL_BLEND);
@@ -76,6 +77,10 @@ public class GLStateManager {
         textureState.reset();
         scaleState.reset();
         rescaleNormalState.reset();
+    }
+
+    public static Color getColor() {
+        return new Color(colorState.red, colorState.green, colorState.blue);
     }
 
     static class BooleanState {

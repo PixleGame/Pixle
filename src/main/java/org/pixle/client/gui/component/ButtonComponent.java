@@ -47,8 +47,7 @@ public class ButtonComponent extends GUIComponent {
         RenderHelper.drawOutline(x, y, width, height, 2);
 
         GLStateManager.enableTexture();
-        TrueTypeFont font = PixleClient.INSTANCE.getFontRenderer();
-        font.drawString((x + (width / 2)) - (font.getWidth(text) / 2), (y + (height / 2)) - (font.getHeight(text) / 2) + 6, text);
+        RenderHelper.drawCenteredScaledString(x + (width / 2), y + (height / 2) + 6, text, 1.0F);
     }
 
     @Override

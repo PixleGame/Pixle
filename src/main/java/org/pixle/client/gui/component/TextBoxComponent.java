@@ -50,7 +50,8 @@ public class TextBoxComponent extends GUIComponent {
         if (selected && System.currentTimeMillis() % 1000 > 500) {
             drawText += "|";
         }
-        font.drawString((x + (width / 2)) - (font.getWidth(text) / 2), (y + (height / 2)) - (font.getHeight(text) / 2) + 6, drawText);
+        GLStateManager.setColor(0xFFFFFF);
+        RenderHelper.drawString((x + (width / 2)) - (font.getWidth(text) / 2), (y + (height / 2)) - (font.getHeight(text) / 2) + 6, drawText);
     }
 
     @Override
