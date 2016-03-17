@@ -54,7 +54,7 @@ public class LevelGUI extends GUI {
             RenderHelper.drawRect(0, 0, Display.getWidth(), (int) (Display.getHeight() - (centerY - ((player.posY + 1) * pixelSize))));
 
             for (PixelLayer layer : PixelLayer.values()) {
-                for (int y = (int) (player.posY - halfPixelsInHeight) - 1; y < Math.min(Level.LEVEL_HEIGHT, player.posY + halfPixelsInHeight); y++) {
+                for (int y = (int) (player.posY - halfPixelsInHeight) - 1; y < Math.min(Level.LEVEL_HEIGHT, player.posY + halfPixelsInHeight + 2); y++) {
                     for (int x = (int) (player.posX - (pixelsInWidth / 2)) - 1; x < player.posX + (pixelsInWidth / 2) + 1; x++) {
                         Region region = level.getRegionForPixel(x, y);
                         if (!region.isEmpty(layer)) {

@@ -12,8 +12,8 @@ public class SelectServerGUI extends GUI {
 
     @Override
     public void updateComponents(RenderResolution renderResolution) {
-        int width = Display.getWidth();
-        int height = Display.getHeight();
+        int width = renderResolution.getWidth();
+        int height = renderResolution.getHeight();
         addComponent(new ButtonComponent(width / 2 - 225, (height - (height / 8)) - 20, 200, 40, "Back", button -> {
             PixleClient client = PixleClient.INSTANCE;
             SelectServerGUI.this.close();
@@ -41,8 +41,9 @@ public class SelectServerGUI extends GUI {
 
     @Override
     public void render(int mouseX, int mouseY) {
-        int width = Display.getWidth();
-        int height = Display.getHeight();
+        RenderResolution renderResolution = PixleClient.INSTANCE.getRenderResolution();
+        int width = renderResolution.getWidth();
+        int height = renderResolution.getHeight();
         GLStateManager.setColor(0x0094FF);
         RenderHelper.drawRect(0, 0, width, height);
         RenderHelper.drawCenteredScaledStringWithShadow(width / 2, 40, "Join Server", 2.0F);

@@ -63,7 +63,7 @@ public class RenderHelper {
         GLStateManager.scale(scale, scale);
 
         float drawX = (x / scale) - (font.getWidth(text) / 2);
-        float drawY = (y - (font.getHeight(text) / 2)) / scale;
+        float drawY = (y / scale) - (font.getHeight(text) / 2);
 
         GLStateManager.setColor(0x606060);
         drawString(drawX + 2, drawY + 2, text);

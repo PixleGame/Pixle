@@ -1,6 +1,7 @@
 package org.pixle.client.gui;
 
 import org.lwjgl.opengl.Display;
+import org.lwjgl.opengl.GL11;
 import org.pixle.client.gl.GLStateManager;
 
 public class RenderResolution {
@@ -33,7 +34,7 @@ public class RenderResolution {
     }
 
     public void applyScale() {
-        GLStateManager.scale(scale, scale);
+        GL11.glScalef(scale, scale, 1.0F); //Shh, don't tell the GLStateManager about these changes! 'They didn't happen!'
     }
 
     public float getScale() {
