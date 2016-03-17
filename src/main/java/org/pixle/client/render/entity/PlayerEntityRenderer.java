@@ -14,6 +14,6 @@ public class PlayerEntityRenderer implements IEntityRenderer<PlayerEntity> {
         GLStateManager.setColor(168.0F / 255.0F, 111.0F / 255.0F, 87.0F / 255.0F);
         RenderHelper.drawRect(x, y - pixelSize, pixelSize, pixelSize);
         GLStateManager.enableTexture();
-        RenderHelper.drawCenteredScaledString(x, y - 16, entity.username, 0.8F);
+        RenderHelper.drawCenteredScaledString(x, y - 11, entity.username, 0.8F);
     }
 }

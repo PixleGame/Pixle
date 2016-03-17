@@ -91,6 +91,6 @@ public class RenderHelper {
 
     public static void drawString(float x, float y, String text) {
         TrueTypeFont font = PixleClient.INSTANCE.getFontRenderer();
-        font.drawString(x, y, text, GLStateManager.getColor());
+        font.drawString(x, y - 5, text, GLStateManager.getColor());
     }
 }
