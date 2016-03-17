@@ -2,6 +2,7 @@ package org.pixle.entity;
 
 import net.darkhax.opennbt.tags.CompoundTag;
 import org.pixle.level.Level;
+import org.pixle.level.PixelLayer;
 import org.pixle.network.EntityPositionUpdatePacket;
 import org.pixle.server.PixleServer;
 import org.pixle.util.Bounds;
@@ -44,7 +45,9 @@ public abstract class Entity {
         updateMovement();
 
         if (level.getSide().isServer() && ticks % 4 == 0) {
-            PixleServer.INSTANCE.getServer().sendToAllTCP(new EntityPositionUpdatePacket(this));
+            if (posX != prevPosX || posY != prevPosY) {
+                PixleServer.INSTANCE.getServer().sendToAllTCP(new EntityPositionUpdatePacket(this));
+            }
             prevPosX = posX;
             prevPosY = posY;
         }
@@ -66,22 +69,24 @@ public abstract class Entity {
     }
 
     public void move(float velX, float velY) {
-        posX += velX;
-        posY += velY;
+        if (!level.getRegionForPixel((int) posX, (int) posY).isEmpty(PixelLayer.FOREGROUND)) {
+            posX += velX;
+            posY += velY;
 
-        double originalX = posX;
-        double originalY = posY;
+            double originalX = posX;
+            double originalY = posY;
 
-        List<Bounds> intersectingBounds = level.getIntersectingPixelBounds(bounds);
+            List<Bounds> intersectingBounds = level.getIntersectingPixelBounds(bounds);
 
-        for (Bounds intersecting : intersectingBounds) {
-            posY = bounds.preventIntersectionY(posY, intersecting);
-            posX = bounds.preventIntersectionX(posX, intersecting);
+            for (Bounds intersecting : intersectingBounds) {
+                posY = bounds.preventIntersectionY(posY, intersecting);
+                posX = bounds.preventIntersectionX(posX, intersecting);
+            }
+
+            collidingHorizontally = originalX != posX;
+            collidingVertically = originalY != posY;
+            onSurface = collidingVertically && posY > originalY;
         }
-
-        collidingHorizontally = originalX != posX;
-        collidingVertically = originalY != posY;
-        onSurface = collidingVertically && posY > originalY;
     }
 
     public float getGravity() {
