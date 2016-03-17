@@ -17,6 +17,7 @@ import org.pixle.client.event.RenderEvent;
 import org.pixle.client.gl.GLStateManager;
 import org.pixle.client.gui.GUI;
 import org.pixle.client.gui.MainMenuGUI;
+import org.pixle.client.gui.RenderResolution;
 import org.pixle.client.render.TextureManager;
 import org.pixle.entity.PlayerEntity;
 import org.pixle.event.PixleInitializeEvent;
@@ -71,11 +72,14 @@ public class PixleClient extends Listener {
     private String host;
     private int port = 25565;
 
+    private RenderResolution renderResolution;
+
     public void start(Map<String, String> properties) {
         try {
             PixleClient.INSTANCE = this;
             config = ConfigUtils.loadConfig(configFile, ClientConfig.class);
             this.username = properties.get("username");
+            renderResolution = new RenderResolution();
             init();
             try {
                 Display.setDisplayMode(new DisplayMode(854, 480));
@@ -125,9 +129,10 @@ public class PixleClient extends Listener {
                     GL11.glMatrixMode(GL11.GL_MODELVIEW);
                     GL11.glScissor(0, 0, width, height);
                     GL11.glViewport(0, 0, width, height);
+                    renderResolution = new RenderResolution();
                     for (GUI gui : getOpenGUIs()) {
                         gui.clearComponents();
-                        gui.updateComponents();
+                        gui.updateComponents(renderResolution);
                     }
                 }
 
@@ -253,6 +258,8 @@ public class PixleClient extends Listener {
         }
         int mouseX = Mouse.getX();
         int mouseY = Display.getHeight() - Mouse.getY();
+        mouseX /= renderResolution.getScale();
+        mouseY /= renderResolution.getScale();
         boolean mouseDown = Mouse.isButtonDown(0);
         boolean mouseClicked = false;
         while (Mouse.next()) {
@@ -275,21 +282,25 @@ public class PixleClient extends Listener {
     }
 
     private void render() {
-        if (EventBus.get().post(new RenderEvent.Pre(this))) {
+        EventBus eventBus = EventBus.get();
+        renderResolution.applyScale();
+        if (eventBus.post(new RenderEvent.Pre(this))) {
             GLStateManager.enableColor();
             int mouseX = Mouse.getX();
             int mouseY = Display.getHeight() - Mouse.getY();
+            mouseX /= renderResolution.getScale();
+            mouseY /= renderResolution.getScale();
             for (GUI gui : getOpenGUIs()) {
                 gui.render(mouseX, mouseY);
             }
         }
-        EventBus.get().post(new RenderEvent.Post(this));
+        eventBus.post(new RenderEvent.Post(this));
     }
 
     public void openGUI(GUI gui) {
         if (EventBus.get().post(new GUIInitializationEvent.Pre(gui))) {
             gui.clearComponents();
-            gui.updateComponents();
+            gui.updateComponents(renderResolution);
             if (!openGUIs.contains(gui)) {
                 openGUIs.add(gui);
             }
@@ -365,6 +376,10 @@ public class PixleClient extends Listener {
 
     public PixleServer getIntegratedServer() {
         return integratedServer;
+    }
+
+    public RenderResolution getRenderResolution() {
+        return renderResolution;
     }
 }
 

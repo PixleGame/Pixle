@@ -23,11 +23,11 @@ public class OptionsGUI extends GUI {
     private Map<Field, GUIOptionComponent> options = new HashMap<>();
 
     @Override
-    public void updateComponents() {
+    public void updateComponents(RenderResolution renderResolution) {
         names.clear();
         options.clear();
-        int width = Display.getWidth();
-        int height = Display.getHeight();
+        int width = renderResolution.getWidth();
+        int height = renderResolution.getHeight();
         int y = height / 4;
         int optionX = width / 2 - 100;
         try {
@@ -66,8 +66,9 @@ public class OptionsGUI extends GUI {
 
     @Override
     public void render(int mouseX, int mouseY) {
-        int width = Display.getWidth();
-        int height = Display.getHeight();
+        RenderResolution renderResolution = PixleClient.INSTANCE.getRenderResolution();
+        int width = renderResolution.getWidth();
+        int height = renderResolution.getHeight();
         GLStateManager.setColor(0x0094FF);
         RenderHelper.drawRect(0, 0, width, height);
         RenderHelper.drawCenteredScaledStringWithShadow(width / 2, 40, "Options", 2.0F);

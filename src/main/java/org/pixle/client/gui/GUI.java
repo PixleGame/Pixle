@@ -9,7 +9,7 @@ import java.util.List;
 public abstract class GUI {
     private List<GUIComponent> components = new ArrayList<GUIComponent>();
 
-    public abstract void updateComponents();
+    public abstract void updateComponents(RenderResolution renderResolution);
 
     public void render(int mouseX, int mouseY) {
         for (GUIComponent component : components) {

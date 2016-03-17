@@ -1,6 +1,5 @@
 package org.pixle.client.gui;
 
-import org.lwjgl.opengl.Display;
 import org.newdawn.slick.TrueTypeFont;
 import org.pixle.client.PixleClient;
 import org.pixle.client.gl.GLStateManager;
@@ -9,9 +8,9 @@ import org.pixle.client.render.RenderHelper;
 
 public class MainMenuGUI extends GUI {
     @Override
-    public void updateComponents() {
-        int width = Display.getWidth();
-        int height = Display.getHeight();
+    public void updateComponents(RenderResolution renderResolution) {
+        int width = renderResolution.getWidth();
+        int height = renderResolution.getHeight();
         int centerButtonX = (width / 2) - 200;
         addComponent(new ButtonComponent(centerButtonX, (height / 3) - 20, 400, 40, "Play Singleplayer", button -> {
             PixleClient client = PixleClient.INSTANCE;
@@ -33,8 +32,9 @@ public class MainMenuGUI extends GUI {
 
     @Override
     public void render(int mouseX, int mouseY) {
-        int width = Display.getWidth();
-        int height = Display.getHeight();
+        RenderResolution renderResolution = PixleClient.INSTANCE.getRenderResolution();
+        int width = renderResolution.getWidth();
+        int height = renderResolution.getHeight();
 
         int centerX = width / 2;
 

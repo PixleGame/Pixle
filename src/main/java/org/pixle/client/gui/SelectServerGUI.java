@@ -11,7 +11,7 @@ public class SelectServerGUI extends GUI {
     private TextBoxComponent ipTextBox;
 
     @Override
-    public void updateComponents() {
+    public void updateComponents(RenderResolution renderResolution) {
         int width = Display.getWidth();
         int height = Display.getHeight();
         addComponent(new ButtonComponent(width / 2 - 225, (height - (height / 8)) - 20, 200, 40, "Back", button -> {

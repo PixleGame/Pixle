@@ -2,7 +2,6 @@ package org.pixle.client.gui;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
-import org.lwjgl.opengl.GL11;
 import org.pixle.client.PixleClient;
 import org.pixle.client.event.RenderEntityEvent;
 import org.pixle.client.gl.GLStateManager;
@@ -26,7 +25,7 @@ public class LevelGUI extends GUI {
     public List<MessageBubble> bubbleList = new ArrayList<>();
 
     @Override
-    public void updateComponents() {
+    public void updateComponents(RenderResolution renderResolution) {
     }
 
     @Override
@@ -38,14 +37,18 @@ public class LevelGUI extends GUI {
         Level level = pixle.getLevel();
         PlayerEntity player = pixle.getPlayer();
 
+        RenderResolution renderResolution = pixle.getRenderResolution();
+        int width = renderResolution.getWidth();
+        int height = renderResolution.getHeight();
+
         if (player != null) {
             int pixelSize = Level.PIXEL_SIZE;
-            int pixelsInWidth = (int) Math.ceil(Display.getWidth() / pixelSize);
-            int pixelsInHeight = (int) Math.ceil(Display.getHeight() / pixelSize);
+            int pixelsInWidth = (int) Math.ceil(width / pixelSize);
+            int pixelsInHeight = (int) Math.ceil(height / pixelSize);
             int halfPixelsInHeight = pixelsInHeight / 2;
 
-            int centerX = Display.getWidth() / 2;
-            int centerY = Display.getHeight() / 2;
+            int centerX = width / 2;
+            int centerY = height / 2;
 
             GLStateManager.setColor(0x0094FF);
             RenderHelper.drawRect(0, 0, Display.getWidth(), (int) (Display.getHeight() - (centerY - ((player.posY + 1) * pixelSize))));
@@ -58,7 +61,7 @@ public class LevelGUI extends GUI {
                             Pixel pixel = level.getPixel(x, y, layer);
                             if (pixel != Pixel.air) {
                                 GLStateManager.setColor(pixel.getColor());
-                                RenderHelper.drawRect((int) (centerX - Math.round((player.posX - x) * pixelSize)), Display.getHeight() - (centerY - (int) Math.round((player.posY - y) * pixelSize)), pixelSize, pixelSize);
+                                RenderHelper.drawRect((int) (centerX - Math.round((player.posX - x) * pixelSize)), height - (centerY - (int) Math.round((player.posY - y) * pixelSize)), pixelSize, pixelSize);
                             }
                         }
                     }
