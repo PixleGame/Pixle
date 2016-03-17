@@ -80,7 +80,7 @@ public class LevelGUI extends GUI {
                 }
             }
 
-            for (MessageBubble bubble : bubbleList) {
+            for (MessageBubble bubble : new ArrayList<>(bubbleList)) {
                 bubble.render(centerX, centerY, player);
             }
         }
