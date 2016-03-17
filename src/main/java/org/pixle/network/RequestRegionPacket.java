@@ -16,14 +16,14 @@ public class RequestRegionPacket extends PixlePacket {
 
     public RequestRegionPacket(int x, int y, int layer) {
         this.x = x;
-        this.y = (byte) y;
+        this.y = (byte) (y + Byte.MIN_VALUE);
         this.layer = (byte) layer;
     }
 
     @Override
     public void handleServer(PixleServer pixleServer, PlayerEntity player, Connection connection, long estimatedSendTime) {
         Server server = (Server) connection.getEndPoint();
-        server.sendToTCP(connection.getID(), new SendRegionPacket(pixleServer.getLevel().getRegion(x, y), layer));
+        server.sendToTCP(connection.getID(), new SendRegionPacket(pixleServer.getLevel().getRegion(x, y - Byte.MIN_VALUE), layer));
     }
 
     @Override

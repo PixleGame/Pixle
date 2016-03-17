@@ -19,7 +19,7 @@ public class SendRegionPacket extends PixlePacket {
     public SendRegionPacket(Region region, byte layer) {
         this.layer = layer;
         this.regionX = region.getX();
-        this.regionY = (byte) region.getY();
+        this.regionY = (byte) (region.getY() + Byte.MIN_VALUE);
 
         pixels = new byte[Region.REGION_WIDTH][Region.REGION_HEIGHT];
         int[][] regionPixels = region.getPixels()[layer];
@@ -38,7 +38,7 @@ public class SendRegionPacket extends PixlePacket {
     @Override
     public void handleClient(PixleClient client, Connection connection, long estimatedSendTime) {
         ClientLevel level = client.getLevel();
-        Region region = level.getRegion(regionX, regionY);
+        Region region = level.getRegion(regionX, regionY - Byte.MIN_VALUE);
         region.setPixels(pixels, layer);
     }
 }

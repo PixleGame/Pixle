@@ -33,7 +33,7 @@ public abstract class Level {
 
     public static int nextEntityId;
 
-    public static final int LEVEL_HEIGHT = 1024;
+    public static final int LEVEL_HEIGHT = 8192;
 
     public Level(long seed) {
         this.levelGenerator = new DefaultLevelGenerator();
