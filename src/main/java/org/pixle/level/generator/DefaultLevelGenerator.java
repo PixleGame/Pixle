@@ -26,20 +26,20 @@ public class DefaultLevelGenerator implements ILevelGenerator {
 
             Random bedrockRand = new Random(worldX * seed);
 
-            for (int y = 0; y < height; y++) {
-                if (y >= regionStartY && y < regionStartY + Region.REGION_HEIGHT) {
-                    Pixel pixel = Pixel.stone;
-                    if (y == 0 || (y < 15 && bedrockRand.nextInt(y + 1) == 0)) {
-                        pixel = Pixel.bedrock;
-                    } else if (y >= dirtLayer) {
-                        if (y == height - 1) {
-                            pixel = Pixel.grass;
-                        } else {
-                            pixel = Pixel.dirt;
-                        }
+            int startY = Math.min(regionStartY, height);
+            int endY = Math.min(height, regionStartY + Region.REGION_HEIGHT);
+            for (int y = startY; y < endY; y++) {
+                Pixel pixel = Pixel.stone;
+                if (y == 0 || (y < 15 && bedrockRand.nextInt(y + 1) == 0)) {
+                    pixel = Pixel.bedrock;
+                } else if (y >= dirtLayer) {
+                    if (y == height - 1) {
+                        pixel = Pixel.grass;
+                    } else {
+                        pixel = Pixel.dirt;
                     }
-                    region.setPixel(pixel, x, y & (Region.REGION_HEIGHT - 1), PixelLayer.FOREGROUND);
                 }
+                region.setPixel(pixel, x, y & (Region.REGION_HEIGHT - 1), PixelLayer.FOREGROUND);
             }
         }
     }
