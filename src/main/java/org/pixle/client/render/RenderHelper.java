@@ -23,18 +23,8 @@ public class RenderHelper {
     }
 
     public static void drawRect(int x, int y, int width, int height) {
-        float uMultiplier = 1.0F / width;
-        float vMultiplier = 1.0F / height;
-
         GLStateManager.disableTexture();
-        GLStateManager.startDrawingQuads();
-
-        drawVertex(x, y + height, 0, height, uMultiplier, vMultiplier);
-        drawVertex(x + width, y + height, width, height, uMultiplier, vMultiplier);
-        drawVertex(x + width, y, width, 0, uMultiplier, vMultiplier);
-        drawVertex(x, y, 0, 0, uMultiplier, vMultiplier);
-
-        GLStateManager.end();
+        GL11.glRecti(x, y, x + width, y + height);
     }
 
     public static void drawOutline(int x, int y, int width, int height, int outlineSize) {
