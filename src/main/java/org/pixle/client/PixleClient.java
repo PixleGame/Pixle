@@ -110,11 +110,11 @@ public class PixleClient extends Listener {
             GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
             try {
-                InputStream inputStream = PixleClient.class.getResourceAsStream("/font/rainyhearts.ttf");
+                InputStream inputStream = PixleClient.class.getResourceAsStream("/font/00TT.ttf");
 
                 Font awtFont = Font.createFont(Font.TRUETYPE_FONT, inputStream);
-                awtFont = awtFont.deriveFont(24F);
-                fontRenderer = new TrueTypeFont(awtFont, true);
+                awtFont = awtFont.deriveFont(11.0F);
+                fontRenderer = new TrueTypeFont(awtFont, false);
             } catch (Exception e) {
                 e.printStackTrace();
             }

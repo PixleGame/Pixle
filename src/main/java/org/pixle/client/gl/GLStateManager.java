@@ -23,7 +23,11 @@ public class GLStateManager {
     }
 
     public static void setColor(float red, float green, float blue) {
-        colorState.setState(red, green, blue);
+        colorState.setState(red, green, blue, colorState.alpha);
+    }
+
+    public static void setColor(float red, float green, float blue, float alpha) {
+        colorState.setState(red, green, blue, alpha);
     }
 
     public static void enableColor() {
@@ -72,11 +76,6 @@ public class GLStateManager {
 
     public static void popMatrix() {
         GL11.glPopMatrix();
-        blendState.reset();
-        colorState.reset();
-        textureState.reset();
-        scaleState.reset();
-        rescaleNormalState.reset();
     }
 
     public static Color getColor() {
@@ -109,36 +108,26 @@ public class GLStateManager {
                 }
             }
         }
-
-        public void reset() {
-            currentState = null;
-        }
     }
 
     static class ColorState extends BooleanState {
         private Float red;
         private Float green;
         private Float blue;
+        private float alpha = 1.0F;
 
         public ColorState() {
             super(GL11.GL_COLOR);
         }
 
-        public void setState(float red, float green, float blue) {
-            if ((this.red == null || this.red != red) || (this.green == null || this.green != green) || (this.blue == null || this.blue != blue)) {
+        public void setState(float red, float green, float blue, float alpha) {
+            if ((this.red == null || this.red != red) || (this.green == null || this.green != green) || (this.blue == null || this.blue != blue) || (this.alpha != alpha)) {
                 this.red = red;
                 this.green = green;
                 this.blue = blue;
-                GL11.glColor4f(red, green, blue, 1.0F);
+                this.alpha = alpha;
+                GL11.glColor4f(red, green, blue, alpha);
             }
-        }
-
-        @Override
-        public void reset() {
-            super.reset();
-            red = null;
-            green = null;
-            blue = null;
         }
     }
 
@@ -150,13 +139,8 @@ public class GLStateManager {
             if ((this.x == null || this.x != x) || (this.y == null || this.y != y)) {
                 this.x = x;
                 this.y = y;
-                GL11.glScaled(x, y, 1.0);
+                GL11.glScaled(x, y, 1.0D);
             }
-        }
-
-        public void reset() {
-            x = null;
-            y = null;
         }
     }
 }

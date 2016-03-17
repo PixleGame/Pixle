@@ -41,7 +41,7 @@ public class MainMenuGUI extends GUI {
         GLStateManager.setColor(0x0094FF);
         RenderHelper.drawRect(0, 0, width, height);
 
-        RenderHelper.drawCenteredScaledStringWithShadow(centerX, height / 10, "Pixle", 2.0F);
+        RenderHelper.drawCenteredScaledStringWithShadow(centerX, height / 4, "Pixle", 8.0F);
 
         String createdByString = "Created by iLexiconn and gegy1000";
 

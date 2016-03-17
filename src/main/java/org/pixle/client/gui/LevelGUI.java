@@ -94,7 +94,7 @@ public class LevelGUI extends GUI {
 
     @Override
     public void tick() {
-        bubbleList.forEach(MessageBubble::tick);
+        new ArrayList<>(bubbleList).forEach(MessageBubble::tick);
     }
 
     @Override

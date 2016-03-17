@@ -45,7 +45,7 @@ public class ButtonComponent extends GUIComponent {
         RenderHelper.drawOutline(x, y, width, height, 2);
 
         GLStateManager.enableTexture();
-        RenderHelper.drawCenteredScaledString(x + (width / 2), y + (height / 2) + 6, text, 1.0F);
+        RenderHelper.drawCenteredScaledStringWithShadow(x + (width / 2), y + (height / 2) + 6, text, 1.0F);
     }
 
     @Override
