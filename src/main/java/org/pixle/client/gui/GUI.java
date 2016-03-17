@@ -33,6 +33,12 @@ public abstract class GUI {
         }
     }
 
+    public void mouseDown(int mouseX, int mouseY) {
+        for (GUIComponent component : components) {
+            component.mouseDown(mouseX, mouseY);
+        }
+    }
+
     protected void addComponent(GUIComponent component) {
         components.add(component);
     }

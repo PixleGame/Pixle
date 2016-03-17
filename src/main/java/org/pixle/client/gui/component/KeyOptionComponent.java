@@ -49,16 +49,13 @@ public class KeyOptionComponent extends GUIOptionComponent {
         RenderHelper.drawOutline(x, y, width, height, 2);
 
         GLStateManager.enableTexture();
-        TrueTypeFont font = PixleClient.INSTANCE.getFontRenderer();
         String text = Keyboard.getKeyName(key);
         RenderHelper.drawCenteredScaledString(x + (width / 2), y + (height / 2) + 6, text, 1.0F);
     }
 
     @Override
     public void mouseClicked(int mouseX, int mouseY) {
-        if (isMouseOver(mouseX, mouseY)) {
-            selected = true;
-        }
+        selected = isMouseOver(mouseX, mouseY);
     }
 
     @Override
@@ -67,6 +64,11 @@ public class KeyOptionComponent extends GUIOptionComponent {
             this.key = key;
             selected = false;
         }
+    }
+
+    @Override
+    public void mouseDown(int mouseX, int mouseY) {
+
     }
 
     private boolean isMouseOver(int mouseX, int mouseY) {
@@ -86,7 +88,7 @@ public class KeyOptionComponent extends GUIOptionComponent {
     }
 
     @Override
-    public void set(Field field) throws IllegalAccessException {
-        field.set(PixleClient.INSTANCE.config, key);
+    public Object set() {
+        return key;
     }
 }

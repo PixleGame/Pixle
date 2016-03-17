@@ -1,7 +1,5 @@
 package org.pixle.client.gui.component;
 
-import org.newdawn.slick.TrueTypeFont;
-import org.pixle.client.PixleClient;
 import org.pixle.client.gl.GLStateManager;
 import org.pixle.client.render.RenderHelper;
 
@@ -59,6 +57,11 @@ public class ButtonComponent extends GUIComponent {
 
     @Override
     public void keyPressed(char c, int key) {
+    }
+
+    @Override
+    public void mouseDown(int mouseX, int mouseY) {
+
     }
 
     private boolean isMouseOver(int mouseX, int mouseY) {

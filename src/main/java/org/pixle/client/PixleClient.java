@@ -253,6 +253,7 @@ public class PixleClient extends Listener {
         }
         int mouseX = Mouse.getX();
         int mouseY = Display.getHeight() - Mouse.getY();
+        boolean mouseDown = Mouse.isButtonDown(0);
         boolean mouseClicked = false;
         while (Mouse.next()) {
             if (Mouse.getEventButton() == 0) {
@@ -262,6 +263,11 @@ public class PixleClient extends Listener {
         if (mouseClicked) {
             for (GUI gui : getOpenGUIs()) {
                 gui.mouseClicked(mouseX, mouseY);
+            }
+        }
+        if (mouseDown) {
+            for (GUI gui : getOpenGUIs()) {
+                gui.mouseDown(mouseX, mouseY);
             }
         }
         level.update();

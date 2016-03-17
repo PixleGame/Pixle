@@ -72,6 +72,10 @@ public class TextBoxComponent extends GUIComponent {
         }
     }
 
+    @Override
+    public void mouseDown(int mouseX, int mouseY) {
+    }
+
     private boolean isMouseOver(int mouseX, int mouseY) {
         return mouseX > x && mouseX < x + width && mouseY > y && mouseY < y + height;
     }

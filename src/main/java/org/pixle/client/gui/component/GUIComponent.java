@@ -15,6 +15,8 @@ public abstract class GUIComponent {
 
     public abstract void keyPressed(char c, int key);
 
+    public abstract void mouseDown(int mouseX, int mouseY);
+
     public int getX() {
         return x;
     }

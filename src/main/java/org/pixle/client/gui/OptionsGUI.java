@@ -9,6 +9,7 @@ import org.pixle.client.gl.GLStateManager;
 import org.pixle.client.gui.component.ButtonComponent;
 import org.pixle.client.gui.component.GUIOptionComponent;
 import org.pixle.client.gui.component.KeyOptionComponent;
+import org.pixle.client.gui.component.SliderOptionComponent;
 import org.pixle.client.render.RenderHelper;
 
 import java.lang.reflect.Field;
@@ -28,13 +29,16 @@ public class OptionsGUI extends GUI {
         int width = Display.getWidth();
         int height = Display.getHeight();
         int y = height / 4;
+        int optionX = width / 2 - 100;
         try {
             for (Field field : ClientConfig.class.getDeclaredFields()) {
                 ConfigOption annotation = field.getDeclaredAnnotation(ConfigOption.class);
                 OptionType type = annotation.type();
                 GUIOptionComponent component = null;
                 if (type == OptionType.KEY) {
-                    component = new KeyOptionComponent(width / 2 - 100, y, 200, 30, (Integer) field.get(PixleClient.INSTANCE.config));
+                    component = new KeyOptionComponent(optionX, y, 200, 30, (Integer) field.get(PixleClient.INSTANCE.config));
+                } else if (type == OptionType.SLIDER) {
+                    component = new SliderOptionComponent(optionX, y, annotation.minValue(), annotation.maxValue(), 200, (Integer) field.get(PixleClient.INSTANCE.config));
                 }
                 if (component != null) {
                     addComponent(component);
@@ -46,11 +50,11 @@ public class OptionsGUI extends GUI {
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
-        addComponent(new ButtonComponent(width / 2 - 100, (height - (height / 8)) - 20, 200, 40, "Done", button -> {
+        addComponent(new ButtonComponent(optionX, (height - (height / 8)) - 20, 200, 40, "Done", button -> {
             PixleClient client = PixleClient.INSTANCE;
             for (Map.Entry<Field, GUIOptionComponent> entry : options.entrySet()) {
                 try {
-                    entry.getValue().set(entry.getKey());
+                    entry.getKey().set(PixleClient.INSTANCE.config, entry.getValue().set());
                 } catch (IllegalAccessException e) {
                     e.printStackTrace();
                 }
