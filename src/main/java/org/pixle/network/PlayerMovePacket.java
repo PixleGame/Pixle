@@ -29,7 +29,9 @@ public class PlayerMovePacket extends PixlePacket {
 
     @Override
     public void handleClient(PixleClient client, Connection connection, long estimatedSendTime) {
-        handle((PlayerEntity) client.getLevel().getEntityById(entityId), estimatedSendTime, true);
+        if (client.getPlayer().entityID != entityId) {
+            handle((PlayerEntity) client.getLevel().getEntityById(entityId), estimatedSendTime, true);
+        }
     }
 
     private void handle(PlayerEntity player, long estimatedSendTime, boolean client) {
@@ -45,5 +47,4 @@ public class PlayerMovePacket extends PixlePacket {
             }
         }
     }
-
 }

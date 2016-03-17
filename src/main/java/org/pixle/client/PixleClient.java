@@ -244,6 +244,8 @@ public class PixleClient extends Listener {
                 jumping = true;
             }
             if (jumping != player.jumping || moveX != player.moveX) {
+                player.moveX = moveX;
+                player.jumping = jumping;
                 client.sendTCP(new PlayerMovePacket(player, moveX, jumping));
             }
         }
