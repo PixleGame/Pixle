@@ -16,7 +16,7 @@ public class Pixel {
     static {
         AIR = new Pixel(0);
         GRASS = new Pixel(1).setColor(0x00A513);
-        STONE = new Pixel(2).setColor(0x686868);
+        STONE = new Pixel(2).setColor(0x848484);
         DIRT = new Pixel(3).setColor(0x6D503C);
         LOG = new Pixel(4).setColor(0xB97A57);
         LEAVES = new Pixel(5).setColor(0x22B14C);
