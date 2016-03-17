@@ -85,6 +85,14 @@ public abstract class Entity {
 
             collidingHorizontally = originalX != posX;
             collidingVertically = originalY != posY;
+
+            if (collidingHorizontally) {
+                this.velX = 0;
+            }
+            if (collidingHorizontally) {
+                this.velY = 0;
+            }
+
             onSurface = collidingVertically && posY > originalY;
         }
     }

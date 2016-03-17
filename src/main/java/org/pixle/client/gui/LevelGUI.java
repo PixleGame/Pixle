@@ -20,6 +20,7 @@ import org.pixle.pixel.Pixel;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class LevelGUI extends GUI {
     public List<MessageBubble> bubbleList = new ArrayList<>();
@@ -60,7 +61,12 @@ public class LevelGUI extends GUI {
                         if (!region.isEmpty(layer)) {
                             Pixel pixel = level.getPixel(x, y, layer);
                             if (pixel != Pixel.AIR) {
-                                GLStateManager.setColor(pixel.getColor());
+                                int color = pixel.getColor();
+                                int r = ((color & 0xFF0000) >> 16);
+                                int g = ((color & 0xFF00) >> 8);
+                                int b = (color & 0xFF);
+                                int offset = new Random((x - y) * y).nextInt(10) - 5;
+                                GLStateManager.setColor((r + offset) / 255.0F, (g + offset) / 255.0F, (b + offset) / 255.0F);
                                 RenderHelper.drawRect((int) (centerX - Math.round((player.posX - x) * pixelSize)), height - (centerY - (int) Math.round((player.posY - y) * pixelSize)), pixelSize, pixelSize);
                             }
                         }
