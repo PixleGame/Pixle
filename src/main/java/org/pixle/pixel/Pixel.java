@@ -3,22 +3,26 @@ package org.pixle.pixel;
 public class Pixel {
     private static Pixel[] pixels = new Pixel[256];
 
-    public static final Pixel air;
-    public static final Pixel grass;
-    public static final Pixel stone;
-    public static final Pixel dirt;
-    public static final Pixel log;
-    public static final Pixel leaves;
-    public static final Pixel bedrock;
+    public static final Pixel AIR;
+    public static final Pixel GRASS;
+    public static final Pixel STONE;
+    public static final Pixel DIRT;
+    public static final Pixel LOG;
+    public static final Pixel LEAVES;
+    public static final Pixel BEDROCK;
+    public static final Pixel GRAVEL;
+    public static final Pixel SNOW;
 
     static {
-        air = new Pixel(0);
-        grass = new Pixel(1).setColor(0x71C476);
-        stone = new Pixel(2).setColor(0x909090);
-        dirt = new Pixel(3).setColor(0x7C5B44);
-        log = new Pixel(4).setColor(0xB97A57);
-        leaves = new Pixel(5).setColor(0x22B14C);
-        bedrock = new Pixel(6).setColor(0x333333);
+        AIR = new Pixel(0);
+        GRASS = new Pixel(1).setColor(0x00A513);
+        STONE = new Pixel(2).setColor(0x686868);
+        DIRT = new Pixel(3).setColor(0x6D503C);
+        LOG = new Pixel(4).setColor(0xB97A57);
+        LEAVES = new Pixel(5).setColor(0x22B14C);
+        BEDROCK = new Pixel(6).setColor(0x333333);
+        GRAVEL = new Pixel(7).setColor(0x636363);
+        SNOW = new Pixel(8).setColor(0xE8FFFF);
     }
 
     private final int pixelID;
@@ -54,6 +58,6 @@ public class Pixel {
                 return pixel;
             }
         }
-        return Pixel.air;
+        return Pixel.AIR;
     }
 }

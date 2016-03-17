@@ -33,7 +33,7 @@ public class Region {
         if (x >= 0 && x < REGION_WIDTH && y >= 0 && y < REGION_HEIGHT) {
             return Pixel.getPixelByID(pixels[layer.ordinal()][x][y]);
         } else {
-            return Pixel.air;
+            return Pixel.AIR;
         }
     }
 
@@ -45,7 +45,7 @@ public class Region {
         if (x >= 0 && x < REGION_WIDTH && y >= 0 && y < REGION_HEIGHT) {
             int layerOrdinal = layer.ordinal();
             pixels[layerOrdinal][x][y] = pixel.getPixelID();
-            if (pixel != Pixel.air) {
+            if (pixel != Pixel.AIR) {
                 empty[layerOrdinal] = false;
             } else {
                 checkEmpty();

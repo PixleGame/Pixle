@@ -15,7 +15,7 @@ public class TestPlugin {
 
     @EventHandler
     public void onSetPixel(SetPixelEvent event) {
-//        if (event.getPixel() == Pixel.grass) {
+//        if (event.getPixel() == Pixel.GRASS) {
 //            event.setCanceled();
 //        }
     }
@@ -25,7 +25,7 @@ public class TestPlugin {
 //        for (int layer = 0; layer < PixelLayer.values().length; layer++) {
 //            for (int x = 0; x < Region.REGION_WIDTH; x++) {
 //                for (int y = 0; y < Region.REGION_HEIGHT; y++) {
-//                    if (event.getRegion().getPixels()[layer][x][y] == Pixel.grass.getPixelID()) {
+//                    if (event.getRegion().getPixels()[layer][x][y] == Pixel.GRASS.getPixelID()) {
 //                        event.getRegion().setPixel(Pixel.air, x, y, PixelLayer.values()[layer]);
 //                    }
 //                }

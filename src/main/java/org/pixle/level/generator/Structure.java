@@ -20,9 +20,9 @@ public class Structure {
             for (int pixelY = 0; pixelY < height; pixelY++) {
                 for (int pixelX = 0; pixelX < width; pixelX++) {
                     int pixel = pixels[layer][pixelX][pixelY];
-                    if ((pixel != Pixel.air.getColor() && pixel != 0xFFFFFF && pixel != 0) || generateAir) {
+                    if ((pixel != Pixel.AIR.getColor() && pixel != 0xFFFFFF && pixel != 0) || generateAir) {
                         if (pixel == 0 || pixel == 0xFFFFFF) {
-                            pixel = Pixel.air.getColor();
+                            pixel = Pixel.AIR.getColor();
                         }
                         level.setPixel(Pixel.getPixelByID(pixel), (x + pixelX) - (width / 2), y + (height - pixelY), PixelLayer.values()[layer]);
                     }

@@ -22,21 +22,27 @@ public class DefaultLevelGenerator implements ILevelGenerator {
             float fractionX = scaledX - scaledXInt;
 
             int height = (int) cubicInterpolate(new double[]{getHeight(seed, scaledXInt - 1), getHeight(seed, scaledXInt), getHeight(seed, scaledXInt + 1), getHeight(seed, scaledXInt + 2)}, fractionX);
-            int dirtLayer = height - 10;
 
-            Random bedrockRand = new Random(worldX * seed);
+            Random rand = new Random(worldX * seed);
+
+            int dirtLayer = height - 20 - rand.nextInt(2);
+            int grassLayer = height - rand.nextInt(2);
 
             int startY = Math.min(regionStartY, height);
             int endY = Math.min(height, regionStartY + Region.REGION_HEIGHT);
             for (int y = startY; y < endY; y++) {
-                Pixel pixel = Pixel.stone;
-                if (y == 0 || (y < 15 && bedrockRand.nextInt(y + 1) == 0)) {
-                    pixel = Pixel.bedrock;
+                Pixel pixel = Pixel.STONE;
+                if (y == 0 || (y < 15 && rand.nextInt(y + 1) == 0)) {
+                    pixel = Pixel.BEDROCK;
                 } else if (y >= dirtLayer) {
-                    if (y == height - 1) {
-                        pixel = Pixel.grass;
+                    if (y >= grassLayer - 1) {
+                        pixel = Pixel.GRASS;
                     } else {
-                        pixel = Pixel.dirt;
+                        if (rand.nextInt(30) == 0) {
+                            pixel = Pixel.GRAVEL;
+                        } else {
+                            pixel = Pixel.DIRT;
+                        }
                     }
                 }
                 region.setPixel(pixel, x, y & (Region.REGION_HEIGHT - 1), PixelLayer.FOREGROUND);

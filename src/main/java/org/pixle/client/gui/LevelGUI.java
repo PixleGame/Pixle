@@ -50,7 +50,7 @@ public class LevelGUI extends GUI {
             int centerX = width / 2;
             int centerY = height / 2;
 
-            GLStateManager.setColor(0x0094FF);
+            GLStateManager.setColor(0x0090F7);
             RenderHelper.drawRect(0, 0, Display.getWidth(), (int) (Display.getHeight() - (centerY - ((player.posY + 1) * pixelSize))));
 
             for (PixelLayer layer : PixelLayer.values()) {
@@ -59,7 +59,7 @@ public class LevelGUI extends GUI {
                         Region region = level.getRegionForPixel(x, y);
                         if (!region.isEmpty(layer)) {
                             Pixel pixel = level.getPixel(x, y, layer);
-                            if (pixel != Pixel.air) {
+                            if (pixel != Pixel.AIR) {
                                 GLStateManager.setColor(pixel.getColor());
                                 RenderHelper.drawRect((int) (centerX - Math.round((player.posX - x) * pixelSize)), height - (centerY - (int) Math.round((player.posY - y) * pixelSize)), pixelSize, pixelSize);
                             }

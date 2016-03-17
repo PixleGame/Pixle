@@ -66,11 +66,11 @@ public abstract class Level {
             y = y & (Region.REGION_HEIGHT - 1);
             return region.getPixel(x, y, layer);
         }
-        return Pixel.air;
+        return Pixel.AIR;
     }
 
     public boolean hasPixel(int x, int y, PixelLayer layer) {
-        return getPixel(x, y, layer) != Pixel.air;
+        return getPixel(x, y, layer) != Pixel.AIR;
     }
 
     public int getRegionX(int x) {
