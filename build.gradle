@@ -39,3 +39,17 @@ natives {
             "jinput-platform-2.0.5-natives-osx",
             "jinput-platform-2.0.5-natives-windows"]
 }
+
+task fatJar(type: Jar) {
+    baseName = project.name + '-all'
+    from {
+        configurations.compile.collect {
+            it.isDirectory() ? it : zipTree(it)
+        }
+    }
+    with jar
+    manifest {
+        attributes 'Implementation-Title': project.archivesBaseName
+        attributes 'Main-Class': project.mainClassName
+    }
+}
