@@ -23,8 +23,7 @@ public class PixelEntity extends Entity {
 
     public PixelEntity(Level level, int x, int y, PixelLayer layer) {
         this(level, new PixelStack(level.getPixel(x, y, layer), 1));
-        Random rand = new Random();
-        this.posX = x + (rand.nextFloat() - 0.5F);
+        this.posX = x + new Random().nextFloat();
         this.posY = y;
     }
 

@@ -10,9 +10,10 @@ public class PixelEntityRenderer implements IEntityRenderer<PixelEntity> {
     public void render(PixelEntity entity, float x, float y, Level level, float delta) {
         int pixelSize = Level.PIXEL_SIZE;
         GLStateManager.pushMatrix();
-        GLStateManager.scale(0.5F, 0.5F);
+        float scale = 0.75F;
+        GLStateManager.scale(scale, scale);
         GLStateManager.setColor(entity.pixel.getPixel().getColor());
-        RenderHelper.drawRect(x / 0.5F - (pixelSize / 2), (y + 4) / 0.5F, pixelSize, pixelSize);
+        RenderHelper.drawRect(x / scale - (pixelSize / 2), y / scale + (pixelSize / 2), pixelSize, pixelSize);
         GLStateManager.popMatrix();
     }
 }
