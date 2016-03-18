@@ -25,7 +25,13 @@ public class SetPixelPacket extends PixlePacket {
 
     @Override
     public void handleServer(PixleServer server, PlayerEntity player, Connection connection, long estimatedSendTime) {
-
+        int distX = (int) (x - player.posX);
+        int distY = (int) (y - player.posY);
+        double dist = Math.sqrt(distX * distX + distY * distY);
+        if (dist < PlayerEntity.REACH_DISTANCE) {
+            server.getLevel().setPixel(Pixel.getPixelByID(pixel), x, y, PixelLayer.values()[layer]);
+            server.getServer().sendToAllTCP(this);
+        }
     }
 
     @Override

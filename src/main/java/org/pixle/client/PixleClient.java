@@ -23,6 +23,7 @@ import org.pixle.entity.PlayerEntity;
 import org.pixle.event.PixleInitializeEvent;
 import org.pixle.event.bus.EventBus;
 import org.pixle.level.ClientLevel;
+import org.pixle.level.Level;
 import org.pixle.network.ConnectPacket;
 import org.pixle.network.PixleNetworkManager;
 import org.pixle.network.PixlePacket;
@@ -382,6 +383,18 @@ public class PixleClient extends Listener {
 
     public RenderResolution getRenderResolution() {
         return renderResolution;
+    }
+
+    public int getSelectionX(int mouseX) {
+        int width = renderResolution.getWidth();
+        int centerX = width / 2;
+        return (int) (((mouseX - centerX) / Level.PIXEL_SIZE) + player.posX);
+    }
+
+    public int getSelectionY(int mouseY) {
+        int height = renderResolution.getHeight();
+        int centerY = height / 2;
+        return (int) (((height - mouseY - centerY) / Level.PIXEL_SIZE) + player.posY);
     }
 }
 

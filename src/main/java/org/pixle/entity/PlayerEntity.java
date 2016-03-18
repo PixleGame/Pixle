@@ -1,14 +1,20 @@
 package org.pixle.entity;
 
 import net.darkhax.opennbt.tags.CompoundTag;
+import org.pixle.client.PixleClient;
 import org.pixle.entity.inventory.PlayerInventory;
 import org.pixle.level.Level;
+import org.pixle.level.PixelLayer;
+import org.pixle.network.SetPixelPacket;
+import org.pixle.pixel.Pixel;
 
 public class PlayerEntity extends Entity {
     private PlayerInventory inventory;
     public String username;
     public boolean jumping;
     public float moveX;
+
+    public static final int REACH_DISTANCE = 15;
 
     public PlayerEntity(Level level) {
         super(level);
@@ -57,5 +63,10 @@ public class PlayerEntity extends Entity {
     @Override
     public void readData(String string) {
         username = string;
+    }
+
+    public void setPixel(Pixel pixel, int x, int y, PixelLayer layer) {
+        level.setPixel(pixel, x, y, layer);
+        PixleClient.INSTANCE.getClient().sendTCP(new SetPixelPacket(pixel.getPixelID(), x, y, layer));
     }
 }

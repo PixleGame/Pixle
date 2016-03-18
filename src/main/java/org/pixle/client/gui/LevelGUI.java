@@ -16,6 +16,7 @@ import org.pixle.level.Level;
 import org.pixle.level.PixelLayer;
 import org.pixle.level.region.Region;
 import org.pixle.network.SendMessagePacket;
+import org.pixle.network.SetPixelPacket;
 import org.pixle.pixel.Pixel;
 
 import java.util.ArrayList;
@@ -74,6 +75,22 @@ public class LevelGUI extends GUI {
                 }
             }
 
+            int selectionX = pixle.getSelectionX(mouseX);
+            int selectionY = pixle.getSelectionY(mouseY);
+
+            int distX = (int) (selectionX - player.posX);
+            int distY = (int) (selectionY - player.posY);
+            double dist = Math.sqrt(distX * distX + distY * distY);
+            if (dist < 10) {
+                for (PixelLayer layer : PixelLayer.values()) {
+                    if (level.hasPixel(selectionX, selectionY, layer)) {
+                        GLStateManager.setColor(0);
+                        RenderHelper.drawOutline((float) ((centerX - (player.posX - selectionX) * pixelSize)), (float) (height - (centerY - (player.posY - selectionY) * pixelSize)), pixelSize, pixelSize, 1);
+                        break;
+                   }
+                }
+            }
+
             EventBus eventBus = EventBus.get();
 
             for (Entity entity : level.getEntities()) {
@@ -101,6 +118,34 @@ public class LevelGUI extends GUI {
     public void keyTyped(char c, int keyCode) {
         if (keyCode == Keyboard.KEY_RETURN) {
             PixleClient.INSTANCE.getClient().sendTCP(new SendMessagePacket(PixleClient.INSTANCE.getPlayer(), "Test!"));
+        }
+    }
+
+    @Override
+    public void mouseClicked(int mouseX, int mouseY) {
+        super.mouseClicked(mouseX, mouseY);
+
+        PixleClient pixle = PixleClient.INSTANCE;
+
+        Level level = pixle.getLevel();
+        PlayerEntity player = pixle.getPlayer();
+
+        if (player != null) {
+            int selectionX = pixle.getSelectionX(mouseX);
+            int selectionY = pixle.getSelectionY(mouseY);
+
+            int distX = (int) (selectionX - player.posX);
+            int distY = (int) (selectionY - player.posY);
+            double dist = Math.sqrt(distX * distX + distY * distY);
+
+            if (dist < PlayerEntity.REACH_DISTANCE) {
+                for (PixelLayer layer : PixelLayer.values()) {
+                    if (level.hasPixel(selectionX, selectionY, layer)) {
+                        player.setPixel(Pixel.AIR, selectionX, selectionY, layer);
+                        break;
+                    }
+                }
+            }
         }
     }
 }
