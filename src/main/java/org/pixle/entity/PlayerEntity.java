@@ -43,9 +43,9 @@ public class PlayerEntity extends Entity {
     public void writeToNBT(CompoundTag compound) {
         super.writeToNBT(compound);
         compound.setString("username", username);
-        CompoundTag tag = new CompoundTag("inventory");
-        inventory.writeToNBT(tag);
-        compound.setTag(tag);
+        CompoundTag inventoryTag = new CompoundTag("inventory");
+        inventory.writeToNBT(inventoryTag);
+        compound.setTag(inventoryTag);
     }
 
     @Override

@@ -10,6 +10,7 @@ public class EntityRegistry {
 
     static {
         registerEntity(0, PlayerEntity.class);
+        registerEntity(1, PixelEntity.class);
     }
 
     public static void registerEntity(int id, Class<? extends Entity> clazz) {

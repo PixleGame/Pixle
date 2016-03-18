@@ -13,7 +13,7 @@ import java.util.Map;
 public class ImageStructureGenerator {
     private static Map<String, Structure> structureCache = new HashMap<>();
 
-    public static void generateFromImage(Level level, int x, int y, String imagePath, boolean generateAir) throws IOException {
+    public static void generateFromImage(Level level, int x, int y, String imagePath, boolean generateAir, boolean invertX) throws IOException {
         if (!imagePath.startsWith("/")) {
             imagePath = "/" + imagePath;
         }
@@ -22,7 +22,7 @@ public class ImageStructureGenerator {
             structure = loadStructure(imagePath);
             structureCache.put(imagePath, structure);
         }
-        structure.generate(level, x, y, generateAir);
+        structure.generate(level, x, y, generateAir, invertX);
     }
 
     private static Structure loadStructure(String imagePath) throws IOException {

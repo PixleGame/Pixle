@@ -1,15 +1,17 @@
 package org.pixle.pixel;
 
+import net.darkhax.opennbt.tags.CompoundTag;
+
 public class PixelStack {
     private int size;
-    private int pixel;
+    private Pixel pixel;
 
-    public PixelStack(int pixel, int size) {
+    public PixelStack(Pixel pixel, int size) {
         this.pixel = pixel;
         this.size = size;
     }
 
-    public PixelStack(int pixel) {
+    public PixelStack(Pixel pixel) {
         this(pixel, 1);
     }
 
@@ -17,7 +19,7 @@ public class PixelStack {
         return size;
     }
 
-    public int getPixel() {
+    public Pixel getPixel() {
         return pixel;
     }
 
@@ -27,5 +29,23 @@ public class PixelStack {
 
     public PixelStack merge(PixelStack stack) {
         return new PixelStack(pixel, size + stack.size);
+    }
+
+    public void writeToNBT(CompoundTag tag) {
+        tag.setInt("size", size);
+        tag.setByte("pixel", (byte) pixel.getPixelID());
+    }
+
+    public static PixelStack readFromNBT(CompoundTag tag) {
+        return new PixelStack(Pixel.getPixelByID(tag.getByte("pixel")), tag.getInt("size"));
+    }
+
+    public String writeData() {
+        return pixel.getPixelID() + "," + size;
+    }
+
+    public static PixelStack readData(String string) {
+        String[] data = string.split(",");
+        return new PixelStack(Pixel.getPixelByID(Integer.parseInt(data[0])), Integer.parseInt(data[1]));
     }
 }

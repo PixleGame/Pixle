@@ -28,8 +28,8 @@ public class Structure {
         }
     }
 
-    public void generate(Level level, int x, int y, boolean generateAir) {
-        while (!hasBase(level, x, y) && y > 0) {
+    public void generate(Level level, int x, int y, boolean generateAir, boolean invertX) {
+        while (!hasBase(level, x, y, invertX) && y > 0) {
             y--;
         }
         for (int layer = 0; layer < pixels.length; layer++) {
@@ -37,18 +37,18 @@ public class Structure {
                 for (int pixelX = 0; pixelX < width; pixelX++) {
                     int pixel = pixels[layer][pixelX][pixelY];
                     if (!isAir(pixel) || generateAir) {
-                        level.setPixel(Pixel.getPixelByID(pixel), x + pixelX, y + (height - pixelY), PixelLayer.values()[layer]);
+                        level.setPixel(Pixel.getPixelByID(pixel), (invertX ? (width - pixelX) : pixelX) + x, y + (height - pixelY), PixelLayer.values()[layer]);
                     }
                 }
             }
         }
     }
 
-    private boolean hasBase(Level level, int x, int y) {
+    private boolean hasBase(Level level, int x, int y, boolean invertX) {
         PixelLayer baseLayer = PixelLayer.FOREGROUND;
         for (PixelLayer layer : PixelLayer.values()) {
             for (int pixelX = 0; pixelX < width; pixelX++) {
-                int worldX = x + pixelX;
+                int worldX = x + (invertX ? (width - pixelX) : pixelX);
                 int pixel = pixels[layer.ordinal()][pixelX][bottomY];
                 if (!isAir(pixel)) {
                     if (level.getPixel(worldX, y + (height - bottomY) - 1, baseLayer) == Pixel.AIR) {

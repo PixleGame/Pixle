@@ -1,8 +1,10 @@
 package org.pixle.client.render;
 
 import org.pixle.client.render.entity.IEntityRenderer;
+import org.pixle.client.render.entity.PixelEntityRenderer;
 import org.pixle.client.render.entity.PlayerEntityRenderer;
 import org.pixle.entity.Entity;
+import org.pixle.entity.PixelEntity;
 import org.pixle.entity.PlayerEntity;
 
 import java.util.HashMap;
@@ -13,6 +15,7 @@ public class RenderingRegistry {
 
     static {
         rendererMap.put(PlayerEntity.class, new PlayerEntityRenderer());
+        rendererMap.put(PixelEntity.class, new PixelEntityRenderer());
     }
 
     public static <E extends Entity> IEntityRenderer<E> getEntityRenderer(Class<E> entityClass) {

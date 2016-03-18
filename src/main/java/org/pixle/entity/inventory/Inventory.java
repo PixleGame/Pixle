@@ -24,7 +24,7 @@ public abstract class Inventory {
             PixelStack stackInSlot = getPixelStack(i);
             if (stackInSlot != null) {
                 if (stackInSlot.getPixel() == stack.getPixel()) {
-                    stackInSlot.merge(stack);
+                    inventory[i] = stackInSlot.merge(stack);
                     return;
                 }
             } else {
@@ -44,8 +44,7 @@ public abstract class Inventory {
             PixelStack stack = getPixelStack(i);
             if (stack != null) {
                 CompoundTag pixelTag = new CompoundTag(i + "");
-                pixelTag.setInt("color", stack.getPixel());
-                pixelTag.setInt("size", stack.getSize());
+                stack.writeToNBT(pixelTag);
                 pixelList.add(pixelTag);
             }
         }
@@ -56,7 +55,7 @@ public abstract class Inventory {
         List<Tag> pixelList = tag.getTagList("pixels");
         for (Tag pixelTag : pixelList) {
             CompoundTag pixelCompoundTag = (CompoundTag) pixelTag;
-            setPixelStack(new PixelStack(pixelCompoundTag.getInt("color"), pixelCompoundTag.getInt("size")), Integer.parseInt(pixelCompoundTag.getName()));
+            setPixelStack(PixelStack.readFromNBT(pixelCompoundTag), Integer.parseInt(pixelCompoundTag.getName()));
         }
     }
 

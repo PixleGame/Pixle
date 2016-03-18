@@ -2,7 +2,9 @@ package org.pixle.network;
 
 import com.esotericsoftware.kryonet.Connection;
 import org.pixle.client.PixleClient;
+import org.pixle.entity.PixelEntity;
 import org.pixle.entity.PlayerEntity;
+import org.pixle.level.Level;
 import org.pixle.level.PixelLayer;
 import org.pixle.pixel.Pixel;
 import org.pixle.server.PixleServer;
@@ -29,7 +31,10 @@ public class SetPixelPacket extends PixlePacket {
         int distY = (int) (y - player.posY);
         double dist = Math.sqrt(distX * distX + distY * distY);
         if (dist < PlayerEntity.REACH_DISTANCE) {
-            server.getLevel().setPixel(Pixel.getPixelByID(pixel), x, y, PixelLayer.values()[layer]);
+            Level level = server.getLevel();
+            PixelLayer layer = PixelLayer.values()[this.layer];
+            level.addEntity(new PixelEntity(level, x, y, layer), true);
+            level.setPixel(Pixel.getPixelByID(pixel), x, y, layer);
             server.getServer().sendToAllTCP(this);
         }
     }
