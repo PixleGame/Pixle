@@ -4,6 +4,7 @@ import org.pixle.client.gl.GLStateManager;
 import org.pixle.client.render.RenderHelper;
 import org.pixle.entity.PixelEntity;
 import org.pixle.level.Level;
+import org.pixle.pixel.Pixel;
 
 public class PixelEntityRenderer implements IEntityRenderer<PixelEntity> {
     @Override
@@ -12,7 +13,8 @@ public class PixelEntityRenderer implements IEntityRenderer<PixelEntity> {
         GLStateManager.pushMatrix();
         float scale = 0.75F;
         GLStateManager.scale(scale, scale);
-        GLStateManager.setColor(entity.pixel.getPixel().getColor());
+        Pixel pixel = entity.pixel.getPixel();
+        GLStateManager.setColor(pixel.getRed(), pixel.getGreen(), pixel.getBlue());
         RenderHelper.drawRect(x / scale - (pixelSize / 2), y / scale + (pixelSize / 2), pixelSize, pixelSize);
         GLStateManager.popMatrix();
     }

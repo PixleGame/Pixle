@@ -26,7 +26,9 @@ public class Pixel {
     }
 
     private final int pixelID;
-    private int color;
+    private float red;
+    private float green;
+    private float blue;
 
     public Pixel(int id) {
         if (pixels[id] != null) {
@@ -43,21 +45,38 @@ public class Pixel {
         return pixels[id];
     }
 
-    public int getColor() {
-        return color;
+    public float getRed() {
+        return red;
+    }
+
+    public float getGreen() {
+        return green;
+    }
+
+    public float getBlue() {
+        return blue;
     }
 
     public Pixel setColor(int color) {
-        this.color = color;
+        red = ((color & 0xFF0000) >> 16) / 255.0F;
+        green = ((color & 0xFF00) >> 8) / 255.0F;
+        blue = (color & 0xFF) / 255.0F;
         return this;
     }
 
-    public static Pixel fromColor(int color) {
+    public static Pixel fromColor(float red, float green, float blue) {
         for (Pixel pixel : pixels) {
-            if (pixel != null && pixel.color == color) {
+            if (pixel != null && pixel.red == red && pixel.green == green && pixel.blue == blue) {
                 return pixel;
             }
         }
         return Pixel.AIR;
+    }
+
+    public static Pixel fromColor(int color) {
+        float red = ((color & 0xFF0000) >> 16) / 255.0F;
+        float green = ((color & 0xFF00) >> 8) / 255.0F;
+        float blue = (color & 0xFF) / 255.0F;
+        return fromColor(red, green, blue);
     }
 }
