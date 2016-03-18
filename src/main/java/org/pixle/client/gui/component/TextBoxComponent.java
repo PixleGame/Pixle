@@ -44,14 +44,13 @@ public class TextBoxComponent extends GUIComponent {
         GLStateManager.setColor(theme.getSecondaryColor(selected));
         RenderHelper.drawOutline(x, y, width, height, 2);
 
-        GLStateManager.enableTexture();
         TrueTypeFont font = PixleClient.INSTANCE.getFontRenderer();
         String drawText = text;
         if (selected && System.currentTimeMillis() % 1000 > 500) {
             drawText += "|";
         }
         GLStateManager.setColor(0xFFFFFF);
-        RenderHelper.drawString((x + (width / 2)) - (font.getWidth(text) / 2), (y + (height / 2)) - (font.getHeight(text) / 2) + 6, drawText);
+        RenderHelper.drawScaledStringWithShadow((x + (width / 2)) - (font.getWidth(text)), (y + (height / 2)) - (font.getHeight(text)) + 12, drawText, 2.0F);
     }
 
     @Override

@@ -1,6 +1,5 @@
 package org.pixle.client.gui;
 
-import org.lwjgl.opengl.Display;
 import org.pixle.client.PixleClient;
 import org.pixle.client.config.ClientConfig;
 import org.pixle.client.config.ConfigOption;
@@ -71,12 +70,12 @@ public class OptionsGUI extends GUI {
         int height = renderResolution.getHeight();
         GLStateManager.setColor(0x0094FF);
         RenderHelper.drawRect(0, 0, width, height);
-        RenderHelper.drawCenteredScaledStringWithShadow(width / 2, 40, "Options", 2.0F);
+        RenderHelper.drawCenteredScaledStringWithShadow(width / 2, 60, "Options", 4.0F);
 
         int y = (height / 4) + 10;
 
         for (String name : names) {
-            RenderHelper.drawScaledStringWithShadow(20, y, name, 1.0F);
+            RenderHelper.drawScaledStringWithShadow(20, y, name, 2.0F);
             y += 40;
         }
 

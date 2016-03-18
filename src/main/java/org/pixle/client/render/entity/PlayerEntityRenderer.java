@@ -7,7 +7,7 @@ import org.pixle.level.Level;
 
 public class PlayerEntityRenderer implements IEntityRenderer<PlayerEntity> {
     @Override
-    public void render(PlayerEntity entity, int x, int y, Level level, float delta) {
+    public void render(PlayerEntity entity, float x, float y, Level level, float delta) {
         int pixelSize = Level.PIXEL_SIZE;
         GLStateManager.setColor(23.0F / 255.0F, 38.0F / 255.0F, 124.0F / 255.0F);
         RenderHelper.drawRect(x, y, pixelSize, pixelSize);

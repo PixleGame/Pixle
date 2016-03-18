@@ -44,8 +44,9 @@ public class ButtonComponent extends GUIComponent {
         GLStateManager.setColor(theme.getSecondaryColor(selected));
         RenderHelper.drawOutline(x, y, width, height, 2);
 
-        GLStateManager.enableTexture();
-        RenderHelper.drawCenteredScaledStringWithShadow(x + (width / 2), y + (height / 2) + 6, text, 1.0F);
+        GLStateManager.pushMatrix();
+        RenderHelper.drawCenteredScaledStringWithShadow(x + (width / 2), y + (height / 2) + 12, text, 2.0F);
+        GLStateManager.popMatrix();
     }
 
     @Override

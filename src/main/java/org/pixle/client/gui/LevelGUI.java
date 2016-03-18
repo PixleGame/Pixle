@@ -67,7 +67,7 @@ public class LevelGUI extends GUI {
                                 int b = (color & 0xFF);
                                 int offset = new Random((x - y) * y).nextInt(10) - 5;
                                 GLStateManager.setColor((r + offset) / 255.0F, (g + offset) / 255.0F, (b + offset) / 255.0F);
-                                RenderHelper.drawRect((int) (centerX - Math.round((player.posX - x) * pixelSize)), height - (centerY - (int) Math.round((player.posY - y) * pixelSize)), pixelSize, pixelSize);
+                                RenderHelper.drawRect((float) (centerX - (player.posX - x) * pixelSize), (float) (height - (centerY - (player.posY - y) * pixelSize)), pixelSize, pixelSize);
                             }
                         }
                     }
@@ -80,7 +80,7 @@ public class LevelGUI extends GUI {
                 IEntityRenderer entityRenderer = RenderingRegistry.getEntityRenderer(entity.getClass());
                 if (entityRenderer != null) {
                     if (eventBus.post(new RenderEntityEvent.Pre(pixle, entity))) {
-                        entityRenderer.render(entity, centerX - (int) ((player.posX - entity.posX) * pixelSize), centerY - (int) Math.round((entity.posY - player.posY) * pixelSize), level, (float) pixle.getDelta());
+                        entityRenderer.render(entity, (float) (centerX - (player.posX - entity.posX) * pixelSize), (float) (centerY - (entity.posY - player.posY) * pixelSize), level, (float) pixle.getDelta());
                     }
                     eventBus.post(new RenderEntityEvent.Post(pixle, entity));
                 }

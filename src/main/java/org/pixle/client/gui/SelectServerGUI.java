@@ -46,8 +46,8 @@ public class SelectServerGUI extends GUI {
         int height = renderResolution.getHeight();
         GLStateManager.setColor(0x0094FF);
         RenderHelper.drawRect(0, 0, width, height);
-        RenderHelper.drawCenteredScaledStringWithShadow(width / 2, 40, "Join Server", 2.0F);
-        RenderHelper.drawCenteredScaledStringWithShadow(width / 2, height / 2 - 50, "IP", 1.0F);
+        RenderHelper.drawCenteredScaledStringWithShadow(width / 2, 60, "Join Server", 4.0F);
+        RenderHelper.drawCenteredScaledStringWithShadow(width / 2, height / 2 - 50, "IP", 2.0F);
         super.render(mouseX, mouseY);
     }
 }

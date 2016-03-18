@@ -48,9 +48,8 @@ public class KeyOptionComponent extends GUIOptionComponent {
         GLStateManager.setColor(theme.getSecondaryColor(selected));
         RenderHelper.drawOutline(x, y, width, height, 2);
 
-        GLStateManager.enableTexture();
         String text = Keyboard.getKeyName(key);
-        RenderHelper.drawCenteredScaledString(x + (width / 2), y + (height / 2) + 6, text, 1.0F);
+        RenderHelper.drawCenteredScaledString(x + (width / 2), y + (height / 2) + 6, text, 2.0F);
     }
 
     @Override
