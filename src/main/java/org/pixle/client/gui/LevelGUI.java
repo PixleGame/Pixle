@@ -55,7 +55,8 @@ public class LevelGUI extends GUI {
             GLStateManager.setColor(0x0090F7);
             RenderHelper.drawRect(0, 0, Display.getWidth(), (int) (Display.getHeight() - (centerY - ((player.posY + 1) * pixelSize))));
 
-            for (PixelLayer layer : PixelLayer.values()) {
+            for (PixelLayer layer : PixelLayer.renderLayers) {
+                int colorOffset = layer.getColorOffset();
                 for (int y = Math.max(0, (int) (player.posY - halfPixelsInHeight) - 1); y < Math.min(Level.LEVEL_HEIGHT, player.posY + halfPixelsInHeight + 2); y++) {
                     for (int x = (int) (player.posX - (pixelsInWidth / 2)) - 1; x < player.posX + (pixelsInWidth / 2) + 1; x++) {
                         Region region = level.getRegionForPixel(x, y);
@@ -66,7 +67,7 @@ public class LevelGUI extends GUI {
                                 int r = ((color & 0xFF0000) >> 16);
                                 int g = ((color & 0xFF00) >> 8);
                                 int b = (color & 0xFF);
-                                int offset = new Random((x - y) * y).nextInt(10) - 5;
+                                int offset = (new Random((x - y) * y).nextInt(10) - 5) + colorOffset;
                                 GLStateManager.setColor((r + offset) / 255.0F, (g + offset) / 255.0F, (b + offset) / 255.0F);
                                 RenderHelper.drawRect((float) (centerX - (player.posX - x) * pixelSize), (float) (height - (centerY - (player.posY - y) * pixelSize)), pixelSize, pixelSize);
                             }

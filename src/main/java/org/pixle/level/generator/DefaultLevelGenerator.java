@@ -31,23 +31,28 @@ public class DefaultLevelGenerator implements ILevelGenerator {
             int startY = Math.min(regionStartY, height);
             int endY = Math.min(height, regionStartY + Region.REGION_HEIGHT);
             for (int y = startY; y < endY; y++) {
-                Pixel pixel = Pixel.STONE;
-                if (y == 0 || (y < 15 && rand.nextInt(y + 1) == 0)) {
-                    pixel = Pixel.BEDROCK;
-                } else if (y >= dirtLayer) {
-                    if (y >= grassLayer - 2) {
-                        pixel = Pixel.GRASS;
-                    } else {
-                        if (rand.nextInt(30) == 0) {
-                            pixel = Pixel.GRAVEL;
-                        } else {
-                            pixel = Pixel.DIRT;
-                        }
-                    }
-                }
-                region.setPixel(pixel, x, y & (Region.REGION_HEIGHT - 1), PixelLayer.FOREGROUND);
+                region.setPixel(getPixel(rand, dirtLayer, grassLayer, y), x, y & (Region.REGION_HEIGHT - 1), PixelLayer.FOREGROUND);
+                region.setPixel(getPixel(rand, dirtLayer, grassLayer, y - 1), x, y & (Region.REGION_HEIGHT - 1), PixelLayer.BACKGROUND);
             }
         }
+    }
+
+    private Pixel getPixel(Random rand, int dirtLayer, int grassLayer, int y) {
+        Pixel pixel = Pixel.STONE;
+        if (y <= 0 || (y < 15 && rand.nextInt(y + 1) == 0)) {
+            pixel = Pixel.BEDROCK;
+        } else if (y >= dirtLayer) {
+            if (y >= grassLayer - 2) {
+                pixel = Pixel.GRASS;
+            } else {
+                if (rand.nextInt(30) == 0) {
+                    pixel = Pixel.GRAVEL;
+                } else {
+                    pixel = Pixel.DIRT;
+                }
+            }
+        }
+        return pixel;
     }
 
     @Override
