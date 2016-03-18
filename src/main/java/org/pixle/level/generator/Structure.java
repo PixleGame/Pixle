@@ -20,7 +20,7 @@ public class Structure {
             for (int pixelY = 0; pixelY < height; pixelY++) {
                 for (int pixelX = 0; pixelX < width; pixelX++) {
                     int pixel = pixels[layer][pixelX][pixelY];
-                    if ((pixel != Pixel.AIR.getColor() && pixel != 0xFFFFFF && pixel != 0) || generateAir) {
+                    if (!isAir(pixel) || generateAir) {
                         if (pixel == 0 || pixel == 0xFFFFFF) {
                             pixel = Pixel.AIR.getColor();
                         }
@@ -29,5 +29,9 @@ public class Structure {
                 }
             }
         }
+    }
+
+    private boolean isAir(int pixel) {
+        return pixel == Pixel.AIR.getColor() || pixel == 0xFFFFFF || pixel == 0;
     }
 }
