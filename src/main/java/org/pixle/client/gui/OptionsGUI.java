@@ -5,10 +5,7 @@ import org.pixle.client.config.ClientConfig;
 import org.pixle.client.config.ConfigOption;
 import org.pixle.client.config.OptionType;
 import org.pixle.client.gl.GLStateManager;
-import org.pixle.client.gui.component.ButtonComponent;
-import org.pixle.client.gui.component.GUIOptionComponent;
-import org.pixle.client.gui.component.KeyOptionComponent;
-import org.pixle.client.gui.component.SliderOptionComponent;
+import org.pixle.client.gui.component.*;
 import org.pixle.client.render.RenderHelper;
 
 import java.lang.reflect.Field;
@@ -29,15 +26,18 @@ public class OptionsGUI extends GUI {
         int height = renderResolution.getHeight();
         int y = height / 4;
         int optionX = width / 2 - 100;
+        ClientConfig config = PixleClient.INSTANCE.config;
         try {
             for (Field field : ClientConfig.class.getDeclaredFields()) {
                 ConfigOption annotation = field.getDeclaredAnnotation(ConfigOption.class);
                 OptionType type = annotation.type();
                 GUIOptionComponent component = null;
                 if (type == OptionType.KEY) {
-                    component = new KeyOptionComponent(optionX, y, 200, 30, (Integer) field.get(PixleClient.INSTANCE.config));
+                    component = new KeyOptionComponent(optionX, y, 200, 30, (Integer) field.get(config));
                 } else if (type == OptionType.SLIDER) {
-                    component = new SliderOptionComponent(optionX, y, annotation.minValue(), annotation.maxValue(), 200, (Integer) field.get(PixleClient.INSTANCE.config));
+                    component = new SliderOptionComponent(optionX, y, annotation.minValue(), annotation.maxValue(), 200, (Integer) field.get(config));
+                } else if (type == OptionType.BOOLEAN) {
+                    component = new BooleanOptionComponent(optionX, y, 200, 30, (Boolean) field.get(config));
                 }
                 if (component != null) {
                     addComponent(component);
@@ -53,7 +53,7 @@ public class OptionsGUI extends GUI {
             PixleClient client = PixleClient.INSTANCE;
             for (Map.Entry<Field, GUIOptionComponent> entry : options.entrySet()) {
                 try {
-                    entry.getKey().set(PixleClient.INSTANCE.config, entry.getValue().set());
+                    entry.getKey().set(config, entry.getValue().set());
                 } catch (IllegalAccessException e) {
                     e.printStackTrace();
                 }

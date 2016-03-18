@@ -62,6 +62,14 @@ public class GLStateManager {
         scale((double) x, (double) y);
     }
 
+    public static void translate(double x, double y) {
+        GL11.glTranslated(x, y, 0.0);
+    }
+
+    public static void translate(float x, float y) {
+        GL11.glTranslatef(x, y, 0.0F);
+    }
+
     public static void startDrawingQuads() {
         GL11.glBegin(GL11.GL_QUADS);
     }

@@ -14,4 +14,7 @@ public class ClientConfig {
 
     @ConfigOption(name = "Jump Key", type = OptionType.KEY)
     public int keyJump = Keyboard.KEY_SPACE;
+
+    @ConfigOption(name = "Pixel Color Noise", type = OptionType.BOOLEAN)
+    public boolean pixelColorNoise = true;
 }

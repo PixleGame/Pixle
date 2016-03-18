@@ -1,5 +1,5 @@
 package org.pixle.client.config;
 
 public enum OptionType {
-    SLIDER, KEY
+    SLIDER, BOOLEAN, KEY
 }

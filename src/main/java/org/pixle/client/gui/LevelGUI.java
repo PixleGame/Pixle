@@ -3,6 +3,7 @@ package org.pixle.client.gui;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.pixle.client.PixleClient;
+import org.pixle.client.config.ClientConfig;
 import org.pixle.client.event.RenderEntityEvent;
 import org.pixle.client.gl.GLStateManager;
 import org.pixle.client.message.MessageBubble;
@@ -16,7 +17,6 @@ import org.pixle.level.Level;
 import org.pixle.level.PixelLayer;
 import org.pixle.level.region.Region;
 import org.pixle.network.SendMessagePacket;
-import org.pixle.network.SetPixelPacket;
 import org.pixle.pixel.Pixel;
 
 import java.util.ArrayList;
@@ -55,6 +55,8 @@ public class LevelGUI extends GUI {
             GLStateManager.setColor(0x0090F7);
             RenderHelper.drawRect(0, 0, Display.getWidth(), (int) (Display.getHeight() - (centerY - ((player.posY + 1) * pixelSize))));
 
+            boolean colorNoise = pixle.config.pixelColorNoise;
+
             PixelLayer[] renderLayers = PixelLayer.values();
             for (int y = Math.max(0, (int) (player.posY - halfPixelsInHeight) - 1); y < Math.min(Level.LEVEL_HEIGHT, player.posY + halfPixelsInHeight + 2); y++) {
                 for (int x = (int) (player.posX - (pixelsInWidth / 2)) - 1; x < player.posX + (pixelsInWidth / 2) + 1; x++) {
@@ -64,7 +66,7 @@ public class LevelGUI extends GUI {
                         if (!region.isEmpty(layer)) {
                             Pixel pixel = level.getPixel(x, y, layer);
                             if (pixel != Pixel.AIR) {
-                                float offset = ((new Random((x - y) * y).nextInt(10) - 5) + colorOffset) / 255.0F;
+                                float offset = colorNoise ? ((new Random((x - y) * y).nextInt(10) - 5) + colorOffset) / 255.0F : 0.0F;
                                 GLStateManager.setColor(pixel.getRed() + offset, pixel.getGreen() + offset, pixel.getBlue() + offset);
                                 RenderHelper.drawRect((float) (centerX - (player.posX - x) * pixelSize), (float) (height - (centerY - (player.posY - y) * pixelSize)), pixelSize, pixelSize);
                                 break;
