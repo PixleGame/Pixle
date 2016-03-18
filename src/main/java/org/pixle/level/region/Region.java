@@ -19,6 +19,7 @@ public class Region {
     private int x;
     private int y;
     private boolean[] empty = new boolean[PixelLayer.values().length];
+    private boolean loaded;
 
     public Region(int x, int y, Level level) {
         this.level = level;
@@ -27,6 +28,7 @@ public class Region {
         for (int layer = 0; layer < empty.length; layer++) {
             empty[layer] = true;
         }
+        this.loaded = false;
     }
 
     public Pixel getPixel(int x, int y, PixelLayer layer) {
@@ -61,6 +63,7 @@ public class Region {
             levelGenerator.decorate(this, x, y, new Random(seed * x));
         }
         eventBus.post(new GenerateRegionEvent.Post(level, this, levelGenerator, seed));
+        loaded = true;
     }
 
     public Level getLevel() {
@@ -87,6 +90,7 @@ public class Region {
                 pixels[layer][x] = layerTag.getIntArray(x + "");
             }
         }
+        loaded = true;
         checkEmpty();
     }
 
@@ -133,5 +137,13 @@ public class Region {
 
     public boolean isEmpty(PixelLayer layer) {
         return empty[layer.ordinal()];
+    }
+
+    public void setLoaded() {
+        this.loaded = true;
+    }
+
+    public boolean isLoaded() {
+        return loaded;
     }
 }

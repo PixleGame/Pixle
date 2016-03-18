@@ -69,7 +69,7 @@ public abstract class Entity {
     }
 
     public void move(float velX, float velY) {
-        if (!level.getRegionForPixel((int) posX, (int) posY).isEmpty(PixelLayer.FOREGROUND)) {
+        if (level.getRegionForPixel((int) posX, (int) posY).isLoaded()) {
             posX += velX;
             posY += velY;
 

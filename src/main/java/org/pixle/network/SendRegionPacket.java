@@ -40,5 +40,6 @@ public class SendRegionPacket extends PixlePacket {
         ClientLevel level = client.getLevel();
         Region region = level.getRegion(regionX, regionY - Byte.MIN_VALUE);
         region.setPixels(pixels, layer);
+        region.setLoaded();
     }
 }
