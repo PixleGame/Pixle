@@ -12,12 +12,14 @@ import org.pixle.client.render.RenderingRegistry;
 import org.pixle.client.render.entity.IEntityRenderer;
 import org.pixle.entity.Entity;
 import org.pixle.entity.PlayerEntity;
+import org.pixle.entity.inventory.Inventory;
 import org.pixle.event.bus.EventBus;
 import org.pixle.level.Level;
 import org.pixle.level.PixelLayer;
 import org.pixle.level.region.Region;
 import org.pixle.network.SendMessagePacket;
 import org.pixle.pixel.Pixel;
+import org.pixle.pixel.PixelStack;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -89,6 +91,28 @@ public class LevelGUI extends GUI {
                         RenderHelper.drawOutline((float) ((centerX - (player.posX - selectionX) * pixelSize)), (float) (height - (centerY - (player.posY - selectionY) * pixelSize)), pixelSize, pixelSize, 1);
                         break;
                     }
+                }
+            }
+
+            Inventory inventory = player.getInventory();
+
+            for (int index = 0; index < 9; index++) {
+                PixelStack stack = inventory.getPixelStack(index);
+                float color = index % 2 == 0 ? 0.35F : 0.25F;
+                float secondaryColor = index % 2 == 0 ? 0.25F : 0.35F;
+                GLStateManager.setColor(color, color, color, 0.5F);
+                RenderHelper.drawRect(40 * index, 0, 40, 40);
+                GLStateManager.setColor(secondaryColor, secondaryColor, secondaryColor, 1.0F);
+                RenderHelper.drawOutline(40 * index, 0, 40, 40, 2);
+                if (stack != null) {
+                    Pixel pixel = stack.getPixel();
+                    GLStateManager.setColor(0.35F, 0.35F, 0.35F);
+                    int x = 40 * index + 10;
+                    RenderHelper.drawRect(x + 2, 12, 20, 20);
+                    GLStateManager.setColor(pixel.getRed(), pixel.getGreen(), pixel.getBlue());
+                    RenderHelper.drawRect(x, 10, 20, 20);
+                    GLStateManager.setColor(1.0F, 1.0F, 1.0F);
+                    RenderHelper.drawScaledStringWithShadow(x, 30, stack.getSize() + "", 1.0F);
                 }
             }
 
