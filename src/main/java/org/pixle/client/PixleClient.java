@@ -263,21 +263,17 @@ public class PixleClient extends Listener {
         int mouseY = Display.getHeight() - Mouse.getY();
         mouseX /= renderResolution.getScale();
         mouseY /= renderResolution.getScale();
-        boolean mouseDown = Mouse.isButtonDown(0);
-        boolean mouseClicked = false;
         while (Mouse.next()) {
-            if (Mouse.getEventButton() == 0) {
-                mouseClicked = Mouse.getEventButtonState();
+            int button = Mouse.getEventButton();
+            if (Mouse.getEventButtonState()) {
+                for (GUI gui : getOpenGUIs()) {
+                    gui.mouseClicked(mouseX, mouseY, button);
+                }
             }
-        }
-        if (mouseClicked) {
-            for (GUI gui : getOpenGUIs()) {
-                gui.mouseClicked(mouseX, mouseY);
-            }
-        }
-        if (mouseDown) {
-            for (GUI gui : getOpenGUIs()) {
-                gui.mouseDown(mouseX, mouseY);
+            if (Mouse.isButtonDown(button)) {
+                for (GUI gui : getOpenGUIs()) {
+                    gui.mouseDown(mouseX, mouseY, button);
+                }
             }
         }
         level.update();

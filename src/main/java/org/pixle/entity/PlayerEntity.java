@@ -13,6 +13,7 @@ public class PlayerEntity extends Entity {
     public String username;
     public boolean jumping;
     public float moveX;
+    public int selectedItem;
 
     public static final int REACH_DISTANCE = 15;
 
@@ -43,6 +44,7 @@ public class PlayerEntity extends Entity {
     public void writeToNBT(CompoundTag compound) {
         super.writeToNBT(compound);
         compound.setString("username", username);
+        compound.setInt("selectedItem", selectedItem);
         CompoundTag inventoryTag = new CompoundTag("inventory");
         inventory.writeToNBT(inventoryTag);
         compound.setTag(inventoryTag);
@@ -52,6 +54,7 @@ public class PlayerEntity extends Entity {
     public void readFromNBT(CompoundTag compound) {
         super.readFromNBT(compound);
         username = compound.getString("username");
+        selectedItem = compound.getInt("selectedItem");
         inventory.readFromNBT(compound.getCompoundTag("inventory"));
     }
 

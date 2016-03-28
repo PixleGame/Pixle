@@ -33,7 +33,9 @@ public class SetPixelPacket extends PixlePacket {
         if (dist < PlayerEntity.REACH_DISTANCE) {
             Level level = server.getLevel();
             PixelLayer layer = PixelLayer.values()[this.layer];
-            level.addEntity(new PixelEntity(level, x, y, layer), true);
+            if (level.getPixel(x, y, layer) != Pixel.AIR) {
+                level.addEntity(new PixelEntity(level, x, y, layer), true);
+            }
             level.setPixel(Pixel.getPixelByID(pixel), x, y, layer);
             server.getServer().sendToAllTCP(this);
         }

@@ -27,13 +27,13 @@ public abstract class GUI {
         }
     }
 
-    public void mouseClicked(int mouseX, int mouseY) {
+    public void mouseClicked(int mouseX, int mouseY, int button) {
         for (GUIComponent component : components) {
             component.mouseClicked(mouseX, mouseY);
         }
     }
 
-    public void mouseDown(int mouseX, int mouseY) {
+    public void mouseDown(int mouseX, int mouseY, int button) {
         for (GUIComponent component : components) {
             component.mouseDown(mouseX, mouseY);
         }
