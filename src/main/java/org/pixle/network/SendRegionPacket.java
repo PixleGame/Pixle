@@ -4,6 +4,7 @@ import com.esotericsoftware.kryonet.Connection;
 import org.pixle.client.PixleClient;
 import org.pixle.entity.PlayerEntity;
 import org.pixle.level.ClientLevel;
+import org.pixle.level.PixelLayer;
 import org.pixle.level.region.Region;
 import org.pixle.server.PixleServer;
 
@@ -12,6 +13,7 @@ public class SendRegionPacket extends PixlePacket {
     private int regionX;
     private byte regionY;
     private byte[][] pixels;
+    private boolean empty;
 
     public SendRegionPacket() {
     }
@@ -20,13 +22,16 @@ public class SendRegionPacket extends PixlePacket {
         this.layer = layer;
         this.regionX = region.getX();
         this.regionY = (byte) (region.getY() + Byte.MIN_VALUE);
+        this.empty = region.isEmpty(PixelLayer.values()[layer]);
 
-        pixels = new byte[Region.REGION_WIDTH][Region.REGION_HEIGHT];
-        int[][] regionPixels = region.getPixels()[layer];
+        if (!this.empty) {
+            pixels = new byte[Region.REGION_WIDTH][Region.REGION_HEIGHT];
+            int[][] regionPixels = region.getPixels()[layer];
 
-        for (int x = 0; x < pixels.length; x++) {
-            for (int y = 0; y < pixels[0].length; y++) {
-                pixels[x][y] = (byte) regionPixels[x][y];
+            for (int x = 0; x < pixels.length; x++) {
+                for (int y = 0; y < pixels[0].length; y++) {
+                    pixels[x][y] = (byte) regionPixels[x][y];
+                }
             }
         }
     }
@@ -39,7 +44,9 @@ public class SendRegionPacket extends PixlePacket {
     public void handleClient(PixleClient client, Connection connection, long estimatedSendTime) {
         ClientLevel level = client.getLevel();
         Region region = level.getRegion(regionX, regionY - Byte.MIN_VALUE);
-        region.setPixels(pixels, layer);
+        if (!this.empty) {
+            region.setPixels(pixels, layer);
+        }
         region.setLoaded();
     }
 }
