@@ -4,7 +4,6 @@ import net.darkhax.opennbt.tags.CompoundTag;
 import net.darkhax.opennbt.tags.Tag;
 import org.pixle.entity.Entity;
 import org.pixle.entity.EntityRegistry;
-import org.pixle.entity.PixelEntity;
 import org.pixle.entity.PlayerEntity;
 import org.pixle.event.SetPixelEvent;
 import org.pixle.event.bus.EventBus;
@@ -243,5 +242,9 @@ public abstract class Level {
             }
         }
         return colliding;
+    }
+
+    public int getGenerationHeight(int x) {
+        return levelGenerator.getGenerationHeight(x, seed);
     }
 }

@@ -62,8 +62,13 @@ public class DefaultLevelGenerator implements ILevelGenerator {
         for (int i = 0; i < rand.nextInt(2); i++) {
             int x = rand.nextInt(Region.REGION_WIDTH);
             int worldX = x + regionOffsetX;
-            TreeGenerator.generateTree(level, worldX, level.getHeight(worldX, PixelLayer.FOREGROUND), rand);
+            TreeGenerator.generateTree(level, worldX, level.getGenerationHeight(worldX), rand);
         }
+    }
+
+    @Override
+    public int getGenerationHeight(int x, long seed) {
+        return getHeight(seed, fastFloor(x / 32.0));
     }
 
     private static int fastFloor(double x) {

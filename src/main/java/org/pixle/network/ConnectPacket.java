@@ -7,7 +7,6 @@ import org.pixle.client.PixleClient;
 import org.pixle.entity.Entity;
 import org.pixle.entity.PlayerEntity;
 import org.pixle.level.Level;
-import org.pixle.level.PixelLayer;
 import org.pixle.server.PixleServer;
 
 public class ConnectPacket extends PixlePacket {
@@ -29,7 +28,7 @@ public class ConnectPacket extends PixlePacket {
             Log.info("Server", username + " has connected to the server!");
             Level level = instance.getLevel();
             player = new PlayerEntity(level, username);
-            player.posY = level.getHeight((int) player.posX, PixelLayer.FOREGROUND) + 1;
+            player.posY = level.getGenerationHeight((int) player.posX) + 1;
             level.addEntity(player, true);
             server.sendToTCP(connectionId, new SetPlayerPacket(player));
             for (Entity entity : level.getEntities()) {
