@@ -3,6 +3,7 @@ package org.pixle.network;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.EndPoint;
+import org.pixle.entity.PlayerEntity;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -27,6 +28,8 @@ public class PixleNetworkManager {
         kryo.register(SetPlayerPacket.class);
         kryo.register(SetPixelPacket.class);
         kryo.register(SendMessagePacket.class);
+        kryo.register(InventoryUpdatePacket.class);
+        kryo.register(SelectSlotPacket.class);
     }
 
     public static boolean addClient(Connection connection, String username) {
@@ -39,5 +42,14 @@ public class PixleNetworkManager {
 
     public static String getUsername(Connection connection) {
         return clients.get(connection);
+    }
+
+    public static Connection getConnection(PlayerEntity player) {
+        for (Map.Entry<Connection, String> entry : clients.entrySet()) {
+            if (entry.getValue().equals(player.username)) {
+                return entry.getKey();
+            }
+        }
+        return null;
     }
 }

@@ -7,6 +7,7 @@ import org.pixle.entity.PlayerEntity;
 import org.pixle.level.Level;
 import org.pixle.level.PixelLayer;
 import org.pixle.pixel.Pixel;
+import org.pixle.pixel.PixelStack;
 import org.pixle.server.PixleServer;
 
 public class SetPixelPacket extends PixlePacket {
@@ -33,8 +34,17 @@ public class SetPixelPacket extends PixlePacket {
         if (dist < PlayerEntity.REACH_DISTANCE) {
             Level level = server.getLevel();
             PixelLayer layer = PixelLayer.values()[this.layer];
-            if (level.getPixel(x, y, layer) != Pixel.AIR) {
+            if (level.getPixel(x, y, layer) != Pixel.AIR && pixel == 0) {
                 level.addEntity(new PixelEntity(level, x, y, layer), true);
+            } else if (level.getPixel(x, y, layer) == Pixel.AIR && pixel != 0) {
+                PixelStack pixelStack = player.getInventory().getPixelStack(player.selectedItem);
+                if (pixelStack != null) {
+                    pixelStack.increaseSize(-1);
+                    if (pixelStack.getSize() <= 0) {
+                        player.getInventory().setPixelStack(null, player.selectedItem);
+                    }
+                    server.getServer().sendToTCP(connection.getID(), new InventoryUpdatePacket(player, player.selectedItem));
+                }
             }
             level.setPixel(Pixel.getPixelByID(pixel), x, y, layer);
             server.getServer().sendToAllTCP(this);

@@ -18,14 +18,14 @@ public abstract class Inventory {
         inventory[index] = pixel;
     }
 
-    public void addStackToInventory(PixelStack stack) {
+    public int addStackToInventory(PixelStack stack) {
         int emptySlot = -1;
         for (int i = 0; i < getSlotCount(); i++) {
             PixelStack stackInSlot = getPixelStack(i);
             if (stackInSlot != null) {
                 if (stackInSlot.getPixel() == stack.getPixel()) {
                     inventory[i] = stackInSlot.merge(stack);
-                    return;
+                    return i;
                 }
             } else {
                 if (emptySlot == -1) {
@@ -36,6 +36,7 @@ public abstract class Inventory {
         if (emptySlot != -1) {
             setPixelStack(stack, emptySlot);
         }
+        return emptySlot;
     }
 
     public void writeToNBT(CompoundTag tag) {

@@ -3,7 +3,10 @@ package org.pixle.entity;
 import net.darkhax.opennbt.tags.CompoundTag;
 import org.pixle.level.Level;
 import org.pixle.level.PixelLayer;
+import org.pixle.network.InventoryUpdatePacket;
+import org.pixle.network.PixleNetworkManager;
 import org.pixle.pixel.PixelStack;
+import org.pixle.server.PixleServer;
 
 import java.util.List;
 import java.util.Random;
@@ -30,13 +33,16 @@ public class PixelEntity extends Entity {
     @Override
     public void update() {
         super.update();
-        List<Entity> collidingEntities = level.getCollidingEntities(bounds);
-        for (Entity entity : collidingEntities) {
-            if (entity instanceof PlayerEntity) {
-                PlayerEntity player = (PlayerEntity) entity;
-                player.getInventory().addStackToInventory(pixel);
-                destroy();
-                break;
+        if (level.getSide().isServer()) {
+            List<Entity> collidingEntities = level.getCollidingEntities(bounds);
+            for (Entity entity : collidingEntities) {
+                if (entity instanceof PlayerEntity) {
+                    PlayerEntity player = (PlayerEntity) entity;
+                    int slot = player.getInventory().addStackToInventory(pixel);
+                    PixleServer.INSTANCE.getServer().sendToTCP(PixleNetworkManager.getConnection(player).getID(), new InventoryUpdatePacket(player, slot));
+                    destroy();
+                    break;
+                }
             }
         }
     }

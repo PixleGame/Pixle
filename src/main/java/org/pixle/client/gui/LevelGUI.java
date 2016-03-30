@@ -17,6 +17,7 @@ import org.pixle.event.bus.EventBus;
 import org.pixle.level.Level;
 import org.pixle.level.PixelLayer;
 import org.pixle.level.region.Region;
+import org.pixle.network.SelectSlotPacket;
 import org.pixle.network.SendMessagePacket;
 import org.pixle.pixel.Pixel;
 import org.pixle.pixel.PixelStack;
@@ -87,7 +88,7 @@ public class LevelGUI extends GUI {
             double dist = Math.sqrt(distX * distX + distY * distY);
             if (dist < PlayerEntity.REACH_DISTANCE) {
                 for (PixelLayer layer : PixelLayer.values()) {
-                    if (canSelect(level, selectionX, selectionY, layer)) {
+                    if (canSelect(level, selectionX, selectionY, layer, true)) {
                         GLStateManager.setColor(0);
                         RenderHelper.drawOutline((float) ((centerX - (player.posX - selectionX) * pixelSize)), (float) (height - (centerY - (player.posY - selectionY) * pixelSize)), pixelSize, pixelSize, 1);
                         break;
@@ -170,16 +171,12 @@ public class LevelGUI extends GUI {
                 PixelStack pixelStack = player.getInventory().getPixelStack(player.selectedItem);
                 if (pixelStack != null) {
                     pixel = pixelStack.getPixel();
-                    pixelStack.increaseSize(-1);
-                    if (pixelStack.getSize() <= 0) {
-                        player.getInventory().setPixelStack(null, player.selectedItem);
-                    }
                 }
             }
 
             if (dist < PlayerEntity.REACH_DISTANCE) {
                 for (PixelLayer layer : PixelLayer.values()) {
-                    if (canSelect(level, selectionX, selectionY, layer) && level.getCollidingEntities(new PixelBounds(selectionX, selectionY)).isEmpty()) {
+                    if (canSelect(level, selectionX, selectionY, layer, button == 1) && level.getCollidingEntities(new PixelBounds(selectionX, selectionY)).isEmpty()) {
                         player.setPixel(pixel, selectionX, selectionY, layer);
                         break;
                     }
@@ -190,15 +187,16 @@ public class LevelGUI extends GUI {
                 int x = index * 40;
                 if (mouseX > x && mouseX < x + 40 && mouseY > 0 && mouseY < 40) {
                     player.selectedItem = index;
+                    PixleClient.INSTANCE.getClient().sendTCP(new SelectSlotPacket(player.selectedItem));
                     break;
                 }
             }
         }
     }
 
-    private boolean canSelect(Level level, int selectionX, int selectionY, PixelLayer layer) {
+    private boolean canSelect(Level level, int selectionX, int selectionY, PixelLayer layer, boolean placement) {
         boolean canSelect = level.hasPixel(selectionX, selectionY, layer);
-        if (!canSelect) {
+        if (!canSelect && placement) {
             outer: for (int x = -1; x <= 1; x++) {
                 for (int y = -1; y <= 1; y++) {
                     if (x != y && x != -y) {

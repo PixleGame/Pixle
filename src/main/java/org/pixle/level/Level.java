@@ -97,12 +97,11 @@ public abstract class Level {
     }
 
     public int getHeight(int x, PixelLayer layer) {
-        for (int y = LEVEL_HEIGHT - 1; y >= 0; y--) {
-            if (hasPixel(x, y, layer)) {
-                return y;
-            }
+        int y = LEVEL_HEIGHT - 1;
+        while (y > 0 && !hasPixel(x, y, layer)) {
+            y--;
         }
-        return 0;
+        return y;
     }
 
     public void setRegion(Region region, int x, int y) {
