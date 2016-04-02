@@ -3,13 +3,13 @@ package org.pixle.level;
 public enum PixelLayer {
     FOREGROUND(0), BACKGROUND(-30);
 
-    int colorOffset;
+    float colorOffset;
 
     PixelLayer(int colorOffset) {
-        this.colorOffset = colorOffset;
+        this.colorOffset = colorOffset / 255.0F;
     }
 
-    public int getColorOffset() {
+    public float getColorOffset() {
         return colorOffset;
     }
 }

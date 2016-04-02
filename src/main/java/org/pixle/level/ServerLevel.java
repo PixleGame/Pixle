@@ -16,12 +16,6 @@ public class ServerLevel extends Level {
     }
 
     @Override
-    public void setPixel(Pixel pixel, int x, int y, PixelLayer layer) {
-        super.setPixel(pixel, x, y, layer);
-        PixleServer.INSTANCE.getServer().sendToAllTCP(new SetPixelPacket(pixel.getPixelID(), x, y, layer));
-    }
-
-    @Override
     public boolean addEntity(Entity entity, boolean assignId) {
         if (assignId) {
             entity.entityID = getUniqueEntityId();

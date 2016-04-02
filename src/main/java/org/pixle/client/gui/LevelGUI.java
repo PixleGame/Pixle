@@ -62,23 +62,31 @@ public class LevelGUI extends GUI {
             boolean colorNoise = pixle.config.pixelColorNoise;
 
             PixelLayer[] renderLayers = PixelLayer.values();
+            int minX = (int) (player.posX - (pixelsInWidth / 2)) - 1;
+            double maxX = player.posX + (pixelsInWidth / 2) + 1;
+
+            GLStateManager.pushMatrix();
+            GLStateManager.translate(centerX - (player.posX * pixelSize), height - (centerY - (player.posY * pixelSize)));
+
             for (int y = Math.max(0, (int) (player.posY - halfPixelsInHeight) - 1); y < Math.min(Level.LEVEL_HEIGHT, player.posY + halfPixelsInHeight + 2); y++) {
-                for (int x = (int) (player.posX - (pixelsInWidth / 2)) - 1; x < player.posX + (pixelsInWidth / 2) + 1; x++) {
+                for (int x = minX; x < maxX; x++) {
                     Region region = level.getRegionForPixel(x, y);
                     for (PixelLayer layer : renderLayers) {
-                        float colorOffset = layer.getColorOffset() / 255.0F;
+                        float colorOffset = layer.getColorOffset();
                         if (!region.isEmpty(layer)) {
                             Pixel pixel = level.getPixel(x, y, layer);
                             if (pixel != Pixel.AIR) {
                                 float offset = (colorNoise ? ((new Random((x - y) * y).nextInt(10) - 5)) / 255.0F : 0.0F) + colorOffset;
                                 GLStateManager.setColor(pixel.getRed() + offset, pixel.getGreen() + offset, pixel.getBlue() + offset);
-                                RenderHelper.drawRect((float) (centerX - (player.posX - x) * pixelSize), (float) (height - (centerY - (player.posY - y) * pixelSize)), pixelSize, pixelSize);
+                                RenderHelper.drawRect((float) (x * pixelSize), (float) -(y * pixelSize), pixelSize, pixelSize);
                                 break;
                             }
                         }
                     }
                 }
             }
+
+            GLStateManager.popMatrix();
 
             int selectionX = pixle.getSelectionX(mouseX);
             int selectionY = pixle.getSelectionY(mouseY);
