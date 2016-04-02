@@ -88,7 +88,7 @@ public class LevelGUI extends GUI {
             double dist = Math.sqrt(distX * distX + distY * distY);
             if (dist < PlayerEntity.REACH_DISTANCE) {
                 for (PixelLayer layer : PixelLayer.values()) {
-                    if (canSelect(level, selectionX, selectionY, layer, true)) {
+                    if (canSelect(level, selectionX, selectionY, layer, true) || canSelect(level, selectionX, selectionY, layer, false)) {
                         GLStateManager.setColor(0);
                         RenderHelper.drawOutline((float) ((centerX - (player.posX - selectionX) * pixelSize)), (float) (height - (centerY - (player.posY - selectionY) * pixelSize)), pixelSize, pixelSize, 1);
                         break;
@@ -195,19 +195,22 @@ public class LevelGUI extends GUI {
     }
 
     private boolean canSelect(Level level, int selectionX, int selectionY, PixelLayer layer, boolean placement) {
-        boolean canSelect = level.hasPixel(selectionX, selectionY, layer);
-        if (!canSelect && placement) {
-            outer: for (int x = -1; x <= 1; x++) {
-                for (int y = -1; y <= 1; y++) {
-                    if (x != y && x != -y) {
-                        if (level.hasPixel(selectionX + x, selectionY + y, layer)) {
-                            canSelect = true;
-                            break outer;
+        boolean hasPixel = level.hasPixel(selectionX, selectionY, layer);
+        if (placement) {
+            if (!hasPixel) {
+                for (int x = -1; x <= 1; x++) {
+                    for (int y = -1; y <= 1; y++) {
+                        if (x != y && x != -y) {
+                            if (level.hasPixel(selectionX + x, selectionY + y, layer)) {
+                                return true;
+                            }
                         }
                     }
                 }
             }
+        } else {
+            return hasPixel;
         }
-        return canSelect;
+        return false;
     }
 }
