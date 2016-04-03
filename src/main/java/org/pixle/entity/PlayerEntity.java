@@ -5,6 +5,7 @@ import org.pixle.client.PixleClient;
 import org.pixle.entity.inventory.PlayerInventory;
 import org.pixle.level.Level;
 import org.pixle.level.PixelLayer;
+import org.pixle.level.region.Region;
 import org.pixle.network.SetPixelPacket;
 import org.pixle.pixel.Pixel;
 
@@ -30,10 +31,21 @@ public class PlayerEntity extends Entity {
     @Override
     public void update() {
         super.update();
+        keepAreaLoaded();
         if (jumping && onSurface) {
             velY = 1.0F;
         }
         velX = moveX;
+    }
+
+    private void keepAreaLoaded() {
+        int playerRegionX = level.getRegionX((int) posX);
+        int playerRegionY = level.getRegionY((int) posY);
+        for (int regionX = playerRegionX - 6; regionX < playerRegionX + 6; regionX++) {
+            for (int regionY = playerRegionY - 3; regionY < playerRegionY + 3; regionY++) {
+                level.getRegion(regionX, regionY);
+            }
+        }
     }
 
     public PlayerInventory getInventory() {

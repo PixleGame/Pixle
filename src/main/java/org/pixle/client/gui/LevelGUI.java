@@ -3,7 +3,6 @@ package org.pixle.client.gui;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.pixle.client.PixleClient;
-import org.pixle.client.config.ClientConfig;
 import org.pixle.client.event.RenderEntityEvent;
 import org.pixle.client.gl.GLStateManager;
 import org.pixle.client.message.MessageBubble;
@@ -184,7 +183,7 @@ public class LevelGUI extends GUI {
 
             if (dist < PlayerEntity.REACH_DISTANCE) {
                 for (PixelLayer layer : PixelLayer.values()) {
-                    if (canSelect(level, selectionX, selectionY, layer, button == 1) && level.getCollidingEntities(new PixelBounds(selectionX, selectionY)).isEmpty()) {
+                    if (canSelect(level, selectionX, selectionY, layer, button == 1) && (level.getCollidingEntities(new PixelBounds(selectionX, selectionY)).isEmpty() || button != 1)) {
                         player.setPixel(pixel, selectionX, selectionY, layer);
                         break;
                     }
