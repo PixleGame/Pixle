@@ -70,15 +70,17 @@ public class LevelGUI extends GUI {
             for (int y = Math.max(0, (int) (player.posY - halfPixelsInHeight) - 1); y < Math.min(Level.LEVEL_HEIGHT, player.posY + halfPixelsInHeight + 2); y++) {
                 for (int x = minX; x < maxX; x++) {
                     Region region = level.getRegionForPixel(x, y);
-                    for (PixelLayer layer : renderLayers) {
-                        float colorOffset = layer.getColorOffset();
-                        if (!region.isEmpty(layer)) {
-                            Pixel pixel = level.getPixel(x, y, layer);
-                            if (pixel != Pixel.AIR) {
-                                float offset = (colorNoise ? ((new Random((x - y) * y).nextInt(10) - 5)) / 255.0F : 0.0F) + colorOffset;
-                                GLStateManager.setColor(pixel.getRed() + offset, pixel.getGreen() + offset, pixel.getBlue() + offset);
-                                RenderHelper.drawRect((float) (x * pixelSize), (float) -(y * pixelSize), pixelSize, pixelSize);
-                                break;
+                    if (region != null) {
+                        for (PixelLayer layer : renderLayers) {
+                            float colorOffset = layer.getColorOffset();
+                            if (!region.isEmpty(layer)) {
+                                Pixel pixel = level.getPixel(x, y, layer);
+                                if (pixel != Pixel.AIR) {
+                                    float offset = (colorNoise ? ((new Random((x - y) * y).nextInt(10) - 5)) / 255.0F : 0.0F) + colorOffset;
+                                    GLStateManager.setColor(pixel.getRed() + offset, pixel.getGreen() + offset, pixel.getBlue() + offset);
+                                    RenderHelper.drawRect((float) (x * pixelSize), (float) -(y * pixelSize), pixelSize, pixelSize);
+                                    break;
+                                }
                             }
                         }
                     }

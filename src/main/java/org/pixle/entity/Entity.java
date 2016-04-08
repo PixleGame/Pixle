@@ -3,6 +3,7 @@ package org.pixle.entity;
 import net.darkhax.opennbt.tags.CompoundTag;
 import org.pixle.level.Level;
 import org.pixle.level.PixelLayer;
+import org.pixle.level.region.Region;
 import org.pixle.network.EntityPositionUpdatePacket;
 import org.pixle.server.PixleServer;
 import org.pixle.util.Bounds;
@@ -69,7 +70,8 @@ public abstract class Entity {
     }
 
     public void move(float velX, float velY) {
-        if (level.getRegionForPixel((int) posX, (int) posY).isLoaded()) {
+        Region entityRegion = level.getRegionForPixel((int) posX, (int) posY);
+        if (entityRegion != null && entityRegion.isLoaded()) {
             posX += velX;
             posY += velY;
 

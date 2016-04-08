@@ -86,13 +86,16 @@ public abstract class Level {
     }
 
     public Region getRegion(int x, int y) {
-        Region region = regions[getRegionXIndex(x)][y];
-        if (region == null) {
-            region = new Region(x, y, this);
-            setRegion(region, x, y);
-            requestRegion(region, x, y);
+        if (y >= 0 && y < 256) {
+            Region region = regions[getRegionXIndex(x)][y];
+            if (region == null) {
+                region = new Region(x, y, this);
+                setRegion(region, x, y);
+                requestRegion(region, x, y);
+            }
+            return region;
         }
-        return region;
+        return null;
     }
 
     public int getHeight(int x, PixelLayer layer) {
