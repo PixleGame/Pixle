@@ -55,8 +55,13 @@ public class LevelGUI extends GUI {
             int centerX = width / 2;
             int centerY = height / 2;
 
+            float delta = (float) pixle.getDelta();
+
+            double playerX = RenderHelper.interpolate(player.prevPosX, player.posX, delta);
+            double playerY = RenderHelper.interpolate(player.prevPosY, player.posY, delta);
+
             GLStateManager.setColor(0x0090F7);
-            RenderHelper.drawRect(0, 0, Display.getWidth(), (int) (Display.getHeight() - (centerY - ((player.posY + 1) * pixelSize))));
+            RenderHelper.drawRect(0, 0, Display.getWidth(), (int) (Display.getHeight() - (centerY - ((playerY + 1) * pixelSize))));
 
             boolean colorNoise = pixle.config.pixelColorNoise;
 
@@ -65,7 +70,7 @@ public class LevelGUI extends GUI {
             double maxX = player.posX + (pixelsInWidth / 2) + 1;
 
             GLStateManager.pushMatrix();
-            GLStateManager.translate(centerX - (player.posX * pixelSize), height - (centerY - (player.posY * pixelSize)));
+            GLStateManager.translate(centerX - (playerX * pixelSize), height - (centerY - (playerY * pixelSize)));
 
             for (int y = Math.max(0, (int) (player.posY - halfPixelsInHeight) - 1); y < Math.min(Level.LEVEL_HEIGHT, player.posY + halfPixelsInHeight + 2); y++) {
                 for (int x = minX; x < maxX; x++) {
@@ -133,7 +138,7 @@ public class LevelGUI extends GUI {
                 IEntityRenderer entityRenderer = RenderingRegistry.getEntityRenderer(entity.getClass());
                 if (entityRenderer != null) {
                     if (eventBus.post(new RenderEntityEvent.Pre(pixle, entity))) {
-                        entityRenderer.render(entity, (float) (centerX - (player.posX - entity.posX) * pixelSize), (float) (centerY - (entity.posY - player.posY) * pixelSize), level, (float) pixle.getDelta());
+                        entityRenderer.render(entity, (float) (centerX - (playerX - RenderHelper.interpolate(entity.prevPosX, entity.posX, delta)) * pixelSize), (float) (centerY - (RenderHelper.interpolate(entity.prevPosY, entity.posY, delta) - playerY) * pixelSize), level, delta);
                     }
                     eventBus.post(new RenderEntityEvent.Post(pixle, entity));
                 }

@@ -92,4 +92,8 @@ public class RenderHelper {
         TrueTypeFont font = PixleClient.INSTANCE.getFontRenderer();
         font.drawString(x, y - 5, text, GLStateManager.getColor());
     }
+
+    public static double interpolate(double prev, double current, float delta) {
+        return prev + delta * (current - prev);
+    }
 }

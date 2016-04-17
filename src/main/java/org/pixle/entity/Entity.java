@@ -49,9 +49,9 @@ public abstract class Entity {
             if (posX != prevPosX || posY != prevPosY) {
                 PixleServer.INSTANCE.getServer().sendToAllTCP(new EntityPositionUpdatePacket(this));
             }
-            prevPosX = posX;
-            prevPosY = posY;
         }
+        prevPosX = posX;
+        prevPosY = posY;
     }
 
     public void updateMovement() {
