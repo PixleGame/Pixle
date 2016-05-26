@@ -2,7 +2,6 @@ package org.pixle.entity;
 
 import net.darkhax.opennbt.tags.CompoundTag;
 import org.pixle.level.Level;
-import org.pixle.level.PixelLayer;
 import org.pixle.level.region.Region;
 import org.pixle.network.EntityPositionUpdatePacket;
 import org.pixle.server.PixleServer;

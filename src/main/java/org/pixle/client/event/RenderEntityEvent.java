@@ -1,14 +1,12 @@
 package org.pixle.client.event;
 
-import org.pixle.client.PixleClient;
 import org.pixle.entity.Entity;
 import org.pixle.event.Cancelable;
 
 public class RenderEntityEvent extends RenderEvent {
     private Entity entity;
 
-    public RenderEntityEvent(PixleClient client, Entity entity) {
-        super(client);
+    public RenderEntityEvent(Entity entity) {
         this.entity = entity;
     }
 
@@ -18,14 +16,14 @@ public class RenderEntityEvent extends RenderEvent {
 
     @Cancelable
     public static class Pre extends RenderEntityEvent {
-        public Pre(PixleClient client, Entity entity) {
-            super(client, entity);
+        public Pre(Entity entity) {
+            super(entity);
         }
     }
 
     public static class Post extends RenderEntityEvent {
-        public Post(PixleClient client, Entity entity) {
-            super(client, entity);
+        public Post(Entity entity) {
+            super(entity);
         }
     }
 }

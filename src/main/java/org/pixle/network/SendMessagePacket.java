@@ -13,7 +13,8 @@ public class SendMessagePacket extends PixlePacket {
     private int entityID;
     private String message;
 
-    public SendMessagePacket() {}
+    public SendMessagePacket() {
+    }
 
     public SendMessagePacket(PlayerEntity entity, String message) {
         this.entityID = entity.entityID;

@@ -132,15 +132,13 @@ public class LevelGUI extends GUI {
                 }
             }
 
-            EventBus eventBus = EventBus.get();
-
             for (Entity entity : level.getEntities()) {
                 IEntityRenderer entityRenderer = RenderingRegistry.getEntityRenderer(entity.getClass());
                 if (entityRenderer != null) {
-                    if (eventBus.post(new RenderEntityEvent.Pre(pixle, entity))) {
+                    if (EventBus.INSTANCE.post(new RenderEntityEvent.Pre(entity))) {
                         entityRenderer.render(entity, (float) (centerX - (playerX - RenderHelper.interpolate(entity.prevPosX, entity.posX, delta)) * pixelSize), (float) (centerY - (RenderHelper.interpolate(entity.prevPosY, entity.posY, delta) - playerY) * pixelSize), level, delta);
                     }
-                    eventBus.post(new RenderEntityEvent.Post(pixle, entity));
+                    EventBus.INSTANCE.post(new RenderEntityEvent.Post(entity));
                 }
             }
 

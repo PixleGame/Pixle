@@ -1,8 +1,6 @@
 package org.pixle.pixel;
 
 public class Pixel {
-    private static Pixel[] pixels = new Pixel[256];
-
     public static final Pixel AIR;
     public static final Pixel GRASS;
     public static final Pixel STONE;
@@ -12,6 +10,7 @@ public class Pixel {
     public static final Pixel BEDROCK;
     public static final Pixel GRAVEL;
     public static final Pixel SNOW;
+    private static Pixel[] pixels = new Pixel[256];
 
     static {
         AIR = new Pixel(0);
@@ -37,12 +36,28 @@ public class Pixel {
         pixels[pixelID = id] = this;
     }
 
-    public int getPixelID() {
-        return pixelID;
-    }
-
     public static Pixel getPixelByID(int id) {
         return pixels[id];
+    }
+
+    public static Pixel fromColor(float red, float green, float blue) {
+        for (Pixel pixel : pixels) {
+            if (pixel != null && pixel.red == red && pixel.green == green && pixel.blue == blue) {
+                return pixel;
+            }
+        }
+        return Pixel.AIR;
+    }
+
+    public static Pixel fromColor(int color) {
+        float red = ((color & 0xFF0000) >> 16) / 255.0F;
+        float green = ((color & 0xFF00) >> 8) / 255.0F;
+        float blue = (color & 0xFF) / 255.0F;
+        return fromColor(red, green, blue);
+    }
+
+    public int getPixelID() {
+        return pixelID;
     }
 
     public float getRed() {
@@ -62,21 +77,5 @@ public class Pixel {
         green = ((color & 0xFF00) >> 8) / 255.0F;
         blue = (color & 0xFF) / 255.0F;
         return this;
-    }
-
-    public static Pixel fromColor(float red, float green, float blue) {
-        for (Pixel pixel : pixels) {
-            if (pixel != null && pixel.red == red && pixel.green == green && pixel.blue == blue) {
-                return pixel;
-            }
-        }
-        return Pixel.AIR;
-    }
-
-    public static Pixel fromColor(int color) {
-        float red = ((color & 0xFF0000) >> 16) / 255.0F;
-        float green = ((color & 0xFF00) >> 8) / 255.0F;
-        float blue = (color & 0xFF) / 255.0F;
-        return fromColor(red, green, blue);
     }
 }

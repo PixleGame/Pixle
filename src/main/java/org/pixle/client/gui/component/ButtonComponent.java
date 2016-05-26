@@ -4,12 +4,6 @@ import org.pixle.client.gl.GLStateManager;
 import org.pixle.client.render.RenderHelper;
 
 public class ButtonComponent extends GUIComponent {
-    protected int width;
-    protected int height;
-    protected String text;
-    protected IButtonActionHandler actionHandler;
-    protected IComponentTheme theme;
-
     public static final IComponentTheme DEFAULT_THEME = new IComponentTheme() {
         @Override
         public int getPrimaryColor(boolean selected) {
@@ -21,6 +15,11 @@ public class ButtonComponent extends GUIComponent {
             return selected ? 0x404040 : 0x666666;
         }
     };
+    protected int width;
+    protected int height;
+    protected String text;
+    protected IButtonActionHandler actionHandler;
+    protected IComponentTheme theme;
 
     public ButtonComponent(int x, int y, int width, int height, String text, IButtonActionHandler actionHandler, IComponentTheme theme) {
         super(x, y);

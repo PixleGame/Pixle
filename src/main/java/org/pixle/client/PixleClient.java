@@ -28,7 +28,7 @@ import org.pixle.network.ConnectPacket;
 import org.pixle.network.PixleNetworkManager;
 import org.pixle.network.PixlePacket;
 import org.pixle.network.PlayerMovePacket;
-import org.pixle.plugin.PluginJson;
+import org.pixle.plugin.PluginContainer;
 import org.pixle.server.PixleServer;
 import org.pixle.util.ConfigUtils;
 import org.pixle.util.CrashReport;
@@ -43,28 +43,19 @@ import java.util.List;
 import java.util.Map;
 
 public class PixleClient extends Listener {
-    public List<PluginJson> pluginList = new ArrayList<>();
-
+    public static PixleClient INSTANCE;
+    public List<PluginContainer> pluginList = new ArrayList<>();
+    public File configFile = new File(SystemUtils.getGameFolder(), "config.json");
+    public ClientConfig config;
     private boolean closeRequested;
     private int fps;
     private double delta;
-
     private TextureManager textureManager;
-
     private List<GUI> openGUIs = new ArrayList<>();
-
     private Client client;
-
     private ClientLevel level;
     private PlayerEntity player;
-
     private String username;
-
-    public static PixleClient INSTANCE;
-
-    public File configFile = new File(SystemUtils.getGameFolder(), "config.json");
-    public ClientConfig config;
-
     private TrueTypeFont fontRenderer;
 
     private boolean hasIntegratedServer;
@@ -214,7 +205,7 @@ public class PixleClient extends Listener {
         PixleNetworkManager.init(client);
         openGUI(new MainMenuGUI());
 
-        EventBus.get().post(new PixleInitializeEvent());
+        EventBus.INSTANCE.post(new PixleInitializeEvent());
     }
 
     public void connect(String host, int port) throws IOException {
@@ -281,9 +272,8 @@ public class PixleClient extends Listener {
     }
 
     private void render() {
-        EventBus eventBus = EventBus.get();
         renderResolution.applyScale();
-        if (eventBus.post(new RenderEvent.Pre(this))) {
+        if (EventBus.INSTANCE.post(new RenderEvent.Pre())) {
             GLStateManager.enableColor();
             int mouseX = Mouse.getX();
             int mouseY = Display.getHeight() - Mouse.getY();
@@ -292,19 +282,21 @@ public class PixleClient extends Listener {
             for (GUI gui : getOpenGUIs()) {
                 gui.render(mouseX, mouseY);
             }
+            EventBus.INSTANCE.post(new RenderEvent.Post());
         }
-        eventBus.post(new RenderEvent.Post(this));
     }
 
     public void openGUI(GUI gui) {
-        if (EventBus.get().post(new GUIInitializationEvent.Pre(gui))) {
+        GUIInitializationEvent event = new GUIInitializationEvent.Pre(gui);
+        if (EventBus.INSTANCE.post(event)) {
+            gui = event.getGUI();
             gui.clearComponents();
             gui.updateComponents(renderResolution);
             if (!openGUIs.contains(gui)) {
                 openGUIs.add(gui);
             }
+            EventBus.INSTANCE.post(new GUIInitializationEvent.Post(gui));
         }
-        EventBus.get().post(new GUIInitializationEvent.Post(gui));
     }
 
     public void closeGUI(GUI gui) {
@@ -329,6 +321,10 @@ public class PixleClient extends Listener {
 
     public PlayerEntity getPlayer() {
         return player;
+    }
+
+    public void setPlayer(int player) {
+        this.player = (PlayerEntity) level.getEntityById(player);
     }
 
     public double getDelta() {
@@ -359,10 +355,6 @@ public class PixleClient extends Listener {
 
     public String getUsername() {
         return username;
-    }
-
-    public void setPlayer(int player) {
-        this.player = (PlayerEntity) level.getEntityById(player);
     }
 
     public TrueTypeFont getFontRenderer() {

@@ -1,20 +1,10 @@
 package org.pixle.client.gui.component;
 
 import org.lwjgl.input.Keyboard;
-import org.newdawn.slick.TrueTypeFont;
-import org.pixle.client.PixleClient;
 import org.pixle.client.gl.GLStateManager;
 import org.pixle.client.render.RenderHelper;
 
-import java.lang.reflect.Field;
-
 public class KeyOptionComponent extends GUIOptionComponent {
-    protected int width;
-    protected int height;
-    protected IComponentTheme theme;
-    protected boolean selected;
-    protected int key;
-
     public static final IComponentTheme DEFAULT_THEME = new IComponentTheme() {
         @Override
         public int getPrimaryColor(boolean selected) {
@@ -26,6 +16,11 @@ public class KeyOptionComponent extends GUIOptionComponent {
             return selected ? 0x404040 : 0x666666;
         }
     };
+    protected int width;
+    protected int height;
+    protected IComponentTheme theme;
+    protected boolean selected;
+    protected int key;
 
     public KeyOptionComponent(int x, int y, int width, int height, int key, IComponentTheme theme) {
         super(x, y);

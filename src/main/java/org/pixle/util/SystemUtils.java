@@ -3,10 +3,6 @@ package org.pixle.util;
 import java.io.File;
 
 public final class SystemUtils {
-    public enum OperatingSystem {
-        WINDOWS, LINUX, MACOSX, SOLARIS, UNKNOWN;
-    }
-
     private static File gameFolder;
 
     public static OperatingSystem getOS() {
@@ -40,5 +36,9 @@ public final class SystemUtils {
 
     public static void setGameFolder(File file) {
         gameFolder = file;
+    }
+
+    public enum OperatingSystem {
+        WINDOWS, LINUX, MACOSX, SOLARIS, UNKNOWN;
     }
 }

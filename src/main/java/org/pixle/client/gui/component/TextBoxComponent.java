@@ -7,12 +7,6 @@ import org.pixle.client.gl.GLStateManager;
 import org.pixle.client.render.RenderHelper;
 
 public class TextBoxComponent extends GUIComponent {
-    private String text;
-    private int width;
-    private int height;
-    private IComponentTheme theme;
-    private boolean selected;
-
     public static final IComponentTheme DEFAULT_THEME = new IComponentTheme() {
         @Override
         public int getPrimaryColor(boolean selected) {
@@ -24,6 +18,11 @@ public class TextBoxComponent extends GUIComponent {
             return selected ? 0x555555 : 0x666666;
         }
     };
+    private String text;
+    private int width;
+    private int height;
+    private IComponentTheme theme;
+    private boolean selected;
 
     public TextBoxComponent(int x, int y, int width, int height, String startText, IComponentTheme theme) {
         super(x, y);

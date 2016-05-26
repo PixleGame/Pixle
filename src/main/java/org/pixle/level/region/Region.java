@@ -57,12 +57,11 @@ public class Region {
 
     public void generate(long seed) {
         ILevelGenerator levelGenerator = level.getLevelGenerator();
-        EventBus eventBus = EventBus.get();
-        if (eventBus.post(new GenerateRegionEvent.Pre(level, this, levelGenerator, seed))) {
+        if (EventBus.INSTANCE.post(new GenerateRegionEvent.Pre(level, this, levelGenerator, seed))) {
             levelGenerator.generate(this, x, y, seed);
             levelGenerator.decorate(this, x, y, new Random(seed * x));
         }
-        eventBus.post(new GenerateRegionEvent.Post(level, this, levelGenerator, seed));
+        EventBus.INSTANCE.post(new GenerateRegionEvent.Post(level, this, levelGenerator, seed));
         loaded = true;
     }
 

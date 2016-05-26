@@ -19,21 +19,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Level {
+    public static final int PIXEL_SIZE = 6;
+    public static final int LEVEL_HEIGHT = 8192;
     protected static final int LEVEL_REGION_WIDTH = 62500;
-
+    public static int nextEntityId;
     protected Region[][] regions = new Region[LEVEL_REGION_WIDTH][getRegionY(LEVEL_HEIGHT)];
-
     protected ILevelGenerator levelGenerator;
     protected long seed;
-
     protected List<Entity> entities = new ArrayList<>();
     protected List<PlayerEntity> players = new ArrayList<>();
-
-    public static final int PIXEL_SIZE = 6;
-
-    public static int nextEntityId;
-
-    public static final int LEVEL_HEIGHT = 8192;
 
     public Level(long seed) {
         this.levelGenerator = new DefaultLevelGenerator();
@@ -53,7 +47,7 @@ public abstract class Level {
             Region regionForPixel = getRegionForPixel(x, y);
             int regionX = x & (Region.REGION_WIDTH - 1);
             int regionY = y & (Region.REGION_HEIGHT - 1);
-            if (EventBus.get().post(new SetPixelEvent.Pre(pixel, x, y, this, regionForPixel, layer))) {
+            if (EventBus.INSTANCE.post(new SetPixelEvent.Pre(pixel, x, y, this, regionForPixel, layer))) {
                 regionForPixel.setPixel(pixel, regionX, regionY, layer);
             }
         }

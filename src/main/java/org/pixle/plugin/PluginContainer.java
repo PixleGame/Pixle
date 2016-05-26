@@ -1,6 +1,9 @@
 package org.pixle.plugin;
 
-public class PluginJson {
+import com.google.gson.annotations.SerializedName;
+
+public class PluginContainer {
+    @SerializedName("main_class")
     private String mainClass;
     private String id;
     private String name;
@@ -11,7 +14,7 @@ public class PluginJson {
         return mainClass;
     }
 
-    public String getId() {
+    public String getID() {
         return id;
     }
 

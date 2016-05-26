@@ -4,8 +4,6 @@ import org.pixle.entity.Entity;
 import org.pixle.level.region.Region;
 import org.pixle.network.AddEntityPacket;
 import org.pixle.network.RemoveEntityPacket;
-import org.pixle.network.SetPixelPacket;
-import org.pixle.pixel.Pixel;
 import org.pixle.server.PixleServer;
 import org.pixle.util.Side;
 

@@ -8,10 +8,10 @@ import java.lang.reflect.Parameter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EventBus {
-    private List<EventMethod> eventMethodList = new ArrayList<>();
+public enum EventBus {
+    INSTANCE;
 
-    private static EventBus eventBus = new EventBus();
+    private List<EventMethod> eventMethodList = new ArrayList<>();
 
     public void register(Object object) {
         Log.info("EventBus", "Attempting to register object " + object);
@@ -21,7 +21,7 @@ public class EventBus {
                     Log.info("EventBus", "Found potential event method " + method);
                     Parameter parameter = method.getParameters()[0];
                     if (Event.class.isAssignableFrom(parameter.getType())) {
-                        eventMethodList.add(new EventMethod(object, method, parameter.getType()));
+                        this.eventMethodList.add(new EventMethod(object, method, parameter.getType()));
                     }
                 }
             }
@@ -29,11 +29,7 @@ public class EventBus {
     }
 
     public boolean post(Event event) {
-        eventMethodList.stream().filter(eventMethod -> eventMethod.canHandleEvent(event)).forEach(eventMethod -> eventMethod.invoke(event));
+        this.eventMethodList.stream().filter(eventMethod -> eventMethod.canHandleEvent(event)).forEach(eventMethod -> eventMethod.invoke(event));
         return !event.isCanceled();
-    }
-
-    public static EventBus get() {
-        return eventBus;
     }
 }
