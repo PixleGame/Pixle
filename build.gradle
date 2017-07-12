@@ -3,7 +3,6 @@ plugins {
     id "idea"
     id "eclipse"
     id "application"
-    id "com.stehno.natives" version "0.2.4"
 }
 
 version = "0.1.0"
@@ -29,15 +28,6 @@ dependencies {
     compile "net.darkhax.opennbt:OpenNBT:2.4.20"
     compile "com.google.code.gson:gson:2.6.2"
 	compile "com.esotericsoftware:kryonet:2.22.0-RC1"
-}
-
-natives {
-    jars = ["lwjgl-platform-2.9.3-natives-linux",
-            "lwjgl-platform-2.9.3-natives-osx",
-            "lwjgl-platform-2.9.3-natives-windows",
-            "jinput-platform-2.0.5-natives-linux",
-            "jinput-platform-2.0.5-natives-osx",
-            "jinput-platform-2.0.5-natives-windows"]
 }
 
 task fatJar(type: Jar) {
