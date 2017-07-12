@@ -14,7 +14,7 @@ sourceCompatibility = targetCompatibility = "1.8"
 repositories {
     mavenCentral()
     maven {
-        url "http://maven.rubbix.net"
+        url "http://maven.epoxide.xyz"
     }
     maven {
         url "http://maven.ilexiconn.net"
@@ -25,7 +25,7 @@ dependencies {
     compile fileTree(dir: "libs", include: "*.jar")
     compile "org.lwjgl.lwjgl:lwjgl:2.9.3"
     compile "commons-io:commons-io:2.4"
-    compile "net.darkhax.opennbt:OpenNBT:2.4.20"
+    compile "net.darkhax.opennbt:OpenNBT:2.5.22"
     compile "com.google.code.gson:gson:2.6.2"
 	compile "com.esotericsoftware:kryonet:2.22.0-RC1"
 }

@@ -6,8 +6,9 @@ import com.google.gson.GsonBuilder;
 import org.apache.commons.io.FilenameUtils;
 import org.lwjgl.Sys;
 import org.pixle.event.bus.EventBus;
-import org.pixle.plugin.PluginJson;
-import org.pixle.plugin.PluginJsonAdapter;
+import org.pixle.plugin.PluginContainer;
+import org.pixle.plugin.PluginContainerAdapter;
+import org.pixle.util.PixleLogger;
 import org.pixle.util.StartupUtils;
 import org.pixle.util.SystemUtils;
 
@@ -21,10 +22,11 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 public class PixleClientStartup {
-    private static final Gson pluginGson = new GsonBuilder().registerTypeAdapter(PluginJson.class, new PluginJsonAdapter()).create();
+    private static final Gson pluginGson = new GsonBuilder().registerTypeAdapter(PluginContainer.class, new PluginContainerAdapter()).create();
 
     public static void main(String[] args) {
         Thread.currentThread().setName("Client");
+        Log.setLogger(new PixleLogger());
         Map<String, String> properties = StartupUtils.argsToMap(args);
         SystemUtils.setGameFolder(new File(properties.get("gamefolder")));
         Log.info("Startup", "Setting user: " + properties.get("username"));
@@ -48,9 +50,9 @@ public class PixleClientStartup {
                         ZipEntry zipEntry = entries.nextElement();
                         if (zipEntry.getName().equals("plugin.json")) {
                             InputStream stream = zipFile.getInputStream(zipEntry);
-                            PluginJson plugin = pluginGson.fromJson(new InputStreamReader(stream), PluginJson.class);
+                            PluginContainer plugin = pluginGson.fromJson(new InputStreamReader(stream), PluginContainer.class);
                             client.pluginList.add(plugin);
-                            EventBus.get().register(plugin.getInstance());
+                            EventBus.INSTANCE.register(plugin.getInstance());
                         }
                     }
                 } catch (IOException e) {
@@ -60,9 +62,9 @@ public class PixleClientStartup {
         }
         InputStream stream = PixleClient.class.getResourceAsStream("/plugin.json");
         if (stream != null) {
-            PluginJson plugin = pluginGson.fromJson(new InputStreamReader(stream), PluginJson.class);
+            PluginContainer plugin = pluginGson.fromJson(new InputStreamReader(stream), PluginContainer.class);
             client.pluginList.add(plugin);
-            EventBus.get().register(plugin.getInstance());
+            EventBus.INSTANCE.register(plugin.getInstance());
         }
     }
 }

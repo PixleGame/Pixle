@@ -18,10 +18,6 @@ public class GLStateManager {
         blendState.setDisabled();
     }
 
-    public static void setColor(int hex) {
-        setColor(((hex & 0xFF0000) >> 16) / 255.0F, ((hex & 0xFF00) >> 8) / 255.0F, (hex & 0xFF) / 255.0F);
-    }
-
     public static void setColor(float red, float green, float blue) {
         setColor(red, green, blue, colorState.alpha == null ? 1.0F : colorState.alpha);
     }
@@ -93,6 +89,10 @@ public class GLStateManager {
 
     public static Color getColor() {
         return new Color(colorState.red, colorState.green, colorState.blue);
+    }
+
+    public static void setColor(int hex) {
+        setColor(((hex & 0xFF0000) >> 16) / 255.0F, ((hex & 0xFF00) >> 8) / 255.0F, (hex & 0xFF) / 255.0F);
     }
 
     static class BooleanState {

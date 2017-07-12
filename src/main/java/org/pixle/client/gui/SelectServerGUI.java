@@ -1,6 +1,5 @@
 package org.pixle.client.gui;
 
-import org.lwjgl.opengl.Display;
 import org.pixle.client.PixleClient;
 import org.pixle.client.gl.GLStateManager;
 import org.pixle.client.gui.component.ButtonComponent;

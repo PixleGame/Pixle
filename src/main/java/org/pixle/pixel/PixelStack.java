@@ -15,6 +15,15 @@ public class PixelStack {
         this(pixel, 1);
     }
 
+    public static PixelStack readFromNBT(CompoundTag tag) {
+        return new PixelStack(Pixel.getPixelByID(tag.getByte("pixel")), tag.getInt("size"));
+    }
+
+    public static PixelStack readData(String string) {
+        String[] data = string.split(",");
+        return new PixelStack(Pixel.getPixelByID(Integer.parseInt(data[0])), Integer.parseInt(data[1]));
+    }
+
     public int getSize() {
         return size;
     }
@@ -36,16 +45,7 @@ public class PixelStack {
         tag.setByte("pixel", (byte) pixel.getPixelID());
     }
 
-    public static PixelStack readFromNBT(CompoundTag tag) {
-        return new PixelStack(Pixel.getPixelByID(tag.getByte("pixel")), tag.getInt("size"));
-    }
-
     public String writeData() {
         return pixel.getPixelID() + "," + size;
-    }
-
-    public static PixelStack readData(String string) {
-        String[] data = string.split(",");
-        return new PixelStack(Pixel.getPixelByID(Integer.parseInt(data[0])), Integer.parseInt(data[1]));
     }
 }

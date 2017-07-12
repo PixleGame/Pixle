@@ -4,12 +4,6 @@ import org.pixle.client.gl.GLStateManager;
 import org.pixle.client.render.RenderHelper;
 
 public class SliderOptionComponent extends GUIOptionComponent {
-    protected int minValue;
-    protected int maxValue;
-    protected int width;
-    protected int value;
-    protected IComponentTheme theme;
-
     public static final IComponentTheme DEFAULT_THEME = new IComponentTheme() {
         @Override
         public int getPrimaryColor(boolean selected) {
@@ -21,6 +15,11 @@ public class SliderOptionComponent extends GUIOptionComponent {
             return selected ? 0x555555 : 0x666666;
         }
     };
+    protected int minValue;
+    protected int maxValue;
+    protected int width;
+    protected int value;
+    protected IComponentTheme theme;
 
     public SliderOptionComponent(int x, int y, int minValue, int maxValue, int width, int startingValue, IComponentTheme theme) {
         super(x, y);

@@ -17,15 +17,15 @@ public class EventMethod {
     }
 
     public boolean canHandleEvent(Event event) {
-        return event.getClass() == eventClass;
+        return this.eventClass == event.getClass();
     }
 
     public void invoke(Event event) {
-        if (event.getClass() != eventClass) {
+        if (event.getClass() != this.eventClass) {
             throw new RuntimeException("Method called with wrong event! " + this);
         }
         try {
-            method.invoke(parent, event);
+            this.method.invoke(this.parent, event);
         } catch (Exception e) {
             System.err.println(CrashReport.makeCrashReport(e, "Failed calling event method"));
         }

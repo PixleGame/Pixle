@@ -5,18 +5,16 @@ import org.pixle.client.PixleClient;
 import org.pixle.entity.inventory.PlayerInventory;
 import org.pixle.level.Level;
 import org.pixle.level.PixelLayer;
-import org.pixle.level.region.Region;
 import org.pixle.network.SetPixelPacket;
 import org.pixle.pixel.Pixel;
 
 public class PlayerEntity extends Entity {
-    private PlayerInventory inventory;
+    public static final int REACH_DISTANCE = 15;
     public String username;
     public boolean jumping;
     public float moveX;
     public int selectedItem;
-
-    public static final int REACH_DISTANCE = 15;
+    private PlayerInventory inventory;
 
     public PlayerEntity(Level level) {
         super(level);

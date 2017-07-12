@@ -10,7 +10,7 @@ import org.pixle.level.Level;
 import org.pixle.level.ServerLevel;
 import org.pixle.network.PixleNetworkManager;
 import org.pixle.network.PixlePacket;
-import org.pixle.plugin.PluginJson;
+import org.pixle.plugin.PluginContainer;
 import org.pixle.util.CrashReport;
 
 import java.io.IOException;
@@ -18,13 +18,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PixleServer extends Listener {
-    public List<PluginJson> pluginList = new ArrayList<>();
-
+    public static PixleServer INSTANCE;
+    public List<PluginContainer> pluginList = new ArrayList<>();
     private boolean closeRequested;
     private Server server;
     private ServerLevel level;
-
-    public static PixleServer INSTANCE;
 
     public void start(int port) {
         try {
@@ -44,7 +42,7 @@ public class PixleServer extends Listener {
         PixleNetworkManager.init(server);
         level = new ServerLevel();
 
-        EventBus.get().post(new PixleInitializeEvent());
+        EventBus.INSTANCE.post(new PixleInitializeEvent());
     }
 
     public void stop() {

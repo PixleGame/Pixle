@@ -1,15 +1,9 @@
 package org.pixle.client.gui.component;
 
-import org.lwjgl.input.Keyboard;
 import org.pixle.client.gl.GLStateManager;
 import org.pixle.client.render.RenderHelper;
 
 public class BooleanOptionComponent extends GUIOptionComponent {
-    protected int width;
-    protected int height;
-    protected boolean value;
-    protected IComponentTheme theme;
-
     public static final IComponentTheme DEFAULT_THEME = new IComponentTheme() {
         @Override
         public int getPrimaryColor(boolean selected) {
@@ -21,6 +15,10 @@ public class BooleanOptionComponent extends GUIOptionComponent {
             return selected ? 0x555555 : 0x666666;
         }
     };
+    protected int width;
+    protected int height;
+    protected boolean value;
+    protected IComponentTheme theme;
 
     public BooleanOptionComponent(int x, int y, int width, int height, boolean startingValue, IComponentTheme theme) {
         super(x, y);

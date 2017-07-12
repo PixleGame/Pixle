@@ -5,16 +5,24 @@ import org.pixle.event.Cancelable;
 import org.pixle.event.Event;
 
 public class GUIInitializationEvent extends Event {
-    private GUI gui;
+    protected GUI gui;
 
     public GUIInitializationEvent(GUI gui) {
         this.gui = gui;
+    }
+
+    public GUI getGUI() {
+        return gui;
     }
 
     @Cancelable
     public static class Pre extends GUIInitializationEvent {
         public Pre(GUI gui) {
             super(gui);
+        }
+
+        public void setGUI(GUI gui) {
+            this.gui = gui;
         }
     }
 

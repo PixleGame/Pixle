@@ -5,12 +5,11 @@ import org.pixle.event.GenerateRegionEvent;
 import org.pixle.event.PixleInitializeEvent;
 import org.pixle.event.SetPixelEvent;
 import org.pixle.event.bus.EventHandler;
-import org.pixle.util.Side;
 
 public class TestPlugin {
     @EventHandler
     public void onInitialize(PixleInitializeEvent event) {
-        Log.info("TestPlugin/" + Side.get(), "Hello world!");
+        Log.info("TestPlugin", "Hello world!");
     }
 
     @EventHandler

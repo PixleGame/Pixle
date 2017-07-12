@@ -9,22 +9,22 @@ import com.google.gson.stream.JsonWriter;
 
 import java.io.IOException;
 
-public class PluginJsonAdapter extends TypeAdapter<PluginJson> {
+public class PluginContainerAdapter extends TypeAdapter<PluginContainer> {
     public Gson gson = new Gson();
 
     @Override
-    public void write(JsonWriter out, PluginJson value) throws IOException {
+    public void write(JsonWriter out, PluginContainer value) throws IOException {
 
     }
 
     @Override
-    public PluginJson read(JsonReader in) throws IOException {
+    public PluginContainer read(JsonReader in) throws IOException {
         JsonObject object = gson.getAdapter(JsonElement.class).read(in).getAsJsonObject();
-        PluginJson plugin = gson.fromJson(object, PluginJson.class);
+        PluginContainer plugin = gson.fromJson(object, PluginContainer.class);
         try {
             plugin.setInstance(Class.forName(plugin.getMainClass()).newInstance());
         } catch (Exception e) {
-            throw new RuntimeException("Couldn't find main class for plugin " + plugin.getId() + " (" + plugin.getMainClass() + ")");
+            throw new RuntimeException("Couldn't find main class for plugin " + plugin.getID() + " (" + plugin.getMainClass() + ")");
         }
         return plugin;
     }

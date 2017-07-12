@@ -1,5 +1,5 @@
 {
-  "mainClass": "org.pixle.plugin.TestPlugin",
+  "main_class": "org.pixle.plugin.TestPlugin",
   "id": "test",
   "name": "Test",
   "version": "0.1.0"

@@ -21,18 +21,20 @@ public class MessageBubble {
     }
 
     public void tick() {
-        tick++;
-        if (tick % 120 == 1) {
+        this.tick++;
+        if (this.tick % 120 == 1) {
             y++;
         }
-        if (tick > 1200) {
+        if (this.tick > 1200) {
             LevelGUI levelGUI = null;
             for (GUI gui : PixleClient.INSTANCE.getOpenGUIs()) {
                 if (gui instanceof LevelGUI) {
                     levelGUI = (LevelGUI) gui;
                 }
             }
-            levelGUI.bubbleList.remove(this);
+            if (levelGUI != null) {
+                levelGUI.bubbleList.remove(this);
+            }
         }
     }
 

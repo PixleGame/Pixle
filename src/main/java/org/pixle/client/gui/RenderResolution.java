@@ -2,16 +2,13 @@ package org.pixle.client.gui;
 
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
-import org.pixle.client.gl.GLStateManager;
 
 public class RenderResolution {
-    private int width;
-    private int height;
-
-    private float scale = 1.0F;
-
     private static final int BASE_WIDTH = 854;
     private static final int BASE_HEIGHT = 480;
+    private int width;
+    private int height;
+    private float scale = 1.0F;
 
     public RenderResolution() {
         int displayWidth = Display.getWidth();
